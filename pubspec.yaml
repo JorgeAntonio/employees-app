@@ -39,6 +39,26 @@ dependencies:
   flutter_riverpod: ^2.6.1
   hooks_riverpod: ^2.6.1
   flutter_hooks: ^0.21.2
+  freezed_annotation: ^3.1.0
+  riverpod_annotation: ^2.6.1
+  json_annotation: ^4.9.0
+
+  # Go Router
+  go_router: ^16.1.0
+
+  # Network
+  dio: ^5.8.0+1
+  connectivity_plus: ^6.1.4
+
+  # Image
+  cached_network_image: ^3.4.1
+
+  # UI
+  responsive_framework: ^1.5.1
+  flutter_screenutil: ^5.9.3
+
+  # Theme
+  google_fonts: ^6.3.0
 
 dev_dependencies:
   flutter_test:
@@ -50,6 +70,10 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  logger: ^2.6.1
+  build_runner: ^2.6.0
+  freezed: ^3.2.0
+  json_serializable: ^6.10.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
