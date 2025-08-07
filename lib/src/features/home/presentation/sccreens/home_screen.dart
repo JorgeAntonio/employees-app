@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
+import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/widgets.dart';
@@ -76,72 +78,64 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: colorScheme.primary,
+        backgroundColor: context.appColorScheme.primary,
         elevation: 0,
-        title: const Text(''),
+        title: Text(
+          'Attendance App',
+          style: context.appTextTheme.titleLarge?.copyWith(
+            color: context.appColorScheme.onPrimary,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.settings),
-            color: colorScheme.onPrimary,
+            color: context.appColorScheme.onPrimary,
           ),
         ],
       ),
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            // Custom App Bar
-            SliverToBoxAdapter(child: const HomeAppBar()),
+      body: Column(
+        children: [
+          // Custom App Bar
+          const HomeAppBar(),
 
-            // Main Content
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  children: [
-                    // Date and Time Card
-                    const DateTimeCard(),
+          // Main Content
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(DoubleSizes.size24),
+              child: Column(
+                spacing: DoubleSizes.size24,
+                children: [
+                  // Today's Status Banner
+                  StatusBanner(
+                    isCheckedIn: _isCheckedIn,
+                    checkInTime: _checkInTime,
+                  ),
 
-                    const SizedBox(height: 24),
+                  // Quick Stats
+                  const QuickStats(),
 
-                    // Today's Status Banner
-                    StatusBanner(
-                      isCheckedIn: _isCheckedIn,
-                      checkInTime: _checkInTime,
-                    ),
+                  // Next Check Card
+                  NextCheckCard(
+                    isCheckedIn: _isCheckedIn,
+                    timeRemaining: _timeRemaining,
+                  ),
 
-                    const SizedBox(height: 24),
+                  // const SizedBox(height: 24),
 
-                    // Quick Stats
-                    const QuickStats(),
-
-                    const SizedBox(height: 24),
-
-                    // Next Check Card
-                    NextCheckCard(
-                      isCheckedIn: _isCheckedIn,
-                      timeRemaining: _timeRemaining,
-                    ),
-
-                    // const SizedBox(height: 24),
-
-                    // // Main Action Button
-                    // MainActionButton(
-                    //   isCheckedIn: _isCheckedIn,
-                    //   onPressed: _isCheckedIn ? _checkOut : _checkIn,
-                    // ),
-                    const SizedBox(height: 40),
-                  ],
-                ),
+                  // // Main Action Button
+                  // MainActionButton(
+                  //   isCheckedIn: _isCheckedIn,
+                  //   onPressed: _isCheckedIn ? _checkOut : _checkIn,
+                  // ),
+                  const SizedBox(height: DoubleSizes.size40),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

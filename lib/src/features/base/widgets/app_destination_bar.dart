@@ -1,3 +1,5 @@
+import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
+import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:flutter/material.dart';
 
 class AppDestinationBar extends StatelessWidget {
@@ -12,51 +14,63 @@ class AppDestinationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final colorScheme = context.appColorScheme;
+
+    final List<NavigationDestination> destinations = [
+      NavigationDestination(
+        icon: Icon(
+          currentIndex == 0 ? Icons.home : Icons.home_outlined,
+          color: currentIndex == 0
+              ? colorScheme.primary
+              : colorScheme.onSurfaceVariant,
+        ),
+        label: 'Inicio',
+      ),
+      NavigationDestination(
+        icon: Icon(
+          currentIndex == 1
+              ? Icons.calendar_today
+              : Icons.calendar_today_outlined,
+          color: currentIndex == 1
+              ? colorScheme.primary
+              : colorScheme.onSurfaceVariant,
+        ),
+        label: 'Historial',
+      ),
+    ];
+
+    final List<NavigationDestinationLabelBehavior> labelBehaviors = [
+      NavigationDestinationLabelBehavior.alwaysShow,
+      NavigationDestinationLabelBehavior.alwaysShow,
+    ];
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(
+        horizontal: DoubleSizes.size8,
+        vertical: DoubleSizes.size2,
+      ),
       decoration: BoxDecoration(
-        color: colorScheme.primary,
-        borderRadius: BorderRadius.circular(16),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(DoubleSizes.size16),
+          topRight: Radius.circular(DoubleSizes.size16),
+        ),
         boxShadow: [
           BoxShadow(
             color: colorScheme.shadow.withValues(alpha: 0.2),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
+            blurRadius: DoubleSizes.size12,
+            offset: const Offset(0, DoubleSizes.size4),
           ),
         ],
       ),
       child: NavigationBar(
-        backgroundColor: colorScheme.primary,
+        backgroundColor: colorScheme.surface,
         elevation: 0,
-        indicatorColor: colorScheme.secondaryContainer,
-        labelTextStyle: WidgetStateProperty.all(
-          TextStyle(color: colorScheme.onPrimary),
-        ),
+        indicatorColor: colorScheme.primaryContainer,
         selectedIndex: currentIndex,
         onDestinationSelected: onTabSelected,
-        destinations: [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined, color: colorScheme.onPrimary),
-            selectedIcon: Icon(Icons.home, color: colorScheme.secondary),
-            label: 'Inicio',
-          ),
-          NavigationDestination(
-            icon: Icon(
-              Icons.calendar_today_outlined,
-              color: colorScheme.onPrimary,
-            ),
-            selectedIcon: Icon(
-              Icons.calendar_today,
-              color: colorScheme.secondary,
-            ),
-            label: 'Historial',
-          ),
-        ],
-
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        destinations: destinations,
+        labelBehavior: labelBehaviors[currentIndex],
       ),
     );
   }

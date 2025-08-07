@@ -1,4 +1,5 @@
 import 'package:attendance_app/src/core/router/router.dart';
+import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -29,23 +30,23 @@ class MainScreen extends StatelessWidget {
         onTabSelected: onTabSelected,
       ),
       floatingActionButton: Container(
-        width: 64,
-        height: 64,
+        width: DoubleSizes.size64,
+        height: DoubleSizes.size64,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: colorScheme.secondary,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: 0.2),
-              blurRadius: 8,
-              offset: const Offset(0, 4),
+              blurRadius: DoubleSizes.size8,
+              offset: const Offset(0, DoubleSizes.size4),
             ),
           ],
         ),
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(DoubleSizes.size32),
             onTap: () {
               // Navigate directly to scanner route
               context.pushNamed(Routes.scanner.name);
@@ -53,7 +54,7 @@ class MainScreen extends StatelessWidget {
             child: Icon(
               Icons.qr_code_scanner,
               color: colorScheme.onSecondary,
-              size: 32,
+              size: DoubleSizes.size32,
             ),
           ),
         ),

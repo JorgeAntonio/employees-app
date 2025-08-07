@@ -1,4 +1,6 @@
 import 'package:attendance_app/src/core/router/router.dart';
+import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
+import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -8,9 +10,8 @@ class SignInScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
+    final colorScheme = context.appColorScheme;
+    final textTheme = context.appTextTheme;
 
     // Hooks for form controllers
     final emailController = useTextEditingController();
@@ -18,43 +19,36 @@ class SignInScreen extends HookWidget {
     final isLoading = useState(false);
     final formKey = useMemoized(() => GlobalKey<FormState>(), []);
 
-    // Dispose controllers when widget is disposed
-    useEffect(() {
-      return () {
-        emailController.dispose();
-        passwordController.dispose();
-      };
-    }, []);
-
     return Scaffold(
       backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(
+                horizontal: DoubleSizes.size24,
+              ),
               child: Form(
                 key: formKey,
                 child: Column(
+                  spacing: DoubleSizes.size24,
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // App Logo
                     Container(
-                      width: 80,
-                      height: 80,
+                      width: DoubleSizes.size80,
+                      height: DoubleSizes.size80,
                       decoration: BoxDecoration(
                         color: colorScheme.primaryContainer,
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(DoubleSizes.size20),
                       ),
                       child: Icon(
                         Icons.access_time_filled_rounded,
-                        size: 40,
+                        size: DoubleSizes.size40,
                         color: colorScheme.onPrimaryContainer,
                       ),
                     ),
-
-                    const SizedBox(height: 24),
 
                     // Title
                     Text(
@@ -65,7 +59,7 @@ class SignInScreen extends HookWidget {
                       ),
                     ),
 
-                    const SizedBox(height: 48),
+                    const SizedBox(height: DoubleSizes.size16),
 
                     // Email field
                     TextFormField(
@@ -86,8 +80,6 @@ class SignInScreen extends HookWidget {
                       },
                     ),
 
-                    const SizedBox(height: 20),
-
                     // Password field
                     TextFormField(
                       controller: passwordController,
@@ -107,12 +99,12 @@ class SignInScreen extends HookWidget {
                       },
                     ),
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: DoubleSizes.size16),
 
                     // Sign in button
                     SizedBox(
                       width: double.infinity,
-                      height: 56,
+                      height: DoubleSizes.size56,
                       child: FilledButton(
                         onPressed: isLoading.value
                             ? null
@@ -127,8 +119,8 @@ class SignInScreen extends HookWidget {
                               },
                         child: isLoading.value
                             ? SizedBox(
-                                width: 24,
-                                height: 24,
+                                width: DoubleSizes.size24,
+                                height: DoubleSizes.size24,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
                                   valueColor: AlwaysStoppedAnimation<Color>(
@@ -145,8 +137,6 @@ class SignInScreen extends HookWidget {
                               ),
                       ),
                     ),
-
-                    const SizedBox(height: 24),
 
                     // Terms and conditions
                     Row(
@@ -200,10 +190,10 @@ class SignInScreen extends HookWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('¡Inicio de sesión exitoso!'),
-          backgroundColor: Theme.of(context).colorScheme.primary,
+          backgroundColor: context.appColorScheme.primary,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(DoubleSizes.size12),
           ),
         ),
       );
