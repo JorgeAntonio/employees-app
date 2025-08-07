@@ -9,7 +9,7 @@ class AttendanceApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    TextTheme textTheme = createTextTheme(context, "Roboto", "Inter");
+    TextTheme textTheme = createTextTheme(context, "Poppins", "Mochiy Pop One");
 
     MaterialTheme theme = MaterialTheme(textTheme);
 
@@ -21,7 +21,7 @@ class AttendanceApp extends ConsumerWidget {
         routerDelegate: router.routerDelegate,
         routeInformationProvider: router.routeInformationProvider,
         debugShowCheckedModeBanner: false,
-        title: 'Matricula EPG UNAP',
+        title: 'Attendance App',
         themeMode: ThemeMode.light,
         theme: theme.light(),
         darkTheme: theme.dark(),

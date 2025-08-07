@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 class Palette {
   const Palette._();
 
+  static const Color blue = Color(0xFF006FEE);
+  static const Color green = Color(0xFF008000);
+  static const Color orange = Color(0xFFFFA500);
+  static const Color purple = Color(0xFF800080);
+
   // Base colors
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
