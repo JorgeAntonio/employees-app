@@ -1,0 +1,26 @@
+class Routes {
+  const Routes._({required this.name, required this.path});
+  final String name;
+  final String path;
+
+  static Routes get splash => const Routes._(name: 'splash', path: '/splash');
+
+  static Routes get welcome =>
+      const Routes._(name: 'welcome', path: '/welcome');
+
+  static Routes get signin => const Routes._(name: 'sign-in', path: '/sign-in');
+
+  static Routes get scanner =>
+      const Routes._(name: 'scanner', path: '/scanner');
+
+  static Routes get home => const Routes._(name: 'home', path: '/home');
+
+  static Routes get history =>
+      const Routes._(name: 'history', path: '/history');
+
+  static Routes get profile =>
+      const Routes._(name: 'profile', path: '/profile');
+
+  static Routes get settings =>
+      const Routes._(name: 'settings', path: '/settings');
+}
