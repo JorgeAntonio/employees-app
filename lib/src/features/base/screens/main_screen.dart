@@ -18,6 +18,9 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
       extendBody: true, // to make floating action button notch transparent
       body: child,
@@ -26,14 +29,14 @@ class MainScreen extends StatelessWidget {
         onTabSelected: onTabSelected,
       ),
       floatingActionButton: Container(
-        width: 60,
-        height: 60,
+        width: 64,
+        height: 64,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.white,
+          color: colorScheme.secondary,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.2),
+              color: Colors.black.withValues(alpha: 0.2),
               blurRadius: 8,
               offset: const Offset(0, 4),
             ),
@@ -47,10 +50,10 @@ class MainScreen extends StatelessWidget {
               // Navigate directly to scanner route
               context.pushNamed(Routes.scanner.name);
             },
-            child: const Icon(
+            child: Icon(
               Icons.qr_code_scanner,
-              color: Colors.red,
-              size: 28,
+              color: colorScheme.onSecondary,
+              size: 32,
             ),
           ),
         ),
