@@ -194,13 +194,13 @@ class MaterialTheme {
     ),
 
     filledButtonTheme: FilledButtonThemeData(
-      style: ButtonStyle(
-        shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
-        ),
-        backgroundColor: WidgetStateProperty.all(colorScheme.primary),
-        foregroundColor: WidgetStateProperty.all(colorScheme.onPrimary),
-      ),
+      // style: ButtonStyle(
+      //   shape: WidgetStateProperty.all(
+      //     RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+      //   ),
+      //   backgroundColor: WidgetStateProperty.all(colorScheme.primary),
+      //   foregroundColor: WidgetStateProperty.all(colorScheme.onPrimary),
+      // ),
     ),
 
     outlinedButtonTheme: OutlinedButtonThemeData(
