@@ -15,11 +15,11 @@ int _getTabIndexFromLocation(String location) {
   if (location.contains(Routes.home.path)) {
     return 0;
   }
-  if (location.contains(Routes.scanner.path)) {
+  if (location.contains(Routes.history.path)) {
     return 1;
   }
-  if (location.contains(Routes.history.path)) {
-    return 2;
+  if (location.contains(Routes.scanner.path)) {
+    return 0; // When in scanner, show home as selected
   }
 
   return 0; // Default to home if no match
@@ -57,6 +57,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: Routes.profile.name,
         builder: (context, state) => const ProfileScreen(),
       ),
+      GoRoute(
+        path: Routes.scanner.path,
+        name: Routes.scanner.name,
+        builder: (context, state) => const ScannerScreen(),
+      ),
 
       StatefulShellRoute.indexedStack(
         key: _shellNavigatorKey,
@@ -66,11 +71,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           return MainScreen(
             currentIndex: currentIndex,
             onTabSelected: (index) {
-              final paths = [
-                Routes.home.path,
-                Routes.scanner.path,
-                Routes.history.path,
-              ];
+              final paths = [Routes.home.path, Routes.history.path];
               GoRouter.of(context).go(paths[index]);
             },
             child: child,
@@ -83,15 +84,6 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: Routes.home.path,
                 name: Routes.home.name,
                 builder: (context, state) => const HomeScreen(),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: Routes.scanner.path,
-                name: Routes.scanner.name,
-                builder: (context, state) => const ScannerScreen(),
               ),
             ],
           ),

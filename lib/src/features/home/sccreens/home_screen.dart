@@ -105,124 +105,121 @@ class _HomeScreenState extends State<HomeScreen> {
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
 
-    return Scaffold(
-      backgroundColor: colorScheme.surface,
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            // Custom App Bar
-            SliverAppBar(
-              expandedHeight: 200,
-              floating: false,
-              pinned: true,
-              backgroundColor: colorScheme.surface,
-              elevation: 0,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        colorScheme.primaryContainer,
-                        colorScheme.tertiaryContainer,
-                      ],
-                    ),
+    return SafeArea(
+      child: CustomScrollView(
+        slivers: [
+          // Custom App Bar
+          SliverAppBar(
+            expandedHeight: 200,
+            floating: false,
+            pinned: true,
+            backgroundColor: colorScheme.surface,
+            elevation: 0,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [
+                      colorScheme.primaryContainer,
+                      colorScheme.tertiaryContainer,
+                    ],
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(24, 60, 24, 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                _getGreeting(),
-                                style: textTheme.headlineMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: colorScheme.onPrimaryContainer,
-                                ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 60, 24, 20),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              _getGreeting(),
+                              style: textTheme.headlineMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: colorScheme.onPrimaryContainer,
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'Juan Pérez',
-                                style: textTheme.titleLarge?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: colorScheme.onPrimaryContainer
-                                      .withOpacity(0.9),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: colorScheme.onPrimaryContainer.withOpacity(
-                              0.2,
                             ),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.person_rounded,
-                            size: 32,
-                            color: colorScheme.onPrimaryContainer,
-                          ),
+                            const SizedBox(height: 4),
+                            Text(
+                              'Juan Pérez',
+                              style: textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.w600,
+                                color: colorScheme.onPrimaryContainer
+                                    .withOpacity(0.9),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: colorScheme.onPrimaryContainer.withOpacity(
+                            0.2,
+                          ),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.person_rounded,
+                          size: 32,
+                          color: colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    context.pushNamed(Routes.profile.name);
-                  },
-                  icon: Icon(
-                    Icons.settings_rounded,
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
             ),
-
-            // Main Content
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Column(
-                  children: [
-                    // Date and Time Card
-                    _buildDateTimeCard(context),
-
-                    const SizedBox(height: 24),
-
-                    // Today's Status Banner
-                    _buildStatusBanner(context),
-
-                    const SizedBox(height: 24),
-
-                    // Quick Stats
-                    _buildQuickStats(context),
-
-                    const SizedBox(height: 24),
-
-                    // Next Check Card
-                    _buildNextCheckCard(context),
-
-                    const SizedBox(height: 40),
-
-                    // Main Action Button
-                    _buildMainActionButton(context),
-                  ],
+            actions: [
+              IconButton(
+                onPressed: () {
+                  context.pushNamed(Routes.profile.name);
+                },
+                icon: Icon(
+                  Icons.settings_rounded,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
+            ],
+          ),
+
+          // Main Content
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                children: [
+                  // Date and Time Card
+                  _buildDateTimeCard(context),
+
+                  const SizedBox(height: 24),
+
+                  // Today's Status Banner
+                  _buildStatusBanner(context),
+
+                  const SizedBox(height: 24),
+
+                  // Quick Stats
+                  _buildQuickStats(context),
+
+                  const SizedBox(height: 24),
+
+                  // Next Check Card
+                  _buildNextCheckCard(context),
+
+                  const SizedBox(height: 40),
+
+                  // Main Action Button
+                  _buildMainActionButton(context),
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

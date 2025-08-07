@@ -1,5 +1,5 @@
-import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
 import 'package:flutter/material.dart';
+import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
 
 class AppDestinationBar extends StatelessWidget {
   const AppDestinationBar({
@@ -13,46 +13,36 @@ class AppDestinationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<NavigationDestination> destinations = [
-      NavigationDestination(
-        icon: Icon(
-          currentIndex == 0 ? Icons.home : Icons.home_outlined,
-          color: currentIndex == 0
-              ? context.theme.colorScheme.primary
-              : context.theme.colorScheme.onSurface,
-        ),
-        label: 'Inicio',
+    return StylishBottomBar(
+      option: AnimatedBarOptions(
+        iconSize: 28,
+        barAnimation: BarAnimation.fade,
+        iconStyle: IconStyle.Default,
+        opacity: 1.0,
       ),
-      NavigationDestination(
-        icon: Icon(
-          currentIndex == 1
-              ? Icons.qr_code_scanner
-              : Icons.qr_code_scanner_outlined,
-          color: currentIndex == 1
-              ? context.theme.colorScheme.primary
-              : context.theme.colorScheme.onSurface,
+      items: [
+        BottomBarItem(
+          icon: const Icon(Icons.home_outlined),
+          selectedIcon: const Icon(Icons.home),
+          selectedColor: Colors.blue,
+          unSelectedColor: Colors.grey,
+          title: const Text('Inicio'),
         ),
-        label: 'Escanear',
-      ),
-      NavigationDestination(
-        icon: Icon(
-          currentIndex == 2
-              ? Icons.calendar_today
-              : Icons.calendar_today_outlined,
-          color: currentIndex == 2
-              ? context.theme.colorScheme.primary
-              : context.theme.colorScheme.onSurface,
+        BottomBarItem(
+          icon: const Icon(Icons.calendar_today_outlined),
+          selectedIcon: const Icon(Icons.calendar_today),
+          selectedColor: Colors.blue,
+          unSelectedColor: Colors.grey,
+          title: const Text('Historial'),
         ),
-        label: 'Historial',
-      ),
-    ];
-
-    return NavigationBar(
-      selectedIndex: currentIndex,
-      onDestinationSelected: (index) {
+      ],
+      hasNotch: true,
+      fabLocation: StylishBarFabLocation.center,
+      currentIndex: currentIndex,
+      notchStyle: NotchStyle.circle,
+      onTap: (index) {
         onTabSelected(index);
       },
-      destinations: destinations,
     );
   }
 }
