@@ -212,9 +212,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   _buildNextCheckCard(context),
 
                   const SizedBox(height: 40),
-
-                  // Main Action Button
-                  _buildMainActionButton(context),
                 ],
               ),
             ),
