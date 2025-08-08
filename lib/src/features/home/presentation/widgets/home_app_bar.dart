@@ -61,23 +61,6 @@ class HomeAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         spacing: DoubleSizes.size16,
         children: [
-          InkWell(
-            onTap: () {
-              context.pushNamed(Routes.profile.name);
-            },
-            child: Container(
-              padding: const EdgeInsets.all(DoubleSizes.size12),
-              decoration: BoxDecoration(
-                color: colorScheme.secondary,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.person_rounded,
-                size: DoubleSizes.size32,
-                color: colorScheme.onPrimary,
-              ),
-            ),
-          ),
           Expanded(
             child: Column(
               spacing: DoubleSizes.size4,
@@ -138,6 +121,23 @@ class HomeAppBar extends StatelessWidget {
                   ],
                 ),
               ],
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              context.pushNamed(Routes.profile.name);
+            },
+            child: Container(
+              padding: const EdgeInsets.all(DoubleSizes.size12),
+              decoration: BoxDecoration(
+                color: colorScheme.secondary,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.person_rounded,
+                size: DoubleSizes.size32,
+                color: colorScheme.onPrimary,
+              ),
             ),
           ),
         ],

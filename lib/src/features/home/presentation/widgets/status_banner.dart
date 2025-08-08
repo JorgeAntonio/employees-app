@@ -1,3 +1,5 @@
+import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
+import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:flutter/material.dart';
 
 class StatusBanner extends StatelessWidget {
@@ -42,47 +44,60 @@ class StatusBanner extends StatelessWidget {
       bannerSubtext = 'No olvides registrar tu asistencia';
     }
 
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: bannerColor.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: bannerColor.withValues(alpha: 0.3)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: bannerColor.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(bannerIcon, color: bannerColor, size: 24),
+    return Column(
+      spacing: DoubleSizes.size16,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          'Estado de asistencia',
+          style: context.appTextTheme.labelLarge?.copyWith(
+            color: context.appColorScheme.onSurface.withValues(alpha: 0.5),
           ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  bannerText,
-                  style: textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: bannerColor,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  bannerSubtext,
-                  style: textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
-            ),
+        ),
+        Container(
+          padding: const EdgeInsets.all(DoubleSizes.size16),
+          decoration: BoxDecoration(
+            color: bannerColor.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(DoubleSizes.size16),
+            border: Border.all(color: bannerColor.withValues(alpha: 0.3)),
           ),
-        ],
-      ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(DoubleSizes.size16),
+                decoration: BoxDecoration(
+                  color: bannerColor.withValues(alpha: 0.2),
+                  borderRadius: BorderRadius.circular(DoubleSizes.size16),
+                ),
+                child: Icon(bannerIcon, color: bannerColor, size: 24),
+              ),
+              const SizedBox(width: DoubleSizes.size16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      bannerText,
+                      style: textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: bannerColor,
+                      ),
+                    ),
+                    const SizedBox(height: DoubleSizes.size4),
+                    Text(
+                      bannerSubtext,
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

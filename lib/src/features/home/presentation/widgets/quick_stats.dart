@@ -1,3 +1,5 @@
+import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
+import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:flutter/material.dart';
 
 class QuickStats extends StatelessWidget {
@@ -5,36 +7,48 @@ class QuickStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      spacing: DoubleSizes.size16,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Expanded(
-          child: _StatCard(
-            icon: Icons.check_circle_rounded,
-            title: 'Presencias',
-            value: '22',
-            subtitle: 'Este mes',
-            color: Theme.of(context).colorScheme.primary,
+        Text(
+          'Estadísticas rápidas',
+          style: context.appTextTheme.labelLarge?.copyWith(
+            color: context.appColorScheme.onSurface.withValues(alpha: 0.5),
           ),
         ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _StatCard(
-            icon: Icons.cancel_rounded,
-            title: 'Ausencias',
-            value: '3',
-            subtitle: 'Este mes',
-            color: Theme.of(context).colorScheme.error,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _StatCard(
-            icon: Icons.trending_up_rounded,
-            title: 'Puntualidad',
-            value: '95%',
-            subtitle: 'Promedio',
-            color: Theme.of(context).colorScheme.tertiary,
-          ),
+        Row(
+          spacing: DoubleSizes.size8,
+          children: [
+            Expanded(
+              child: _StatCard(
+                icon: Icons.check_circle_rounded,
+                title: 'Presencias',
+                value: '22',
+                subtitle: 'Este mes',
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+            Expanded(
+              child: _StatCard(
+                icon: Icons.cancel_rounded,
+                title: 'Ausencias',
+                value: '3',
+                subtitle: 'Este mes',
+                color: Theme.of(context).colorScheme.error,
+              ),
+            ),
+            Expanded(
+              child: _StatCard(
+                icon: Icons.trending_up_rounded,
+                title: 'Puntualidad',
+                value: '95%',
+                subtitle: 'Promedio',
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -63,10 +77,10 @@ class _StatCard extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(DoubleSizes.size8),
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(DoubleSizes.size16),
         border: Border.all(
           color: colorScheme.outlineVariant.withValues(alpha: 0.3),
         ),
@@ -74,7 +88,7 @@ class _StatCard extends StatelessWidget {
       child: Column(
         children: [
           Icon(icon, size: 28, color: color),
-          const SizedBox(height: 8),
+          const SizedBox(height: DoubleSizes.size8),
           Text(
             value,
             style: textTheme.titleLarge?.copyWith(
@@ -82,7 +96,7 @@ class _StatCard extends StatelessWidget {
               color: colorScheme.onSurface,
             ),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: DoubleSizes.size2),
           Text(
             title,
             style: textTheme.bodySmall?.copyWith(
@@ -91,7 +105,7 @@ class _StatCard extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: DoubleSizes.size2),
           Text(
             subtitle,
             style: textTheme.bodySmall?.copyWith(

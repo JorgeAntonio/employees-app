@@ -1,3 +1,5 @@
+import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
+import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class HistoryScreen extends StatelessWidget {
@@ -43,24 +45,14 @@ class HistoryScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
-      appBar: AppBar(
-        backgroundColor: colorScheme.surface,
-        elevation: 0,
-        title: Text(
-          'Historial de Asistencia',
-          style: textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: colorScheme.onSurface,
-          ),
-        ),
+      appBar: AttendanceAppBar(
+        title: 'Historial',
         actions: [
           IconButton(
-            onPressed: () {
-              // TODO: Show filter options
-            },
+            onPressed: () {},
             icon: Icon(
               Icons.filter_list_rounded,
-              color: colorScheme.onSurfaceVariant,
+              color: context.appColorScheme.onPrimary,
             ),
           ),
         ],

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
+import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/widgets.dart';
@@ -79,15 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: context.appColorScheme.primary,
-        elevation: 0,
-        title: Text(
-          'Attendance App',
-          style: context.appTextTheme.titleLarge?.copyWith(
-            color: context.appColorScheme.onPrimary,
-          ),
-        ),
+      appBar: AttendanceAppBar(
         actions: [
           IconButton(
             onPressed: () {},
@@ -96,34 +89,32 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          // Custom App Bar
-          const HomeAppBar(),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Custom App Bar
+            const HomeAppBar(),
 
-          // Main Content
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(DoubleSizes.size24),
+            // Main Content
+            Padding(
+              padding: const EdgeInsets.all(DoubleSizes.size16),
               child: Column(
                 spacing: DoubleSizes.size24,
                 children: [
-                  // Today's Status Banner
-                  StatusBanner(
-                    isCheckedIn: _isCheckedIn,
-                    checkInTime: _checkInTime,
-                  ),
-
-                  // Quick Stats
-                  const QuickStats(),
-
                   // Next Check Card
                   NextCheckCard(
                     isCheckedIn: _isCheckedIn,
                     timeRemaining: _timeRemaining,
                   ),
 
-                  // const SizedBox(height: 24),
+                  // Quick Stats
+                  const QuickStats(),
+
+                  // Today's Status Banner
+                  StatusBanner(
+                    isCheckedIn: _isCheckedIn,
+                    checkInTime: _checkInTime,
+                  ),
 
                   // // Main Action Button
                   // MainActionButton(
@@ -131,11 +122,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   //   onPressed: _isCheckedIn ? _checkOut : _checkIn,
                   // ),
                   const SizedBox(height: DoubleSizes.size40),
+                  const SizedBox(height: DoubleSizes.size40),
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

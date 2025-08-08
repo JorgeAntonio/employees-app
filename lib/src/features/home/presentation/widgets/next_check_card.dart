@@ -1,3 +1,4 @@
+import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:flutter/material.dart';
 
 class NextCheckCard extends StatelessWidget {
@@ -42,7 +43,7 @@ class NextCheckCard extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(DoubleSizes.size16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
