@@ -1,4 +1,4 @@
-import 'package:attendance_app/src/features/auth/screens/sign_in_screen.dart';
+import 'package:attendance_app/src/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:attendance_app/src/features/base/screens/main_screen.dart';
 import 'package:attendance_app/src/features/dashboard/screens/dashboard_screen.dart';
 import 'package:attendance_app/src/features/history/history_screen.dart';
