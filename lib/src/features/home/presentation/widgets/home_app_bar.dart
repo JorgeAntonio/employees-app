@@ -92,7 +92,7 @@ class HomeAppBar extends StatelessWidget {
                     Text(
                       getGreeting(name: 'Juan Pérez'),
                       style: textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w400,
                         color: colorScheme.onPrimary,
                       ),
                     ),
