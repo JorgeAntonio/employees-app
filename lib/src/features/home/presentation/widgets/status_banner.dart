@@ -1,5 +1,5 @@
-import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
+import 'package:attendance_app/src/core/shared/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 
 class StatusBanner extends StatelessWidget {
@@ -49,12 +49,7 @@ class StatusBanner extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Text(
-          'Estado de asistencia',
-          style: context.appTextTheme.labelLarge?.copyWith(
-            color: context.appColorScheme.onSurface.withValues(alpha: 0.5),
-          ),
-        ),
+        const SectionTitle(title: 'Estado de asistencia'),
         Container(
           padding: const EdgeInsets.all(DoubleSizes.size16),
           decoration: BoxDecoration(

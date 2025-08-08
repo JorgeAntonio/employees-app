@@ -1,5 +1,5 @@
-import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
+import 'package:attendance_app/src/core/shared/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 
 class QuickStats extends StatelessWidget {
@@ -12,12 +12,7 @@ class QuickStats extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Text(
-          'Estadísticas rápidas',
-          style: context.appTextTheme.labelLarge?.copyWith(
-            color: context.appColorScheme.onSurface.withValues(alpha: 0.5),
-          ),
-        ),
+        const SectionTitle(title: 'Estadísticas rápidas'),
         Row(
           spacing: DoubleSizes.size8,
           children: [
@@ -79,7 +74,7 @@ class _StatCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(DoubleSizes.size8),
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest,
+        color: colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(DoubleSizes.size16),
         border: Border.all(
           color: colorScheme.outlineVariant.withValues(alpha: 0.3),

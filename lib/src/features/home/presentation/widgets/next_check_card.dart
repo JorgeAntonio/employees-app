@@ -45,15 +45,8 @@ class NextCheckCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(DoubleSizes.size16),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            nextColor.withValues(alpha: 0.1),
-            nextColor.withValues(alpha: 0.05),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(20),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(DoubleSizes.size16),
         border: Border.all(color: nextColor.withValues(alpha: 0.3)),
       ),
       child: Column(
@@ -61,14 +54,18 @@ class NextCheckCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(DoubleSizes.size12),
                 decoration: BoxDecoration(
                   color: nextColor.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(DoubleSizes.size12),
                 ),
-                child: Icon(nextIcon, color: nextColor, size: 24),
+                child: Icon(
+                  nextIcon,
+                  color: nextColor,
+                  size: DoubleSizes.size24,
+                ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: DoubleSizes.size16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,7 +77,7 @@ class NextCheckCard extends StatelessWidget {
                         color: colorScheme.onSurface,
                       ),
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: DoubleSizes.size4),
                     Text(
                       timeRemainingText,
                       style: textTheme.bodyMedium?.copyWith(
@@ -93,20 +90,27 @@ class NextCheckCard extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: DoubleSizes.size16),
 
           // Countdown timer
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            padding: const EdgeInsets.symmetric(
+              horizontal: DoubleSizes.size20,
+              vertical: DoubleSizes.size16,
+            ),
             decoration: BoxDecoration(
               color: nextColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(DoubleSizes.size16),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.timer_rounded, size: 24, color: nextColor),
-                const SizedBox(width: 12),
+                Icon(
+                  Icons.timer_rounded,
+                  size: DoubleSizes.size24,
+                  color: nextColor,
+                ),
+                const SizedBox(width: DoubleSizes.size12),
                 Text(
                   _formatDuration(timeRemaining),
                   style: textTheme.headlineSmall?.copyWith(
