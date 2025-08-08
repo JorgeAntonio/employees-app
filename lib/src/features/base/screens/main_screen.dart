@@ -1,5 +1,7 @@
 import 'package:attendance_app/src/core/router/router.dart';
+import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
+import 'package:attendance_app/src/features/base/widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -19,11 +21,13 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final colorScheme = context.appColorScheme;
 
     return Scaffold(
       extendBody: true, // to make floating action button notch transparent
+      appBar: AppBar(title: const Text('Attendance App'), centerTitle: true),
+      drawer: const AppDrawer(),
+
       body: child,
       bottomNavigationBar: AppDestinationBar(
         currentIndex: currentIndex,

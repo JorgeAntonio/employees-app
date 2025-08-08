@@ -2,6 +2,7 @@ import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/core/shared/widgets/section_title.dart';
+import 'package:attendance_app/src/features/history/widgets/filters_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -12,7 +13,7 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  String _selectedTimeFilter = 'Semana';
+  final String _selectedTimeFilter = 'Semana';
   final List<String> _timeFilters = ['Semana', 'Quincena', 'Mes'];
 
   // Mock data for demonstration
@@ -77,9 +78,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
+    final colorScheme = context.appColorScheme;
+    final textTheme = context.appTextTheme;
 
     return Scaffold(
       backgroundColor: colorScheme.surface,
@@ -87,7 +87,21 @@ class _HistoryScreenState extends State<HistoryScreen> {
         title: 'Historial',
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                showDragHandle: false,
+                elevation: 0,
+                useSafeArea: true,
+                isScrollControlled: true,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(DoubleSizes.size16),
+                  ),
+                ),
+                builder: (context) => FiltersBottomSheet(),
+              );
+            },
             icon: Icon(
               Icons.filter_list_rounded,
               color: context.appColorScheme.onPrimary,
@@ -103,79 +117,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              // Time filter section
-              Container(
-                padding: const EdgeInsets.all(DoubleSizes.size16),
-                decoration: BoxDecoration(
-                  color: colorScheme.surface,
-                  borderRadius: BorderRadius.circular(DoubleSizes.size16),
-                  border: Border.all(
-                    color: colorScheme.outlineVariant,
-                    width: 1,
-                  ),
-                ),
-                child: Column(
-                  spacing: DoubleSizes.size12,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Filtrar por período',
-                      style: textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: colorScheme.onSurface,
-                      ),
-                    ),
-                    Row(
-                      children: _timeFilters.map((filter) {
-                        final isSelected = filter == _selectedTimeFilter;
-                        return Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedTimeFilter = filter;
-                              });
-                            },
-                            child: Container(
-                              margin: const EdgeInsets.only(
-                                right: DoubleSizes.size8,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                vertical: DoubleSizes.size12,
-                                horizontal: DoubleSizes.size16,
-                              ),
-                              decoration: BoxDecoration(
-                                color: isSelected
-                                    ? colorScheme.primaryContainer
-                                    : colorScheme.surfaceContainerLow,
-                                borderRadius: BorderRadius.circular(
-                                  DoubleSizes.size12,
-                                ),
-                                border: Border.all(
-                                  color: isSelected
-                                      ? colorScheme.primary
-                                      : colorScheme.outlineVariant,
-                                  width: 1,
-                                ),
-                              ),
-                              child: Text(
-                                filter,
-                                textAlign: TextAlign.center,
-                                style: textTheme.labelMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: isSelected
-                                      ? colorScheme.onPrimaryContainer
-                                      : colorScheme.onSurfaceVariant,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
-              ),
-
               CustomText(
                 title: 'Octubre 2024',
                 isTitle: true,
@@ -229,12 +170,28 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               if (isPresent) ...[
-                                Text(
-                                  'Entrada: ${record['checkIn']} - Salida: ${record['checkOut']}',
-                                  style: textTheme.bodyMedium?.copyWith(
-                                    color: colorScheme.onSurfaceVariant,
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Entrada: ${record['checkIn']}',
+                                        style: textTheme.bodyMedium?.copyWith(
+                                          color: colorScheme.onSurfaceVariant,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Salida: ${record['checkOut']}',
+                                        style: textTheme.bodyMedium?.copyWith(
+                                          color: colorScheme.onSurfaceVariant,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 const SizedBox(width: DoubleSizes.size12),

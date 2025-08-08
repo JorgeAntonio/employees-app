@@ -23,4 +23,7 @@ class Routes {
 
   static Routes get settings =>
       const Routes._(name: 'settings', path: '/settings');
+
+  static Routes get dashboard =>
+      const Routes._(name: 'dashboard', path: '/dashboard');
 }

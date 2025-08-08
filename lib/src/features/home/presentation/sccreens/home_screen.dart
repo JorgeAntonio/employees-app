@@ -81,11 +81,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AttendanceAppBar(
+        title: '8 de agosto',
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.settings),
-            color: context.appColorScheme.onPrimary,
+            onPressed: null,
+            icon: Icon(
+              Icons.calendar_today_rounded,
+              color: context.appColorScheme.onPrimary,
+            ),
           ),
         ],
       ),

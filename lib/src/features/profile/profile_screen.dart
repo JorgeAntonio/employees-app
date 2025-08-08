@@ -1,3 +1,5 @@
+import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
+import 'package:attendance_app/src/core/shared/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -14,6 +16,7 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: colorScheme.surface,
         elevation: 0,
+        centerTitle: true,
         title: Text(
           'Mi Perfil',
           style: textTheme.titleLarge?.copyWith(
@@ -35,18 +38,18 @@ class ProfileScreen extends StatelessWidget {
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
-              // Profile header
+              // Profile header with centered design
               _buildProfileHeader(context),
 
               const SizedBox(height: 32),
 
-              // Statistics cards
-              _buildStatisticsSection(context),
+              // Personal information section
+              _buildPersonalInformationSection(context),
 
               const SizedBox(height: 32),
 
-              // Menu options
-              _buildMenuSection(context),
+              // Contact information section
+              _buildContactInformationSection(context),
             ],
           ),
         ),
@@ -59,291 +62,187 @@ class ProfileScreen extends StatelessWidget {
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
 
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        children: [
-          // Profile avatar
-          Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              color: colorScheme.onPrimaryContainer,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.person_rounded,
-              size: 50,
-              color: colorScheme.primaryContainer,
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          // Name and role
-          Text(
-            'Juan Pérez',
-            style: textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: colorScheme.onPrimaryContainer,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'Desarrollador de Software',
-            style: textTheme.titleMedium?.copyWith(
-              color: colorScheme.onPrimaryContainer.withOpacity(0.8),
-            ),
-          ),
-
-          const SizedBox(height: 16),
-
-          // Employee info
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: colorScheme.onPrimaryContainer.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.badge_rounded,
-                  color: colorScheme.onPrimaryContainer,
-                  size: 20,
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'ID: EMP-2024-001',
-                  style: textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: colorScheme.onPrimaryContainer,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStatisticsSection(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
-
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Profile avatar - centered
+        Container(
+          width: 120,
+          height: 120,
+          decoration: BoxDecoration(
+            color: const Color(0xFFF5E6D3), // Light peach background
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            Icons.person_rounded,
+            size: 60,
+            color: const Color(0xFF8B7355),
+          ),
+        ),
+
+        const SizedBox(height: 16),
+
+        // Name - centered
         Text(
-          'Estadísticas del Mes',
-          style: textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w600,
+          'Laura Rodriguez',
+          style: textTheme.headlineMedium?.copyWith(
+            fontWeight: FontWeight.bold,
             color: colorScheme.onSurface,
           ),
         ),
-        const SizedBox(height: 16),
 
-        Row(
-          children: [
-            Expanded(
-              child: _buildStatCard(
-                context,
-                icon: Icons.calendar_today_rounded,
-                title: 'Días Trabajados',
-                value: '22',
-                color: colorScheme.primary,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _buildStatCard(
-                context,
-                icon: Icons.access_time_rounded,
-                title: 'Horas Totales',
-                value: '176h',
-                color: colorScheme.secondary,
-              ),
-            ),
-          ],
+        const SizedBox(height: 4),
+
+        // Job title - centered
+        Text(
+          'Gerente de Marketing',
+          style: textTheme.titleMedium?.copyWith(
+            color: colorScheme.onSurfaceVariant,
+          ),
         ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 4),
 
-        Row(
-          children: [
-            Expanded(
-              child: _buildStatCard(
-                context,
-                icon: Icons.trending_up_rounded,
-                title: 'Puntualidad',
-                value: '95%',
-                color: colorScheme.tertiary,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: _buildStatCard(
-                context,
-                icon: Icons.work_rounded,
-                title: 'Días Restantes',
-                value: '8',
-                color: colorScheme.error,
-              ),
-            ),
-          ],
+        // Employee ID - centered
+        Text(
+          'ID: 123456',
+          style: textTheme.bodyMedium?.copyWith(
+            color: colorScheme.onSurfaceVariant,
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildStatCard(
+  Widget _buildPersonalInformationSection(BuildContext context) {
+    final colorScheme = context.appColorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SectionTitle(title: 'Información Personal'),
+
+        const SizedBox(height: 16),
+
+        // Personal information items
+        Container(
+          decoration: BoxDecoration(
+            color: colorScheme.surface,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: colorScheme.outlineVariant, width: 1),
+          ),
+          child: Column(
+            children: [
+              _buildInfoItem(
+                context,
+                label: 'Cargo',
+                value: 'Gerente de Marketing',
+                isLast: false,
+              ),
+              _buildInfoItem(
+                context,
+                label: 'Área',
+                value: 'Marketing',
+                isLast: false,
+              ),
+              _buildInfoItem(
+                context,
+                label: 'Fecha de Ingreso',
+                value: '15 de enero de 2022',
+                isLast: true,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildContactInformationSection(BuildContext context) {
+    final colorScheme = context.appColorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SectionTitle(title: 'Información de Contacto'),
+
+        const SizedBox(height: 16),
+
+        // Contact information items
+        Container(
+          decoration: BoxDecoration(
+            color: colorScheme.surface,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: colorScheme.outlineVariant, width: 1),
+          ),
+          child: Column(
+            children: [
+              _buildInfoItem(
+                context,
+                label: 'Teléfono',
+                value: '555-123-4567',
+                isLast: false,
+              ),
+              _buildInfoItem(
+                context,
+                label: 'Email',
+                value: 'laura.rodriguez@example.com',
+                isLast: false,
+              ),
+              _buildInfoItem(
+                context,
+                label: 'Dirección',
+                value: '123 Calle Principal, Ciudad, CP 12345',
+                isLast: true,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInfoItem(
     BuildContext context, {
-    required IconData icon,
-    required String title,
+    required String label,
     required String value,
-    required Color color,
+    required bool isLast,
   }) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainerHighest,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: colorScheme.outlineVariant, width: 1),
+        border: isLast
+            ? null
+            : Border(
+                bottom: BorderSide(color: colorScheme.outlineVariant, width: 1),
+              ),
       ),
-      child: Column(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 24, color: color),
-          const SizedBox(height: 8),
-          Text(
-            value,
-            style: textTheme.headlineSmall?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: colorScheme.onSurface,
+          Flexible(
+            child: Text(
+              label,
+              style: textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
             ),
           ),
-          const SizedBox(height: 4),
-          Text(
-            title,
-            style: textTheme.bodySmall?.copyWith(
-              color: colorScheme.onSurfaceVariant,
+          Flexible(
+            child: Text(
+              value,
+              style: textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+                color: colorScheme.onSurface,
+              ),
             ),
-            textAlign: TextAlign.center,
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildMenuSection(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-    final textTheme = theme.textTheme;
-
-    final menuItems = [
-      {
-        'icon': Icons.notifications_rounded,
-        'title': 'Notificaciones',
-        'subtitle': 'Configurar alertas de asistencia',
-      },
-      {
-        'icon': Icons.security_rounded,
-        'title': 'Seguridad',
-        'subtitle': 'Cambiar contraseña y configuración',
-      },
-      {
-        'icon': Icons.help_rounded,
-        'title': 'Ayuda y Soporte',
-        'subtitle': 'Centro de ayuda y contacto',
-      },
-      {
-        'icon': Icons.info_rounded,
-        'title': 'Acerca de',
-        'subtitle': 'Información de la aplicación',
-      },
-      {
-        'icon': Icons.logout_rounded,
-        'title': 'Cerrar Sesión',
-        'subtitle': 'Salir de la aplicación',
-        'isDestructive': true,
-      },
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Configuración',
-          style: textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: colorScheme.onSurface,
-          ),
-        ),
-        const SizedBox(height: 16),
-
-        Container(
-          decoration: BoxDecoration(
-            color: colorScheme.surfaceContainerHighest,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: colorScheme.outlineVariant, width: 1),
-          ),
-          child: ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: menuItems.length,
-            separatorBuilder: (context, index) => Divider(
-              height: 1,
-              color: colorScheme.outlineVariant,
-              indent: 16,
-              endIndent: 16,
-            ),
-            itemBuilder: (context, index) {
-              final item = menuItems[index];
-              final isDestructive = item['isDestructive'] == true;
-
-              return ListTile(
-                onTap: () {
-                  // TODO: Handle menu item tap
-                },
-                leading: Icon(
-                  item['icon'] as IconData,
-                  color: isDestructive
-                      ? colorScheme.error
-                      : colorScheme.onSurfaceVariant,
-                ),
-                title: Text(
-                  item['title'] as String,
-                  style: textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: isDestructive
-                        ? colorScheme.error
-                        : colorScheme.onSurface,
-                  ),
-                ),
-                subtitle: Text(
-                  item['subtitle'] as String,
-                  style: textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-                trailing: Icon(
-                  Icons.chevron_right_rounded,
-                  color: colorScheme.onSurfaceVariant,
-                ),
-              );
-            },
-          ),
-        ),
-      ],
     );
   }
 }

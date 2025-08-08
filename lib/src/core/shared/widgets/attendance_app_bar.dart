@@ -14,9 +14,7 @@ class AttendanceAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       title: Text(
         title ?? 'Attendance App',
-        style: context.appTextTheme.titleLarge?.copyWith(
-          color: context.appColorScheme.onPrimary,
-        ),
+        style: TextStyle(color: context.appColorScheme.onPrimary),
       ),
       actions: actions,
     );

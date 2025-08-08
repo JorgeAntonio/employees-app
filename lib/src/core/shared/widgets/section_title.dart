@@ -10,8 +10,8 @@ class SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: context.appTextTheme.labelLarge?.copyWith(
-        color: context.appColorScheme.onSurface.withValues(alpha: 0.5),
+      style: context.appTextTheme.titleSmall?.copyWith(
+        color: context.appColorScheme.onSurface.withValues(alpha: 0.8),
       ),
     );
   }
