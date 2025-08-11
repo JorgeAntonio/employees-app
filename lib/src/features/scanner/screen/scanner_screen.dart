@@ -2,12 +2,13 @@ import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/features/scanner/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ScannerScreen extends StatelessWidget {
+class ScannerScreen extends ConsumerWidget {
   const ScannerScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: context.appColorScheme.surface,
       appBar: AppBar(
@@ -38,7 +39,7 @@ class ScannerScreen extends StatelessWidget {
                       // const ScannerStatus(),
 
                       // Manual code button
-                      ManualCodeButton(onPressed: () {}),
+                      const ManualCodeButton(),
                     ],
                   ),
                 ),

@@ -1,0 +1,14 @@
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          include_if_null: false
+      freezed:
+        generate_for:
+          include:
+            - lib/src/features/attendance/domain/entities/**.dart
+            - lib/src/features/attendance/data/models/**.dart
+      riverpod_generator:
+        options:
+          provider_name_suffix: "Provider"
