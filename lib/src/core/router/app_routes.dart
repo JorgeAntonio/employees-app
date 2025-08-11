@@ -1,6 +1,7 @@
 import 'package:attendance_app/src/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:attendance_app/src/features/base/screens/main_screen.dart';
 import 'package:attendance_app/src/features/dashboard/screens/dashboard_screen.dart';
+import 'package:attendance_app/src/features/employees/screens/employees_screen.dart';
 import 'package:attendance_app/src/features/history/history_screen.dart';
 import 'package:attendance_app/src/features/home/presentation/sccreens/home_screen.dart';
 import 'package:attendance_app/src/features/profile/profile_screen.dart';
@@ -18,6 +19,9 @@ int _getTabIndexFromLocation(String location) {
   }
   if (location.contains(Routes.history.path)) {
     return 1;
+  } 
+  if(location.contains(Routes.employees.path)) {
+    return 2;
   }
   if (location.contains(Routes.scanner.path)) {
     return 0; // When in scanner, show home as selected
@@ -78,7 +82,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           return MainScreen(
             currentIndex: currentIndex,
             onTabSelected: (index) {
-              final paths = [Routes.home.path, Routes.history.path];
+              final paths = [Routes.home.path, Routes.history.path, Routes.employees.path];
               GoRouter.of(context).go(paths[index]);
             },
             child: child,
@@ -100,6 +104,15 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: Routes.history.path,
                 name: Routes.history.name,
                 builder: (context, state) => const HistoryScreen(),
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: Routes.employees.path,
+                name: Routes.employees.name,
+                builder: (context, state) => const EmployeesScreen(),
               ),
             ],
           ),

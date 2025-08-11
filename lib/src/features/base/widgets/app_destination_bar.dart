@@ -26,6 +26,7 @@ class AppDestinationBar extends StatelessWidget {
         ),
         label: 'Inicio',
       ),
+
       NavigationDestination(
         icon: Icon(
           currentIndex == 1
@@ -37,9 +38,21 @@ class AppDestinationBar extends StatelessWidget {
         ),
         label: 'Historial',
       ),
+      NavigationDestination(
+        icon: Icon(
+          currentIndex == 2
+              ? Icons.person
+              : Icons.person_outline,
+          color: currentIndex == 2
+              ? colorScheme.primary
+              : colorScheme.onSurfaceVariant,
+        ),
+        label: 'Empleados',
+      ),
     ];
 
     final List<NavigationDestinationLabelBehavior> labelBehaviors = [
+      NavigationDestinationLabelBehavior.alwaysShow,
       NavigationDestinationLabelBehavior.alwaysShow,
       NavigationDestinationLabelBehavior.alwaysShow,
     ];

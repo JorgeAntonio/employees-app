@@ -26,4 +26,7 @@ class Routes {
 
   static Routes get dashboard =>
       const Routes._(name: 'dashboard', path: '/dashboard');
+
+  static Routes get employees =>
+      const Routes._(name: 'employees', path: '/employees');
 }
