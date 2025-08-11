@@ -1,14 +1,16 @@
 import 'package:attendance_app/src/core/router/routes.dart';
 import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
+import 'package:attendance_app/src/features/auth/presentation/providers/auth_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AppDrawer extends StatelessWidget {
+class AppDrawer extends HookConsumerWidget {
   const AppDrawer({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = context.appColorScheme;
     final textTheme = context.appTextTheme;
 
@@ -48,7 +50,9 @@ class AppDrawer extends StatelessWidget {
         'title': 'Cerrar Sesión',
         'subtitle': 'Salir de la aplicación',
         'isDestructive': true,
-        'onTap': () {},
+        'onTap': () {
+          ref.read(authStateProvider.notifier).signOut();
+        },
       },
     ];
 

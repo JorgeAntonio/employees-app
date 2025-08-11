@@ -1,3 +1,4 @@
+import 'package:attendance_app/src/features/auth/presentation/providers/session_provider.dart';
 import 'package:attendance_app/src/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:attendance_app/src/features/base/screens/main_screen.dart';
 import 'package:attendance_app/src/features/dashboard/screens/dashboard_screen.dart';
@@ -30,12 +31,12 @@ final _rootNavigatorkey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<StatefulNavigationShellState>();
 
 final routerProvider = Provider<GoRouter>((ref) {
-  // final session = ref.watch(sessionProvider);
+  final session = ref.watch(sessionProvider);
 
   return GoRouter(
     navigatorKey: _rootNavigatorkey,
     debugLogDiagnostics: true,
-    initialLocation: Routes.welcome.path,
+    initialLocation: Routes.signin.path,
     routes: [
       GoRoute(
         path: Routes.welcome.path,
@@ -107,39 +108,45 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
     ],
 
-    // redirect: (context, state) {
-    //   // If our async state is loading, don't perform redirects, yet
-    //   if (session.isLoading || session.hasError) return null;
+    redirect: (context, state) {
+      // If our async state is loading, don't perform redirects, yet
+      if (session.isLoading) {
+        return null;
+      }
 
-    //   final isAuth = session.valueOrNull != null;
-    //   final currentPath = state.matchedLocation;
+      final isAuth = session.value != null;
+      final currentPath = state.matchedLocation;
 
-    //   // Si estamos en la página de login y no estamos autenticados, no redirigir
-    //   if (currentPath == Routes.signin.path && !isAuth) {
-    //     return null;
-    //   }
+      // Si hay un error y estamos en signin, no redirigir (dejar que se muestre el error)
+      if (session.hasError && currentPath == Routes.signin.path) {
+        return null;
+      }
 
-    //   // Si estamos en la página de splash, redirigir según el estado de autenticación
-    //   if (currentPath == Routes.splash.path) {
-    //     return isAuth ? Routes.home.path : Routes.signin.path;
-    //   }
+      // Si estamos en la página de welcome y no estamos autenticados, ir a signin
+      if (currentPath == Routes.welcome.path && !isAuth) {
+        return Routes.signin.path;
+      }
 
-    //   // Si estamos autenticados y en una página de autenticación, ir a home
-    //   if (isAuth &&
-    //       (currentPath == Routes.signin.path ||
-    //           currentPath == Routes.splash.path)) {
-    //     return Routes.home.path;
-    //   }
+      // Si estamos en la página de signin y no estamos autenticados, no redirigir
+      if (currentPath == Routes.signin.path && !isAuth) {
+        return null;
+      }
 
-    //   // Si no estamos autenticados y no estamos en una página pública, ir a splash
-    //   if (!isAuth &&
-    //       currentPath != Routes.signin.path &&
-    //       currentPath != Routes.splash.path) {
-    //     return Routes.splash.path;
-    //   }
+      // Si estamos autenticados y en una página de autenticación, ir a home
+      if (isAuth &&
+          (currentPath == Routes.signin.path ||
+              currentPath == Routes.welcome.path)) {
+        return Routes.home.path;
+      }
 
-    //   // En cualquier otro caso, no redirigir
-    //   return null;
-    // },
+      // Si no estamos autenticados y no estamos en una página pública, ir a signin
+      if (!isAuth &&
+          currentPath != Routes.signin.path &&
+          currentPath != Routes.welcome.path) {
+        return Routes.signin.path;
+      }
+
+      return null;
+    },
   );
 });
