@@ -1,3 +1,5 @@
+import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
+import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:flutter/material.dart';
 
 class ScannerContainer extends StatelessWidget {
@@ -7,22 +9,14 @@ class ScannerContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     return Container(
-      width: double.infinity,
+      width: context.screenWidth * 0.8,
+      height: context.screenHeight * 0.5,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            colorScheme.primaryContainer.withValues(alpha: 0.3),
-            colorScheme.tertiaryContainer.withValues(alpha: 0.5),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(DoubleSizes.size24),
+        color: context.appColorScheme.surfaceContainerHighest,
         border: Border.all(
-          color: colorScheme.outlineVariant.withValues(alpha: 0.3),
+          color: context.appColorScheme.outlineVariant.withValues(alpha: 0.3),
           width: 1,
         ),
       ),

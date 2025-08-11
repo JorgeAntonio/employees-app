@@ -1,3 +1,4 @@
+import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/features/scanner/widgets/widgets.dart';
 import 'package:flutter/material.dart';
@@ -7,51 +8,44 @@ class ScannerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
     return Scaffold(
-      backgroundColor: colorScheme.surface,
+      backgroundColor: context.appColorScheme.surface,
       appBar: AppBar(
         title: const Text('Registrar asistencia'),
         centerTitle: true,
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Padding(
-            padding: EdgeInsets.all(DoubleSizes.size24),
-            child: Column(
-              children: [
-                // Instructions section
-                const ScannerInstructions(),
-
-                Gaps.gap48,
-
-                // Enhanced QR Scanner container
-                ScannerContainer(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.all(DoubleSizes.size24),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: DoubleSizes.size24,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      // Instructions section
+                      const ScannerInstructions(),
+
                       // Modern QR Scanner frame
                       const ScannerFrame(),
 
-                      const SizedBox(height: 32),
-
                       // Enhanced scanning status
-                      const ScannerStatus(),
+                      // const ScannerStatus(),
+
+                      // Manual code button
+                      ManualCodeButton(onPressed: () {}),
                     ],
                   ),
                 ),
-
-                const SizedBox(height: 32),
-
-                // Manual code button
-                ManualCodeButton(onPressed: () {}),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

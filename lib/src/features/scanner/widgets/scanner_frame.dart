@@ -1,3 +1,4 @@
+import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:flutter/material.dart';
 
 class ScannerFrame extends StatelessWidget {
@@ -174,15 +175,15 @@ class ScannerFrame extends StatelessWidget {
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
+              spacing: DoubleSizes.size8,
               children: [
                 Icon(
-                  Icons.touch_app_rounded,
+                  Icons.info_outline_rounded,
                   color: colorScheme.onSurfaceVariant,
                   size: 20,
                 ),
-                const SizedBox(width: 8),
                 Text(
-                  'Toca para escanear',
+                  'Este es un QR unico para tu asistencia',
                   style: textTheme.bodySmall?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     fontWeight: FontWeight.w500,
