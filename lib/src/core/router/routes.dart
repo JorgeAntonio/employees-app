@@ -32,4 +32,7 @@ class Routes {
 
   static Routes get confirmAttendance =>
       const Routes._(name: 'confirm-attendance', path: '/confirm-attendance');
+
+  static Routes get attendanceHistory =>
+      const Routes._(name: 'attendance-history', path: '/attendance-history');
 }

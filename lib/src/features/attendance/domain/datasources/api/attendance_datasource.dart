@@ -4,6 +4,8 @@ import 'package:attendance_app/src/features/attendance/domain/entities/validate_
 import 'package:attendance_app/src/features/attendance/domain/entities/validate_code_response.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_request.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_response.dart';
+import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_request.dart';
+import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_response.dart';
 
 abstract class AttendanceDataSource {
   /// Generate QR code for check-in (for employees)
@@ -23,4 +25,16 @@ abstract class AttendanceDataSource {
   
   /// Confirm attendance
   FutureEither<ConfirmAttendanceResponse> confirmAttendance(ConfirmAttendanceRequest request);
+  
+  /// Get attendance history for current employee
+  FutureEither<AttendanceHistoryResponse> getAttendanceHistory(AttendanceHistoryRequest request);
+  
+  /// Get attendance history for specific employee (for admins)
+  FutureEither<AttendanceHistoryResponse> getAttendanceHistoryForEmployee(
+    String employeeId, 
+    AttendanceHistoryRequest request
+  );
+  
+  /// Get general attendance history (for admins)
+  FutureEither<AttendanceHistoryResponse> getAllAttendanceHistory(AttendanceHistoryRequest request);
 }

@@ -5,6 +5,9 @@ import 'package:attendance_app/src/features/attendance/domain/usecases/generate_
 import 'package:attendance_app/src/features/attendance/domain/usecases/generate_checkout_qr_usecase.dart';
 import 'package:attendance_app/src/features/attendance/domain/usecases/validate_code_usecase.dart';
 import 'package:attendance_app/src/features/attendance/domain/usecases/confirm_attendance_usecase.dart';
+import 'package:attendance_app/src/features/attendance/domain/usecases/get_attendance_history_usecase.dart';
+import 'package:attendance_app/src/features/attendance/domain/usecases/get_attendance_history_for_employee_usecase.dart';
+import 'package:attendance_app/src/features/attendance/domain/usecases/get_all_attendance_history_usecase.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/auth_providers.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -58,4 +61,22 @@ ValidateCodeUseCase validateCodeUseCase(Ref ref) {
 ConfirmAttendanceUseCase confirmAttendanceUseCase(Ref ref) {
   final attendanceRepository = ref.watch(attendanceRepositoryProvider);
   return ConfirmAttendanceUseCase(attendanceRepository);
+}
+
+@riverpod
+GetAttendanceHistoryUseCase getAttendanceHistoryUseCase(Ref ref) {
+  final attendanceRepository = ref.watch(attendanceRepositoryProvider);
+  return GetAttendanceHistoryUseCase(attendanceRepository);
+}
+
+@riverpod
+GetAttendanceHistoryForEmployeeUseCase getAttendanceHistoryForEmployeeUseCase(Ref ref) {
+  final attendanceRepository = ref.watch(attendanceRepositoryProvider);
+  return GetAttendanceHistoryForEmployeeUseCase(attendanceRepository);
+}
+
+@riverpod
+GetAllAttendanceHistoryUseCase getAllAttendanceHistoryUseCase(Ref ref) {
+  final attendanceRepository = ref.watch(attendanceRepositoryProvider);
+  return GetAllAttendanceHistoryUseCase(attendanceRepository);
 }

@@ -334,5 +334,156 @@ final class ConfirmAttendanceUseCaseProvider
 String _$confirmAttendanceUseCaseHash() =>
     r'eaee340f9ac53f678deaf466aa00c22217543780';
 
+@ProviderFor(getAttendanceHistoryUseCase)
+const getAttendanceHistoryUseCaseProvider =
+    GetAttendanceHistoryUseCaseProvider._();
+
+final class GetAttendanceHistoryUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GetAttendanceHistoryUseCase,
+          GetAttendanceHistoryUseCase,
+          GetAttendanceHistoryUseCase
+        >
+    with $Provider<GetAttendanceHistoryUseCase> {
+  const GetAttendanceHistoryUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getAttendanceHistoryUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getAttendanceHistoryUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetAttendanceHistoryUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetAttendanceHistoryUseCase create(Ref ref) {
+    return getAttendanceHistoryUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetAttendanceHistoryUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetAttendanceHistoryUseCase>(value),
+    );
+  }
+}
+
+String _$getAttendanceHistoryUseCaseHash() =>
+    r'd270f062a2ca83b97c4a2635fbf5c54645de7d88';
+
+@ProviderFor(getAttendanceHistoryForEmployeeUseCase)
+const getAttendanceHistoryForEmployeeUseCaseProvider =
+    GetAttendanceHistoryForEmployeeUseCaseProvider._();
+
+final class GetAttendanceHistoryForEmployeeUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GetAttendanceHistoryForEmployeeUseCase,
+          GetAttendanceHistoryForEmployeeUseCase,
+          GetAttendanceHistoryForEmployeeUseCase
+        >
+    with $Provider<GetAttendanceHistoryForEmployeeUseCase> {
+  const GetAttendanceHistoryForEmployeeUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getAttendanceHistoryForEmployeeUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() =>
+      _$getAttendanceHistoryForEmployeeUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetAttendanceHistoryForEmployeeUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetAttendanceHistoryForEmployeeUseCase create(Ref ref) {
+    return getAttendanceHistoryForEmployeeUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetAttendanceHistoryForEmployeeUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride:
+          $SyncValueProvider<GetAttendanceHistoryForEmployeeUseCase>(value),
+    );
+  }
+}
+
+String _$getAttendanceHistoryForEmployeeUseCaseHash() =>
+    r'a68145790948a2b25595d581cf70ab06e8a0a07d';
+
+@ProviderFor(getAllAttendanceHistoryUseCase)
+const getAllAttendanceHistoryUseCaseProvider =
+    GetAllAttendanceHistoryUseCaseProvider._();
+
+final class GetAllAttendanceHistoryUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GetAllAttendanceHistoryUseCase,
+          GetAllAttendanceHistoryUseCase,
+          GetAllAttendanceHistoryUseCase
+        >
+    with $Provider<GetAllAttendanceHistoryUseCase> {
+  const GetAllAttendanceHistoryUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getAllAttendanceHistoryUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getAllAttendanceHistoryUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetAllAttendanceHistoryUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetAllAttendanceHistoryUseCase create(Ref ref) {
+    return getAllAttendanceHistoryUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetAllAttendanceHistoryUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetAllAttendanceHistoryUseCase>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$getAllAttendanceHistoryUseCaseHash() =>
+    r'1533f3cde3e5b4108bc5d3ea4270857c7ae7b3ef';
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
