@@ -1,64 +1,7 @@
-// import 'package:attendance_app/src/core/shared/layout/layout.dart';
-// import 'package:attendance_app/src/features/scanner/widgets/widgets.dart';
-// import 'package:flutter/material.dart';
-
-// class ScannerScreen extends StatelessWidget {
-//   const ScannerScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final theme = Theme.of(context);
-//     final colorScheme = theme.colorScheme;
-
-//     return Scaffold(
-//       backgroundColor: colorScheme.surface,
-//       appBar: AppBar(
-//         title: const Text('Registrar asistencia'),
-//         centerTitle: true,
-//         elevation: 0,
-//       ),
-//       body: SingleChildScrollView(
-//         child: SafeArea(
-//           child: Padding(
-//             padding: EdgeInsets.all(DoubleSizes.size24),
-//             child: Column(
-//               children: [
-//                 // Instructions section
-//                 const ScannerInstructions(),
-
-//                 Gaps.gap48,
-
-//                 // Enhanced QR Scanner container
-//                 ScannerContainer(
-//                   child: Column(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: [
-//                       // Modern QR Scanner frame
-//                       const ScannerFrame(),
-
-//                       const SizedBox(height: 32),
-
-//                       // Enhanced scanning status
-//                       const ScannerStatus(),
-//                     ],
-//                   ),
-//                 ),
-
-//                 const SizedBox(height: 32),
-
-//                 // Manual code button
-//                 ManualCodeButton(onPressed: () {}),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
+import 'package:attendance_app/src/features/attendance/presentation/providers/qr_code_state_provider.dart';
+import 'package:attendance_app/src/features/attendance/presentation/widgets/widgets.dart';
 import 'package:attendance_app/src/features/scanner/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -68,6 +11,8 @@ class ScannerScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final qrCodeState = ref.watch(qrCodeNotifierProvider);
+
     return Scaffold(
       backgroundColor: context.appColorScheme.surface,
       appBar: AppBar(
@@ -91,14 +36,104 @@ class ScannerScreen extends ConsumerWidget {
                       // Instructions section
                       const ScannerInstructions(),
 
-                      // Modern QR Scanner frame
-                      const ScannerFrame(),
+                      // QR Code Display or Scanner Frame
+                      qrCodeState.when(
+                        initial: () => const ScannerFrame(),
+                        loading: () =>
+                            const Center(child: CircularProgressIndicator()),
+                        success: (qrCodeResponse) => QrCodeDisplay(
+                          qrCodeResponse: qrCodeResponse,
+                          onClose: () =>
+                              ref.read(qrCodeNotifierProvider.notifier).reset(),
+                        ),
+                        error: (message) => Column(
+                          children: [
+                            const ScannerFrame(),
+                            Gaps.gap16,
+                            Container(
+                              padding: EdgeInsets.all(DoubleSizes.size16),
+                              decoration: BoxDecoration(
+                                color: context.appColorScheme.errorContainer,
+                                borderRadius: BorderRadius.circular(
+                                  DoubleSizes.size12,
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.error_outline,
+                                    color:
+                                        context.appColorScheme.onErrorContainer,
+                                  ),
+                                  Gaps.gap8,
+                                  Expanded(
+                                    child: Text(
+                                      message,
+                                      style: context.appTextTheme.bodyMedium
+                                          ?.copyWith(
+                                            color: context
+                                                .appColorScheme
+                                                .onErrorContainer,
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
 
-                      // Enhanced scanning status
-                      // const ScannerStatus(),
-
-                      // Manual code button
-                      ManualCodeButton(onPressed: () {}),
+                      // Generate QR Button or Manual code button
+                      qrCodeState.when(
+                        initial: () => Column(
+                          children: [
+                            // Generate QR Button
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton.icon(
+                                onPressed: () => ref
+                                    .read(qrCodeNotifierProvider.notifier)
+                                    .generateCheckInQr(),
+                                icon: const Icon(Icons.qr_code),
+                                label: const Text('Generar Código QR'),
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: DoubleSizes.size16,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Gaps.gap16,
+                            // Manual code button
+                            ManualCodeButton(onPressed: () {}),
+                          ],
+                        ),
+                        loading: () => const SizedBox.shrink(),
+                        success: (_) => ManualCodeButton(onPressed: () {}),
+                        error: (_) => Column(
+                          children: [
+                            // Retry button
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton.icon(
+                                onPressed: () => ref
+                                    .read(qrCodeNotifierProvider.notifier)
+                                    .generateCheckInQr(),
+                                icon: const Icon(Icons.refresh),
+                                label: const Text('Reintentar'),
+                                style: ElevatedButton.styleFrom(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: DoubleSizes.size16,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Gaps.gap16,
+                            ManualCodeButton(onPressed: () {}),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
