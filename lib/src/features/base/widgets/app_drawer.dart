@@ -22,6 +22,12 @@ class AppDrawer extends HookConsumerWidget {
         'onTap': () => context.pushNamed(Routes.dashboard.name),
       },
       {
+        'icon': Icons.qr_code_scanner_rounded,
+        'title': 'Validar Código',
+        'subtitle': 'Validar código QR o manual',
+        'onTap': () => context.pushNamed(Routes.validateCode.name),
+      },
+      {
         'icon': Icons.notifications_rounded,
         'title': 'Notificaciones',
         'subtitle': 'Configurar alertas de asistencia',

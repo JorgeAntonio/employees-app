@@ -3,6 +3,7 @@ import 'package:attendance_app/src/features/attendance/data/data.dart';
 import 'package:attendance_app/src/features/attendance/domain/repositories/attendance_repository.dart';
 import 'package:attendance_app/src/features/attendance/domain/usecases/generate_checkin_qr_usecase.dart';
 import 'package:attendance_app/src/features/attendance/domain/usecases/generate_checkout_qr_usecase.dart';
+import 'package:attendance_app/src/features/attendance/domain/usecases/validate_code_usecase.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/auth_providers.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -44,4 +45,10 @@ GenerateCheckInQrUseCase generateCheckInQrUseCase(Ref ref) {
 GenerateCheckOutQrUseCase generateCheckOutQrUseCase(Ref ref) {
   final attendanceRepository = ref.watch(attendanceRepositoryProvider);
   return GenerateCheckOutQrUseCase(attendanceRepository);
+}
+
+@riverpod
+ValidateCodeUseCase validateCodeUseCase(Ref ref) {
+  final attendanceRepository = ref.watch(attendanceRepositoryProvider);
+  return ValidateCodeUseCase(attendanceRepository);
 }

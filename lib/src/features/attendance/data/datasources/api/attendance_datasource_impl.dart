@@ -1,7 +1,10 @@
 import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/features/attendance/data/models/qr_code_response/qr_code_response_model.dart';
+import 'package:attendance_app/src/features/attendance/data/models/validate_code_response/validate_code_response_model.dart';
 import 'package:attendance_app/src/features/attendance/domain/datasources/api/attendance_datasource.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/qr_code_response.dart';
+import 'package:attendance_app/src/features/attendance/domain/entities/validate_code_request.dart';
+import 'package:attendance_app/src/features/attendance/domain/entities/validate_code_response.dart';
 import 'package:attendance_app/src/features/auth/data/datasources/local/auth_local_datasource.dart';
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
@@ -194,6 +197,48 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
               final message = response.data['message'] ?? 'Error en la operación de checkout';
               return left(AttendanceFailure(message));
             }
+          } else {
+            return left(
+              ServerFailure(
+                'Error del servidor: ${response.statusCode} - ${response.statusMessage}',
+              ),
+            );
+          }
+        },
+      );
+    } on DioException catch (e) {
+      return left(_handleDioError(e));
+    } catch (e) {
+      return left(ServerFailure('Error inesperado: $e'));
+    }
+  }
+
+  @override
+  FutureEither<ValidateCodeResponse> validateCode(ValidateCodeRequest request) async {
+    try {
+      // Obtener token de autenticación
+      final tokenResult = await _authLocalDataSource.getToken();
+      return tokenResult.fold(
+        (failure) => left(failure),
+        (token) async {
+          if (token == null) {
+            return left(const AuthFailure('Token de autenticación no encontrado'));
+          }
+
+          final response = await _dio.post(
+            '/attendance/validate',
+            data: request.toJson(),
+            options: Options(
+              headers: {
+                'Authorization': 'Bearer $token',
+                'Content-Type': 'application/json',
+              },
+            ),
+          );
+
+          if (response.statusCode == 200) {
+            final validateCodeResponseModel = ValidateCodeResponseModel.fromJson(response.data);
+            return right(validateCodeResponseModel.toDomain());
           } else {
             return left(
               ServerFailure(

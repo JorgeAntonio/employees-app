@@ -1,5 +1,7 @@
 import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/qr_code_response.dart';
+import 'package:attendance_app/src/features/attendance/domain/entities/validate_code_request.dart';
+import 'package:attendance_app/src/features/attendance/domain/entities/validate_code_response.dart';
 
 abstract class AttendanceDataSource {
   /// Generate QR code for check-in (for employees)
@@ -13,4 +15,7 @@ abstract class AttendanceDataSource {
   
   /// Generate QR code for check-out for specific employee (for admins)
   FutureEither<QrCodeResponse> generateCheckOutQrForEmployee(String employeeId);
+  
+  /// Validate QR code or manual code
+  FutureEither<ValidateCodeResponse> validateCode(ValidateCodeRequest request);
 }

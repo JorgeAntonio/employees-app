@@ -238,5 +238,53 @@ final class GenerateCheckOutQrUseCaseProvider
 String _$generateCheckOutQrUseCaseHash() =>
     r'9012993f4eb1c931bd56d04b2a578a3f9eb2c33c';
 
+@ProviderFor(validateCodeUseCase)
+const validateCodeUseCaseProvider = ValidateCodeUseCaseProvider._();
+
+final class ValidateCodeUseCaseProvider
+    extends
+        $FunctionalProvider<
+          ValidateCodeUseCase,
+          ValidateCodeUseCase,
+          ValidateCodeUseCase
+        >
+    with $Provider<ValidateCodeUseCase> {
+  const ValidateCodeUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'validateCodeUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$validateCodeUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<ValidateCodeUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ValidateCodeUseCase create(Ref ref) {
+    return validateCodeUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ValidateCodeUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ValidateCodeUseCase>(value),
+    );
+  }
+}
+
+String _$validateCodeUseCaseHash() =>
+    r'cd25e8c6f7b93083abb66316bbe7647409bb6b37';
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
