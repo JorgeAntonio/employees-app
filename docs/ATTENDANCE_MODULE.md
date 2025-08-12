@@ -58,7 +58,7 @@ Authorization: Bearer <admin_token>
 ```
 
 **Respuesta:** Igual que el endpoint de entrada
-
+  
 ### 3. Validar Código (QR o Manual)
 
 ```
@@ -67,7 +67,19 @@ Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "code": "ABC123" // Código QR escaneado o código manual
+  "code": "ABC123", // Código QR escaneado o código manual
+  "confirm": true, // Opcional, por defecto true
+  "locationId": "loc-123", // Opcional - usar ubicación existente
+  "latitude": -12.0464, // Opcional - crear nueva ubicación
+  "longitude": -77.0428, // Opcional - crear nueva ubicación
+  "accuracy": 5.0, // Opcional
+  "name": "Mi Ubicación", // Opcional - nombre para nueva ubicación
+  "deviceInfo": { // Opcional
+    "name": "iPhone 12",
+    "os": "iOS",
+    "browser": "Safari",
+    "userAgent": "Mozilla/5.0..."
+  }
 }
 ```
 

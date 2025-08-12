@@ -35,7 +35,15 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
 
           if (response.statusCode == 200 || response.statusCode == 201) {
             final qrCodeResponseModel = QrCodeResponseModel.fromJson(response.data);
-            return right(qrCodeResponseModel.toDomain());
+            
+            // Verificar si la respuesta indica éxito
+            if (qrCodeResponseModel.success) {
+              return right(qrCodeResponseModel.toDomain(attendanceType: 'CHECK_IN'));
+            } else {
+              // La API devolvió success: false
+              final message = response.data['message'] ?? 'Error en la operación de check-in';
+              return left(AttendanceFailure(message));
+            }
           } else {
             return left(
               ServerFailure(
@@ -77,7 +85,115 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
 
           if (response.statusCode == 200 || response.statusCode == 201) {
             final qrCodeResponseModel = QrCodeResponseModel.fromJson(response.data);
-            return right(qrCodeResponseModel.toDomain());
+            
+            // Verificar si la respuesta indica éxito
+            if (qrCodeResponseModel.success) {
+              return right(qrCodeResponseModel.toDomain(attendanceType: 'CHECK_IN'));
+            } else {
+              // La API devolvió success: false
+              final message = response.data['message'] ?? 'Error en la operación de check-in';
+              return left(AttendanceFailure(message));
+            }
+          } else {
+            return left(
+              ServerFailure(
+                'Error del servidor: ${response.statusCode} - ${response.statusMessage}',
+              ),
+            );
+          }
+        },
+      );
+    } on DioException catch (e) {
+      return left(_handleDioError(e));
+    } catch (e) {
+      return left(ServerFailure('Error inesperado: $e'));
+    }
+  }
+
+  @override
+  FutureEither<QrCodeResponse> generateCheckOutQr() async {
+    try {
+      // Obtener token de autenticación
+      final tokenResult = await _authLocalDataSource.getToken();
+      return await tokenResult.fold(
+        (failure) async => left(failure),
+        (token) async {
+          if (token == null) {
+            return left(const AuthFailure('Token de autenticación no encontrado'));
+          }
+
+          try {
+            final response = await _dio.post(
+              '/attendance/checkout/qr',
+              options: Options(
+                headers: {
+                  'Authorization': 'Bearer $token',
+                },
+              ),
+            );
+
+            if (response.statusCode == 200 || response.statusCode == 201) {
+              final qrCodeResponseModel = QrCodeResponseModel.fromJson(response.data);
+              
+              // Verificar si la respuesta indica éxito
+              if (qrCodeResponseModel.success) {
+                return right(qrCodeResponseModel.toDomain(attendanceType: 'CHECK_OUT'));
+              } else {
+                // La API devolvió success: false
+                final message = response.data['message'] ?? 'Error en la operación de checkout';
+                return left(AttendanceFailure(message));
+              }
+            } else {
+              return left(
+                ServerFailure(
+                  'Error del servidor: ${response.statusCode} - ${response.statusMessage}',
+                ),
+              );
+            }
+          } on DioException catch (e) {
+            return left(_handleDioError(e));
+          }
+        },
+      );
+    } catch (e) {
+      return left(ServerFailure('Error inesperado: $e'));
+    }
+  }
+
+  @override
+  FutureEither<QrCodeResponse> generateCheckOutQrForEmployee(
+    String employeeId,
+  ) async {
+    try {
+      // Obtener token de autenticación
+      final tokenResult = await _authLocalDataSource.getToken();
+      return tokenResult.fold(
+        (failure) => left(failure),
+        (token) async {
+          if (token == null) {
+            return left(const AuthFailure('Token de autenticación no encontrado'));
+          }
+
+          final response = await _dio.post(
+            '/api/v1/attendance/checkout/qr/$employeeId',
+            options: Options(
+              headers: {
+                'Authorization': 'Bearer $token',
+              },
+            ),
+          );
+
+          if (response.statusCode == 200 || response.statusCode == 201) {
+            final qrCodeResponseModel = QrCodeResponseModel.fromJson(response.data);
+            
+            // Verificar si la respuesta indica éxito
+            if (qrCodeResponseModel.success) {
+              return right(qrCodeResponseModel.toDomain(attendanceType: 'CHECK_OUT'));
+            } else {
+              // La API devolvió success: false
+              final message = response.data['message'] ?? 'Error en la operación de checkout';
+              return left(AttendanceFailure(message));
+            }
           } else {
             return left(
               ServerFailure(
@@ -108,7 +224,8 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
 
         switch (statusCode) {
           case 400:
-            return AttendanceFailure('Datos inválidos: $message');
+            // Para errores 400, usar directamente el mensaje de la API
+            return AttendanceFailure(message);
           case 401:
             return const AuthFailure('Token de autenticación inválido');
           case 403:

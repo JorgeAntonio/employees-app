@@ -18,6 +18,6 @@ abstract class QrCodeResponseModel with _$QrCodeResponseModel {
 }
 
 extension QrCodeResponseModelX on QrCodeResponseModel {
-  QrCodeResponse toDomain() =>
-      QrCodeResponse(success: success, data: data.toDomain());
+  QrCodeResponse toDomain({String? attendanceType}) =>
+      QrCodeResponse(success: success, data: data.toDomain(attendanceType: attendanceType));
 }

@@ -33,10 +33,10 @@ abstract class QrCodeDataModel with _$QrCodeDataModel {
 }
 
 extension QrCodeDataModelX on QrCodeDataModel {
-  QrCodeData toDomain() => QrCodeData(
+  QrCodeData toDomain({String? attendanceType}) => QrCodeData(
         qrCode: qrCode,
         manualCode: manualCode,
         expiresAt: expiresAt,
-        type: 'checkin',
+        type: attendanceType ?? 'checkin',
       );
 }

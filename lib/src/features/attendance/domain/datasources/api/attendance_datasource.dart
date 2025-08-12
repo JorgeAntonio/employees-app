@@ -7,4 +7,10 @@ abstract class AttendanceDataSource {
   
   /// Generate QR code for check-in for specific employee (for admins)
   FutureEither<QrCodeResponse> generateCheckInQrForEmployee(String employeeId);
+  
+  /// Generate QR code for check-out (for employees)
+  FutureEither<QrCodeResponse> generateCheckOutQr();
+  
+  /// Generate QR code for check-out for specific employee (for admins)
+  FutureEither<QrCodeResponse> generateCheckOutQrForEmployee(String employeeId);
 }

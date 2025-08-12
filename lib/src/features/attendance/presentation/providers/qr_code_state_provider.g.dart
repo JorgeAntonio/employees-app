@@ -38,7 +38,7 @@ final class QrCodeNotifierProvider
   }
 }
 
-String _$qrCodeNotifierHash() => r'9fd32c4af805184c7b51d5982ba846c230e9cfa6';
+String _$qrCodeNotifierHash() => r'bd5093317366f6d717fca0b04cabc63677503f1b';
 
 abstract class _$QrCodeNotifier extends $Notifier<QrCodeState> {
   QrCodeState build();

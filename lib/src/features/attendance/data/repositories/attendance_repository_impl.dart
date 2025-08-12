@@ -21,4 +21,15 @@ class AttendanceRepositoryImpl implements AttendanceRepository {
       String employeeId) async {
     return await _apiDataSource.generateCheckInQrForEmployee(employeeId);
   }
+
+  @override
+  FutureEither<QrCodeResponse> generateCheckOutQr() async {
+    return await _apiDataSource.generateCheckOutQr();
+  }
+
+  @override
+  FutureEither<QrCodeResponse> generateCheckOutQrForEmployee(
+      String employeeId) async {
+    return await _apiDataSource.generateCheckOutQrForEmployee(employeeId);
+  }
 }

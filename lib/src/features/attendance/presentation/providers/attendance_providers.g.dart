@@ -190,5 +190,53 @@ final class GenerateCheckInQrUseCaseProvider
 String _$generateCheckInQrUseCaseHash() =>
     r'1a392b92e884f069924e95f51e48d4d96ed60ba0';
 
+@ProviderFor(generateCheckOutQrUseCase)
+const generateCheckOutQrUseCaseProvider = GenerateCheckOutQrUseCaseProvider._();
+
+final class GenerateCheckOutQrUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GenerateCheckOutQrUseCase,
+          GenerateCheckOutQrUseCase,
+          GenerateCheckOutQrUseCase
+        >
+    with $Provider<GenerateCheckOutQrUseCase> {
+  const GenerateCheckOutQrUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'generateCheckOutQrUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$generateCheckOutQrUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GenerateCheckOutQrUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GenerateCheckOutQrUseCase create(Ref ref) {
+    return generateCheckOutQrUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GenerateCheckOutQrUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GenerateCheckOutQrUseCase>(value),
+    );
+  }
+}
+
+String _$generateCheckOutQrUseCaseHash() =>
+    r'9012993f4eb1c931bd56d04b2a578a3f9eb2c33c';
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
