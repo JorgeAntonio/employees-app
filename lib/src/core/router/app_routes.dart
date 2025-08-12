@@ -73,10 +73,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
 
       GoRoute(
-        path: Routes.validateCode.path,
-        name: Routes.validateCode.name,
-        builder: (context, state) => const ValidateCodeScreen(),
-      ),
+          path: Routes.validateCode.path,
+          name: Routes.validateCode.name,
+          builder: (context, state) => const ValidateCodeScreen(),
+        ),
+        GoRoute(
+          path: Routes.confirmAttendance.path,
+          name: Routes.confirmAttendance.name,
+          builder: (context, state) => const ConfirmAttendanceScreen(),
+        ),
 
       StatefulShellRoute.indexedStack(
         key: _shellNavigatorKey,

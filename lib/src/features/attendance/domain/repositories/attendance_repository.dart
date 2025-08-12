@@ -2,6 +2,8 @@ import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/qr_code_response.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/validate_code_request.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/validate_code_response.dart';
+import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_request.dart';
+import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_response.dart';
 
 abstract class AttendanceRepository {
   /// Generate QR code for check-in (for employees)
@@ -18,4 +20,7 @@ abstract class AttendanceRepository {
   
   /// Validate QR code or manual code
   FutureEither<ValidateCodeResponse> validateCode(ValidateCodeRequest request);
+  
+  /// Confirm attendance
+  FutureEither<ConfirmAttendanceResponse> confirmAttendance(ConfirmAttendanceRequest request);
 }

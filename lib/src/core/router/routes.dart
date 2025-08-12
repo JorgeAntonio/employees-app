@@ -29,4 +29,7 @@ class Routes {
 
   static Routes get validateCode =>
       const Routes._(name: 'validate-code', path: '/validate-code');
+
+  static Routes get confirmAttendance =>
+      const Routes._(name: 'confirm-attendance', path: '/confirm-attendance');
 }

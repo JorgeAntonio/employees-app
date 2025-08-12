@@ -3,6 +3,8 @@ import 'package:attendance_app/src/features/attendance/data/datasources/api/atte
 import 'package:attendance_app/src/features/attendance/domain/entities/qr_code_response.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/validate_code_request.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/validate_code_response.dart';
+import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_request.dart';
+import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_response.dart';
 import 'package:attendance_app/src/features/attendance/domain/repositories/attendance_repository.dart';
 
 class AttendanceRepositoryImpl implements AttendanceRepository {
@@ -38,5 +40,10 @@ class AttendanceRepositoryImpl implements AttendanceRepository {
   @override
   FutureEither<ValidateCodeResponse> validateCode(ValidateCodeRequest request) async {
     return await _apiDataSource.validateCode(request);
+  }
+
+  @override
+  FutureEither<ConfirmAttendanceResponse> confirmAttendance(ConfirmAttendanceRequest request) async {
+    return await _apiDataSource.confirmAttendance(request);
   }
 }

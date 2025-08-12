@@ -286,5 +286,53 @@ final class ValidateCodeUseCaseProvider
 String _$validateCodeUseCaseHash() =>
     r'cd25e8c6f7b93083abb66316bbe7647409bb6b37';
 
+@ProviderFor(confirmAttendanceUseCase)
+const confirmAttendanceUseCaseProvider = ConfirmAttendanceUseCaseProvider._();
+
+final class ConfirmAttendanceUseCaseProvider
+    extends
+        $FunctionalProvider<
+          ConfirmAttendanceUseCase,
+          ConfirmAttendanceUseCase,
+          ConfirmAttendanceUseCase
+        >
+    with $Provider<ConfirmAttendanceUseCase> {
+  const ConfirmAttendanceUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'confirmAttendanceUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$confirmAttendanceUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<ConfirmAttendanceUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ConfirmAttendanceUseCase create(Ref ref) {
+    return confirmAttendanceUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ConfirmAttendanceUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ConfirmAttendanceUseCase>(value),
+    );
+  }
+}
+
+String _$confirmAttendanceUseCaseHash() =>
+    r'eaee340f9ac53f678deaf466aa00c22217543780';
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

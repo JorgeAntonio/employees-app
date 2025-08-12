@@ -28,6 +28,12 @@ class AppDrawer extends HookConsumerWidget {
         'onTap': () => context.pushNamed(Routes.validateCode.name),
       },
       {
+        'icon': Icons.check_circle_rounded,
+        'title': 'Confirmar Asistencia',
+        'subtitle': 'Confirmar asistencia con código',
+        'onTap': () => context.pushNamed(Routes.confirmAttendance.name),
+      },
+      {
         'icon': Icons.notifications_rounded,
         'title': 'Notificaciones',
         'subtitle': 'Configurar alertas de asistencia',

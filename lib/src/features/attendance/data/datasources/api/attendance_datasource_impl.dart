@@ -1,10 +1,14 @@
 import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/features/attendance/data/models/qr_code_response/qr_code_response_model.dart';
 import 'package:attendance_app/src/features/attendance/data/models/validate_code_response/validate_code_response_model.dart';
+import 'package:attendance_app/src/features/attendance/data/models/confirm_attendance_request_model.dart';
+import 'package:attendance_app/src/features/attendance/data/models/confirm_attendance_response_model.dart';
 import 'package:attendance_app/src/features/attendance/domain/datasources/api/attendance_datasource.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/qr_code_response.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/validate_code_request.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/validate_code_response.dart';
+import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_request.dart';
+import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_response.dart';
 import 'package:attendance_app/src/features/auth/data/datasources/local/auth_local_datasource.dart';
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
@@ -239,6 +243,59 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
           if (response.statusCode == 200) {
             final validateCodeResponseModel = ValidateCodeResponseModel.fromJson(response.data);
             return right(validateCodeResponseModel.toDomain());
+          } else {
+            return left(
+              ServerFailure(
+                'Error del servidor: ${response.statusCode} - ${response.statusMessage}',
+              ),
+            );
+          }
+        },
+      );
+    } on DioException catch (e) {
+      return left(_handleDioError(e));
+    } catch (e) {
+      return left(ServerFailure('Error inesperado: $e'));
+    }
+  }
+
+  @override
+  FutureEither<ConfirmAttendanceResponse> confirmAttendance(ConfirmAttendanceRequest request) async {
+    try {
+      // Obtener token de autenticación
+      final tokenResult = await _authLocalDataSource.getToken();
+      return tokenResult.fold(
+        (failure) => left(failure),
+        (token) async {
+          if (token == null) {
+            return left(const AuthFailure('Token de autenticación no encontrado'));
+          }
+
+          // Convertir la entidad del dominio al modelo de datos
+          final requestModel = request.toModel();
+
+          final response = await _dio.post(
+            '/attendance/confirm',
+            data: requestModel.toJson(),
+            options: Options(
+              headers: {
+                'Authorization': 'Bearer $token',
+                'Content-Type': 'application/json',
+              },
+            ),
+          );
+
+          if (response.statusCode == 200 || response.statusCode == 201) {
+            final confirmAttendanceResponseModel = ConfirmAttendanceResponseModel.fromJson(response.data);
+            
+            // Verificar si la respuesta indica éxito
+            if (confirmAttendanceResponseModel.success) {
+              return right(confirmAttendanceResponseModel.toDomain());
+            } else {
+              // La API devolvió success: false
+              final message = response.data['message'] ?? 'Error en la confirmación de asistencia';
+              return left(AttendanceFailure(message));
+            }
           } else {
             return left(
               ServerFailure(
