@@ -164,6 +164,38 @@ GET /api/v1/attendance/status/me
 Authorization: Bearer <employee_token>
 ```
 
+**Respuesta:**
+```json
+{
+	"success": true,
+	"data": {
+		"employee": {
+			"id": "5106ec23-1a62-4a21-aafa-93536cfc155c",
+			"firstName": "Ana",
+			"lastName": "López",
+			"dni": "11223344"
+		},
+		"currentAttendance": {
+			"id": "c5bd9d86-53a1-4ddd-9e78-3ed067b77860",
+			"employeeId": "5106ec23-1a62-4a21-aafa-93536cfc155c",
+			"date": "2025-08-12T16:21:01.417Z",
+			"checkInTime": "2025-08-12T16:21:01.417Z",
+			"checkOutTime": "2025-08-12T16:22:00.491Z",
+			"durationMins": 0,
+			"status": "PRESENT",
+			"checkInLocationId": null,
+			"checkOutLocationId": null,
+			"deviceId": null,
+			"createdAt": "2025-08-12T16:27:40.001Z",
+			"updatedAt": "2025-08-12T16:28:39.351Z",
+			"checkInLocation": null,
+			"checkOutLocation": null
+		},
+		"status": "completed"
+	}
+}
+```
+
 **Estado de empleado específico (Administradores):**
 ```
 GET /api/v1/attendance/status/:employeeId
