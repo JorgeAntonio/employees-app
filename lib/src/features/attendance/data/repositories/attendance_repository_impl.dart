@@ -2,14 +2,12 @@ import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/features/attendance/data/datasources/api/attendance_datasource_impl.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/qr_code_response.dart';
 import 'package:attendance_app/src/features/attendance/domain/repositories/attendance_repository.dart';
-import 'package:fpdart/fpdart.dart';
 
 class AttendanceRepositoryImpl implements AttendanceRepository {
   final AttendanceDataSourceImpl _apiDataSource;
 
-  AttendanceRepositoryImpl({
-    required AttendanceDataSourceImpl apiDataSource,
-  }) : _apiDataSource = apiDataSource;
+  AttendanceRepositoryImpl({required AttendanceDataSourceImpl apiDataSource})
+    : _apiDataSource = apiDataSource;
 
   @override
   FutureEither<QrCodeResponse> generateCheckInQr() async {
@@ -18,7 +16,8 @@ class AttendanceRepositoryImpl implements AttendanceRepository {
 
   @override
   FutureEither<QrCodeResponse> generateCheckInQrForEmployee(
-      String employeeId) async {
+    String employeeId,
+  ) async {
     return await _apiDataSource.generateCheckInQrForEmployee(employeeId);
   }
 
@@ -29,7 +28,8 @@ class AttendanceRepositoryImpl implements AttendanceRepository {
 
   @override
   FutureEither<QrCodeResponse> generateCheckOutQrForEmployee(
-      String employeeId) async {
+    String employeeId,
+  ) async {
     return await _apiDataSource.generateCheckOutQrForEmployee(employeeId);
   }
 }

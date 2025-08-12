@@ -3,6 +3,13 @@ class QrCodeResponse {
   final QrCodeData data;
 
   QrCodeResponse({required this.success, required this.data});
+
+  factory QrCodeResponse.fromJson(Map<String, dynamic> json) {
+    return QrCodeResponse(
+      success: json['success'],
+      data: QrCodeData.fromJson(json['data']),
+    );
+  }
 }
 
 class QrCodeData {
@@ -17,4 +24,13 @@ class QrCodeData {
     required this.expiresAt,
     required this.type,
   });
+
+  factory QrCodeData.fromJson(Map<String, dynamic> json) {
+    return QrCodeData(
+      qrCode: json['qrCode'],
+      manualCode: json['manualCode'],
+      expiresAt: DateTime.parse(json['expiresAt']),
+      type: json['type'],
+    );
+  }
 }

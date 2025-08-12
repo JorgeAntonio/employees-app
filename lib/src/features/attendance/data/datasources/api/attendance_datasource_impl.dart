@@ -38,7 +38,7 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
             
             // Verificar si la respuesta indica éxito
             if (qrCodeResponseModel.success) {
-              return right(qrCodeResponseModel.toDomain(attendanceType: 'CHECK_IN'));
+              return right(qrCodeResponseModel.toDomain());
             } else {
               // La API devolvió success: false
               final message = response.data['message'] ?? 'Error en la operación de check-in';
@@ -88,7 +88,7 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
             
             // Verificar si la respuesta indica éxito
             if (qrCodeResponseModel.success) {
-              return right(qrCodeResponseModel.toDomain(attendanceType: 'CHECK_IN'));
+              return right(qrCodeResponseModel.toDomain());
             } else {
               // La API devolvió success: false
               final message = response.data['message'] ?? 'Error en la operación de check-in';
@@ -137,7 +137,7 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
               
               // Verificar si la respuesta indica éxito
               if (qrCodeResponseModel.success) {
-                return right(qrCodeResponseModel.toDomain(attendanceType: 'CHECK_OUT'));
+                return right(qrCodeResponseModel.toDomain());
               } else {
                 // La API devolvió success: false
                 final message = response.data['message'] ?? 'Error en la operación de checkout';
@@ -188,7 +188,7 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
             
             // Verificar si la respuesta indica éxito
             if (qrCodeResponseModel.success) {
-              return right(qrCodeResponseModel.toDomain(attendanceType: 'CHECK_OUT'));
+              return right(qrCodeResponseModel.toDomain());
             } else {
               // La API devolvió success: false
               final message = response.data['message'] ?? 'Error en la operación de checkout';

@@ -5,27 +5,12 @@ part 'qr_code_data_model.freezed.dart';
 part 'qr_code_data_model.g.dart';
 
 @freezed
-abstract class EmployeeDataModel with _$EmployeeDataModel {
-  const factory EmployeeDataModel({
-    required String id,
-    required String firstName,
-    required String lastName,
-    required String dni,
-    required String position,
-    required String department,
-  }) = _EmployeeDataModel;
-
-  factory EmployeeDataModel.fromJson(Map<String, dynamic> json) =>
-      _$EmployeeDataModelFromJson(json);
-}
-
-@freezed
 abstract class QrCodeDataModel with _$QrCodeDataModel {
   const factory QrCodeDataModel({
     required String qrCode,
     required String manualCode,
-    required EmployeeDataModel employeeData,
     required DateTime expiresAt,
+    required String type,
   }) = _QrCodeDataModel;
 
   factory QrCodeDataModel.fromJson(Map<String, dynamic> json) =>
@@ -33,10 +18,10 @@ abstract class QrCodeDataModel with _$QrCodeDataModel {
 }
 
 extension QrCodeDataModelX on QrCodeDataModel {
-  QrCodeData toDomain({String? attendanceType}) => QrCodeData(
+  QrCodeData toDomain() => QrCodeData(
         qrCode: qrCode,
         manualCode: manualCode,
         expiresAt: expiresAt,
-        type: attendanceType ?? 'checkin',
+        type: type,
       );
 }
