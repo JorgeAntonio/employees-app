@@ -1,6 +1,7 @@
 import 'package:attendance_app/src/core/router/routes.dart';
 import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
+import 'package:attendance_app/src/features/auth/domain/entities/auth_session.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/auth_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +14,8 @@ class AppDrawer extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = context.appColorScheme;
     final textTheme = context.appTextTheme;
+
+    final session = ref.watch(authStateProvider);
 
     final menuItems = [
       {
@@ -74,6 +77,38 @@ class AppDrawer extends HookConsumerWidget {
       },
     ];
 
+    return session.when(
+      loading: () =>
+          const Drawer(child: Center(child: CircularProgressIndicator())),
+      error: (error, stack) =>
+          Drawer(child: Center(child: Text('Error: $error'))),
+      data: (authSession) {
+        if (authSession == null) {
+          return const Drawer(
+            child: Center(child: Text('No hay sesión activa')),
+          );
+        }
+
+        return _buildDrawer(
+          context,
+          colorScheme,
+          textTheme,
+          menuItems,
+          authSession,
+        );
+      },
+    );
+  }
+
+  Widget _buildDrawer(
+    BuildContext context,
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+    List<Map<String, dynamic>> menuItems,
+    AuthSession authSession,
+  ) {
+    final user = authSession.data.user;
+
     return Drawer(
       width: context.screenWidth * 0.8,
       // Add a ListView to the drawer. This ensures the user can scroll
@@ -104,14 +139,14 @@ class AppDrawer extends HookConsumerWidget {
                     context.pushNamed(Routes.profile.name);
                   },
                   title: Text(
-                    'Juan Perez',
+                    '${user.employee.firstName} ${user.employee.lastName}',
                     style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: colorScheme.onPrimary,
                     ),
                   ),
                   subtitle: Text(
-                    'Desarrollador de Software',
+                    user.employee.position,
                     style: textTheme.bodySmall?.copyWith(
                       color: colorScheme.onPrimary.withValues(alpha: 0.8),
                     ),

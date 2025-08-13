@@ -79,9 +79,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final dayName = getDayName(now);
+    final monthName = getMonthName(now.month);
+    final formattedDate = '$dayName, ${now.day} de $monthName de ${now.year}';
+
     return Scaffold(
       appBar: AttendanceAppBar(
-        title: '8 de agosto',
+        title: formattedDate,
         actions: [
           IconButton(
             onPressed: null,
