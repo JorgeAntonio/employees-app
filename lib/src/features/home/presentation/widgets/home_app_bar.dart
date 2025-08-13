@@ -4,37 +4,6 @@ import 'package:attendance_app/src/features/auth/presentation/providers/auth_sta
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-String getDayName(DateTime now) {
-  final days = [
-    'Domingo',
-    'Lunes',
-    'Martes',
-    'Miércoles',
-    'Jueves',
-    'Viernes',
-    'Sábado',
-  ];
-  return days[now.weekday - 1];
-}
-
-String getMonthName(int month) {
-  const months = [
-    'Enero',
-    'Febrero',
-    'Marzo',
-    'Abril',
-    'Mayo',
-    'Junio',
-    'Julio',
-    'Agosto',
-    'Septiembre',
-    'Octubre',
-    'Noviembre',
-    'Diciembre',
-  ];
-  return months[month - 1];
-}
-
 class HomeAppBar extends ConsumerWidget {
   const HomeAppBar({super.key});
 

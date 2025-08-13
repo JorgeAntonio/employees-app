@@ -77,12 +77,43 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  String getDayName(DateTime now) {
+    final days = [
+      'Lunes',
+      'Martes',
+      'Miércoles',
+      'Jueves',
+      'Viernes',
+      'Sábado',
+      'Domingo',
+    ];
+    return days[now.weekday - 1];
+  }
+
+  String getMonthName(int month) {
+    const months = [
+      'Enero',
+      'Febrero',
+      'Marzo',
+      'Abril',
+      'Mayo',
+      'Junio',
+      'Julio',
+      'Agosto',
+      'Septiembre',
+      'Octubre',
+      'Noviembre',
+      'Diciembre',
+    ];
+    return months[month - 1];
+  }
+
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
     final dayName = getDayName(now);
     final monthName = getMonthName(now.month);
-    final formattedDate = '$dayName, ${now.day} de $monthName de ${now.year}';
+    final formattedDate = '$dayName, ${now.day} de $monthName';
 
     return Scaffold(
       appBar: AttendanceAppBar(
