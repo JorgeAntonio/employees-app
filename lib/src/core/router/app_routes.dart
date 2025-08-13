@@ -7,6 +7,8 @@ import 'package:attendance_app/src/features/home/presentation/sccreens/home_scre
 import 'package:attendance_app/src/features/profile/profile_screen.dart';
 import 'package:attendance_app/src/features/scanner/screen/scanner_screen.dart';
 import 'package:attendance_app/src/features/welcome/welcome_screen.dart';
+import 'package:attendance_app/src/features/attendance/presentation/screens/screens.dart';
+import 'package:attendance_app/src/features/attendance/presentation/screens/attendance_history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -70,6 +72,22 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: Routes.dashboard.name,
         builder: (context, state) => const DashboardScreen(),
       ),
+
+      GoRoute(
+          path: Routes.validateCode.path,
+          name: Routes.validateCode.name,
+          builder: (context, state) => const ValidateCodeScreen(),
+        ),
+        GoRoute(
+          path: Routes.confirmAttendance.path,
+          name: Routes.confirmAttendance.name,
+          builder: (context, state) => const ConfirmAttendanceScreen(),
+        ),
+        GoRoute(
+          path: Routes.attendanceHistory.path,
+          name: Routes.attendanceHistory.name,
+          builder: (context, state) => const AttendanceHistoryScreen(),
+        ),
 
       StatefulShellRoute.indexedStack(
         key: _shellNavigatorKey,

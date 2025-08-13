@@ -1,57 +1,58 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'qr_code_state_provider.dart';
+part of 'validate_code_state_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-@ProviderFor(QrCodeNotifier)
-const qrCodeNotifierProvider = QrCodeNotifierProvider._();
+@ProviderFor(ValidateCodeNotifier)
+const validateCodeNotifierProvider = ValidateCodeNotifierProvider._();
 
-final class QrCodeNotifierProvider
-    extends $NotifierProvider<QrCodeNotifier, QrCodeState> {
-  const QrCodeNotifierProvider._()
+final class ValidateCodeNotifierProvider
+    extends $NotifierProvider<ValidateCodeNotifier, ValidateCodeState> {
+  const ValidateCodeNotifierProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'qrCodeNotifierProvider',
+        name: r'validateCodeNotifierProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$qrCodeNotifierHash();
+  String debugGetCreateSourceHash() => _$validateCodeNotifierHash();
 
   @$internal
   @override
-  QrCodeNotifier create() => QrCodeNotifier();
+  ValidateCodeNotifier create() => ValidateCodeNotifier();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(QrCodeState value) {
+  Override overrideWithValue(ValidateCodeState value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<QrCodeState>(value),
+      providerOverride: $SyncValueProvider<ValidateCodeState>(value),
     );
   }
 }
 
-String _$qrCodeNotifierHash() => r'bd5093317366f6d717fca0b04cabc63677503f1b';
+String _$validateCodeNotifierHash() =>
+    r'd295dce32990b1b619c725e45cfe58806c9736c1';
 
-abstract class _$QrCodeNotifier extends $Notifier<QrCodeState> {
-  QrCodeState build();
+abstract class _$ValidateCodeNotifier extends $Notifier<ValidateCodeState> {
+  ValidateCodeState build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<QrCodeState, QrCodeState>;
+    final ref = this.ref as $Ref<ValidateCodeState, ValidateCodeState>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<QrCodeState, QrCodeState>,
-              QrCodeState,
+              AnyNotifier<ValidateCodeState, ValidateCodeState>,
+              ValidateCodeState,
               Object?,
               Object?
             >;

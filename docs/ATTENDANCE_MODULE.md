@@ -67,7 +67,10 @@ Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "code": "ABC123" // Código QR escaneado o código manual
+  "code": "ABC123", // Código QR escaneado o código manual
+  "latitude": -12.0464, // Opcional - coordenadas de ubicación
+  "longitude": -77.0428, // Opcional - coordenadas de ubicación
+  "accuracy": 5.0 // Opcional - precisión de ubicación
 }
 ```
 
@@ -85,7 +88,12 @@ Content-Type: application/json
     },
     "type": "CHECK_IN",
     "timestamp": "2024-01-15T10:05:00.000Z",
-    "location": "Oficina Principal"
+    "location": {
+      "name": "Ubicación Actual",
+      "latitude": -12.0464,
+      "longitude": -77.0428,
+      "accuracy": 5.0
+    }
   }
 }
 ```
@@ -156,6 +164,38 @@ GET /api/v1/attendance/status/me
 Authorization: Bearer <employee_token>
 ```
 
+**Respuesta:**
+```json
+{
+	"success": true,
+	"data": {
+		"employee": {
+			"id": "5106ec23-1a62-4a21-aafa-93536cfc155c",
+			"firstName": "Ana",
+			"lastName": "López",
+			"dni": "11223344"
+		},
+		"currentAttendance": {
+			"id": "c5bd9d86-53a1-4ddd-9e78-3ed067b77860",
+			"employeeId": "5106ec23-1a62-4a21-aafa-93536cfc155c",
+			"date": "2025-08-12T16:21:01.417Z",
+			"checkInTime": "2025-08-12T16:21:01.417Z",
+			"checkOutTime": "2025-08-12T16:22:00.491Z",
+			"durationMins": 0,
+			"status": "PRESENT",
+			"checkInLocationId": null,
+			"checkOutLocationId": null,
+			"deviceId": null,
+			"createdAt": "2025-08-12T16:27:40.001Z",
+			"updatedAt": "2025-08-12T16:28:39.351Z",
+			"checkInLocation": null,
+			"checkOutLocation": null
+		},
+		"status": "completed"
+	}
+}
+```
+
 **Estado de empleado específico (Administradores):**
 ```
 GET /api/v1/attendance/status/:employeeId
@@ -210,25 +250,31 @@ Authorization: Bearer <employee_token>
 
 ## Flujo de Trabajo
 
-### Para Empleados:
+### Flujo Independiente de QR:
 
-1. **Generar QR de Entrada:**
-   - El empleado solicita un código QR para marcar entrada
-   - El sistema genera un QR único y un código manual alternativo
-   - Ambos códigos expiran en 10 minutos
+1. **Generación de QR:**
+   - Cualquier usuario autenticado puede generar un código QR
+   - El QR no está vinculado a un empleado específico durante la generación
+   - Se almacena en la base de datos con información de expiración
+   - Los administradores pueden generar QRs para empleados específicos
 
-2. **Escanear/Validar Código:**
+2. **Validación del Código:**
    - El empleado escanea el QR o ingresa el código manual
-   - El sistema muestra los datos del empleado y la hora actual
+   - El sistema identifica al empleado por su token de autenticación
+   - Valida que el código existe, no ha expirado y no ha sido usado
+   - Muestra los datos del empleado para confirmación
    - **Importante:** Este paso NO registra la asistencia, solo valida
 
-3. **Confirmar Asistencia:**
-   - El empleado presiona el botón "Confirmar"
-   - El sistema registra oficialmente la entrada/salida
+3. **Confirmación de Asistencia:**
+   - El empleado confirma la asistencia
+   - El sistema marca el QR como usado
+   - Registra oficialmente la entrada/salida con ubicación opcional
 
-4. **Generar QR de Salida:**
-   - Similar al proceso de entrada, pero para marcar la salida
-   - Solo disponible si el empleado ya marcó entrada
+### Para Empleados:
+
+- Generan sus propios códigos QR para entrada/salida
+- Escanean cualquier código QR válido para marcar asistencia
+- Pueden incluir información de ubicación durante la confirmación
 
 ### Para Administradores:
 
@@ -243,14 +289,18 @@ Authorization: Bearer <employee_token>
 - **Autenticación:** Todos los endpoints requieren JWT válido
 - **Autorización:** Control de permisos por roles (ADMIN/EMPLOYEE)
 - **Limpieza automática:** Sistema de limpieza cada 5 minutos
+- **Uso único:** Los códigos se marcan como usados después de la confirmación
+- **Validación de empleado:** La identidad del empleado se determina por el token JWT
+- **Persistencia:** Los códigos se almacenan de forma segura en la base de datos
 
 ## Consideraciones Técnicas
 
-- **Base de datos:** Utiliza Prisma ORM con PostgreSQL
+- **Base de datos:** Utiliza Prisma ORM con SQLite (desarrollo) / PostgreSQL (producción)
 - **Códigos QR:** Generados con la librería `qrcode`
 - **Códigos manuales:** Generados con `uuid` (6 caracteres)
 - **Validación:** Esquemas Zod para validación de entrada
-- **Almacenamiento temporal:** Los códigos se almacenan en memoria (Map)
+- **Almacenamiento:** Los códigos se almacenan en la base de datos (tabla `AttendanceQR`)
+- **Flujo independiente:** Los QRs no están vinculados a empleados específicos durante la generación
 
 ## Estados de Asistencia
 

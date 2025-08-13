@@ -6,11 +6,18 @@ import 'package:attendance_app/src/features/scanner/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ScannerScreen extends ConsumerWidget {
+class ScannerScreen extends ConsumerStatefulWidget {
   const ScannerScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ScannerScreen> createState() => _ScannerScreenState();
+}
+
+class _ScannerScreenState extends ConsumerState<ScannerScreen> {
+  bool _isCheckIn = true; // true for check-in, false for check-out
+
+  @override
+  Widget build(BuildContext context) {
     final qrCodeState = ref.watch(qrCodeNotifierProvider);
 
     return Scaffold(
@@ -35,6 +42,98 @@ class ScannerScreen extends ConsumerWidget {
                     children: [
                       // Instructions section
                       const ScannerInstructions(),
+
+                      // Check-in/Check-out Toggle
+                      Container(
+                        decoration: BoxDecoration(
+                          color: context.appColorScheme.surfaceContainerHighest,
+                          borderRadius: BorderRadius.circular(DoubleSizes.size12),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () => setState(() => _isCheckIn = true),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: DoubleSizes.size12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: _isCheckIn
+                                        ? context.appColorScheme.primary
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(
+                                      DoubleSizes.size12,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.login,
+                                        color: _isCheckIn
+                                            ? context.appColorScheme.onPrimary
+                                            : context.appColorScheme.onSurfaceVariant,
+                                        size: 20,
+                                      ),
+                                      Gaps.gap8,
+                                      Text(
+                                        'Entrada',
+                                        style: context.appTextTheme.bodyMedium?.copyWith(
+                                          color: _isCheckIn
+                                              ? context.appColorScheme.onPrimary
+                                              : context.appColorScheme.onSurfaceVariant,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () => setState(() => _isCheckIn = false),
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: DoubleSizes.size12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: !_isCheckIn
+                                        ? context.appColorScheme.primary
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(
+                                      DoubleSizes.size12,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.logout,
+                                        color: !_isCheckIn
+                                            ? context.appColorScheme.onPrimary
+                                            : context.appColorScheme.onSurfaceVariant,
+                                        size: 20,
+                                      ),
+                                      Gaps.gap8,
+                                      Text(
+                                        'Salida',
+                                        style: context.appTextTheme.bodyMedium?.copyWith(
+                                          color: !_isCheckIn
+                                              ? context.appColorScheme.onPrimary
+                                              : context.appColorScheme.onSurfaceVariant,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
 
                       // QR Code Display or Scanner Frame
                       qrCodeState.when(
@@ -92,11 +191,19 @@ class ScannerScreen extends ConsumerWidget {
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
-                                onPressed: () => ref
-                                    .read(qrCodeNotifierProvider.notifier)
-                                    .generateCheckInQr(),
-                                icon: const Icon(Icons.qr_code),
-                                label: const Text('Generar Código QR'),
+                                onPressed: () {
+                                  if (_isCheckIn) {
+                                    ref
+                                        .read(qrCodeNotifierProvider.notifier)
+                                        .generateCheckInQr();
+                                  } else {
+                                    ref
+                                        .read(qrCodeNotifierProvider.notifier)
+                                        .generateCheckOutQr();
+                                  }
+                                },
+                                icon: Icon(_isCheckIn ? Icons.login : Icons.logout),
+                                label: Text(_isCheckIn ? 'Generar QR de Entrada' : 'Generar QR de Salida'),
                                 style: ElevatedButton.styleFrom(
                                   padding: EdgeInsets.symmetric(
                                     vertical: DoubleSizes.size16,
@@ -117,9 +224,17 @@ class ScannerScreen extends ConsumerWidget {
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton.icon(
-                                onPressed: () => ref
-                                    .read(qrCodeNotifierProvider.notifier)
-                                    .generateCheckInQr(),
+                                onPressed: () {
+                                  if (_isCheckIn) {
+                                    ref
+                                        .read(qrCodeNotifierProvider.notifier)
+                                        .generateCheckInQr();
+                                  } else {
+                                    ref
+                                        .read(qrCodeNotifierProvider.notifier)
+                                        .generateCheckOutQr();
+                                  }
+                                },
                                 icon: const Icon(Icons.refresh),
                                 label: const Text('Reintentar'),
                                 style: ElevatedButton.styleFrom(

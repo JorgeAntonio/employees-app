@@ -48,6 +48,32 @@ class QrCodeNotifier extends _$QrCodeNotifier {
     );
   }
 
+  /// Generate QR code for check-out (for employees)
+  Future<void> generateCheckOutQr() async {
+    state = const QrCodeState.loading();
+
+    final useCase = ref.read(generateCheckOutQrUseCaseProvider);
+    final result = await useCase();
+
+    result.fold(
+      (failure) => state = QrCodeState.error(failure.message),
+      (qrCodeResponse) => state = QrCodeState.success(qrCodeResponse),
+    );
+  }
+
+  /// Generate QR code for check-out for specific employee (for admins)
+  Future<void> generateCheckOutQrForEmployee(String employeeId) async {
+    state = const QrCodeState.loading();
+
+    final useCase = ref.read(generateCheckOutQrUseCaseProvider);
+    final result = await useCase.callForEmployee(employeeId);
+
+    result.fold(
+      (failure) => state = QrCodeState.error(failure.message),
+      (qrCodeResponse) => state = QrCodeState.success(qrCodeResponse),
+    );
+  }
+
   /// Reset state to initial
   void reset() {
     state = const QrCodeState.initial();

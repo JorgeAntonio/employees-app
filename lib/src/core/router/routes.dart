@@ -26,4 +26,13 @@ class Routes {
 
   static Routes get dashboard =>
       const Routes._(name: 'dashboard', path: '/dashboard');
+
+  static Routes get validateCode =>
+      const Routes._(name: 'validate-code', path: '/validate-code');
+
+  static Routes get confirmAttendance =>
+      const Routes._(name: 'confirm-attendance', path: '/confirm-attendance');
+
+  static Routes get attendanceHistory =>
+      const Routes._(name: 'attendance-history', path: '/attendance-history');
 }
