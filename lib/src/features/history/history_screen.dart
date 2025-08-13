@@ -13,9 +13,6 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  final String _selectedTimeFilter = 'Semana';
-  final List<String> _timeFilters = ['Semana', 'Quincena', 'Mes'];
-
   // Mock data for demonstration
   final List<Map<String, dynamic>> _attendanceHistory = [
     {

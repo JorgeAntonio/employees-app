@@ -1,4 +1,3 @@
-import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/qr_code_response.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/attendance_providers.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
