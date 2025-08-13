@@ -53,7 +53,7 @@ _AttendanceModel _$AttendanceModelFromJson(Map<String, dynamic> json) =>
       checkOutTime: json['checkOutTime'] == null
           ? null
           : DateTime.parse(json['checkOutTime'] as String),
-      durationMins: (json['durationMins'] as num).toInt(),
+      durationMins: (json['durationMins'] as num?)?.toInt(),
       status: json['status'] as String,
       checkInLocationId: json['checkInLocationId'] as String?,
       checkOutLocationId: json['checkOutLocationId'] as String?,

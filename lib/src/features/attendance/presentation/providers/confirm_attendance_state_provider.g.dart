@@ -40,7 +40,7 @@ final class ConfirmAttendanceNotifierProvider
 }
 
 String _$confirmAttendanceNotifierHash() =>
-    r'63ca79ed019d2846b3812cf02e6c392d5cb5f3e1';
+    r'd4e1815844e329941f0eb43eb2c1d2540eff73a6';
 
 abstract class _$ConfirmAttendanceNotifier
     extends $Notifier<ConfirmAttendanceState> {

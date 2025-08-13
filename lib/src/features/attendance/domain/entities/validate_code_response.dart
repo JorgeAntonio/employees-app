@@ -3,19 +3,7 @@ class ValidateCodeResponse {
   final ValidateCodeData? data;
   final String? message;
 
-  ValidateCodeResponse({
-    required this.success,
-    this.data,
-    this.message,
-  });
-
-  factory ValidateCodeResponse.fromJson(Map<String, dynamic> json) {
-    return ValidateCodeResponse(
-      success: json['success'],
-      data: json['data'] != null ? ValidateCodeData.fromJson(json['data']) : null,
-      message: json['message'],
-    );
-  }
+  ValidateCodeResponse({required this.success, this.data, this.message});
 }
 
 class ValidateCodeData {
@@ -28,14 +16,6 @@ class ValidateCodeData {
     required this.action,
     required this.timestamp,
   });
-
-  factory ValidateCodeData.fromJson(Map<String, dynamic> json) {
-    return ValidateCodeData(
-      employee: Employee.fromJson(json['employee']),
-      action: json['action'],
-      timestamp: DateTime.parse(json['timestamp']),
-    );
-  }
 }
 
 class Employee {
@@ -54,17 +34,6 @@ class Employee {
     required this.position,
     required this.department,
   });
-
-  factory Employee.fromJson(Map<String, dynamic> json) {
-    return Employee(
-      id: json['id'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
-      dni: json['dni'],
-      position: json['position'],
-      department: json['department'],
-    );
-  }
 
   String get fullName => '$firstName $lastName';
 }

@@ -1,16 +1,18 @@
+import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_request.dart';
+import 'package:attendance_app/src/features/attendance/presentation/providers/confirm_attendance_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:attendance_app/src/features/attendance/presentation/providers/confirm_attendance_state_provider.dart';
-import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_request.dart';
 
 class ConfirmAttendanceScreen extends ConsumerStatefulWidget {
   const ConfirmAttendanceScreen({super.key});
 
   @override
-  ConsumerState<ConfirmAttendanceScreen> createState() => _ConfirmAttendanceScreenState();
+  ConsumerState<ConfirmAttendanceScreen> createState() =>
+      _ConfirmAttendanceScreenState();
 }
 
-class _ConfirmAttendanceScreenState extends ConsumerState<ConfirmAttendanceScreen> {
+class _ConfirmAttendanceScreenState
+    extends ConsumerState<ConfirmAttendanceScreen> {
   final _codeController = TextEditingController();
   final _latitudeController = TextEditingController();
   final _longitudeController = TextEditingController();
@@ -21,10 +23,10 @@ class _ConfirmAttendanceScreenState extends ConsumerState<ConfirmAttendanceScree
   final _deviceOsController = TextEditingController();
   final _deviceBrowserController = TextEditingController();
   final _deviceUserAgentController = TextEditingController();
-  
+
   bool _includeLocation = false;
   bool _includeDeviceInfo = false;
-  bool? _confirmed;
+  bool? _confirmed = true;
 
   @override
   void dispose() {
@@ -53,47 +55,48 @@ class _ConfirmAttendanceScreenState extends ConsumerState<ConfirmAttendanceScree
     DeviceInfo? deviceInfo;
     if (_includeDeviceInfo) {
       deviceInfo = DeviceInfo(
-        name: _deviceNameController.text.trim().isEmpty 
-            ? 'Test Device' 
+        name: _deviceNameController.text.trim().isEmpty
+            ? 'Test Device'
             : _deviceNameController.text.trim(),
-        os: _deviceOsController.text.trim().isEmpty 
-            ? 'Android' 
+        os: _deviceOsController.text.trim().isEmpty
+            ? 'Android'
             : _deviceOsController.text.trim(),
-        browser: _deviceBrowserController.text.trim().isEmpty 
-            ? 'Chrome' 
+        browser: _deviceBrowserController.text.trim().isEmpty
+            ? 'Chrome'
             : _deviceBrowserController.text.trim(),
-        userAgent: _deviceUserAgentController.text.trim().isEmpty 
-            ? 'Test User Agent' 
+        userAgent: _deviceUserAgentController.text.trim().isEmpty
+            ? 'Test User Agent'
             : _deviceUserAgentController.text.trim(),
       );
     }
 
     if (_includeLocation) {
-      ref.read(confirmAttendanceNotifierProvider.notifier).confirmWithLocation(
-        code: code,
-        confirmed: _confirmed,
-        locationId: _locationIdController.text.trim().isEmpty 
-            ? null 
-            : _locationIdController.text.trim(),
-        latitude: _latitudeController.text.trim().isEmpty 
-            ? null 
-            : double.tryParse(_latitudeController.text.trim()),
-        longitude: _longitudeController.text.trim().isEmpty 
-            ? null 
-            : double.tryParse(_longitudeController.text.trim()),
-        accuracy: _accuracyController.text.trim().isEmpty 
-            ? null 
-            : double.tryParse(_accuracyController.text.trim()),
-        name: _nameController.text.trim().isEmpty 
-            ? null 
-            : _nameController.text.trim(),
-        deviceInfo: deviceInfo,
-      );
+      ref
+          .read(confirmAttendanceNotifierProvider.notifier)
+          .confirmWithLocation(
+            code: code,
+            confirmed: _confirmed ?? true,
+            locationId: _locationIdController.text.trim().isEmpty
+                ? null
+                : _locationIdController.text.trim(),
+            latitude: _latitudeController.text.trim().isEmpty
+                ? null
+                : double.tryParse(_latitudeController.text.trim()),
+            longitude: _longitudeController.text.trim().isEmpty
+                ? null
+                : double.tryParse(_longitudeController.text.trim()),
+            accuracy: _accuracyController.text.trim().isEmpty
+                ? null
+                : double.tryParse(_accuracyController.text.trim()),
+            name: _nameController.text.trim().isEmpty
+                ? null
+                : _nameController.text.trim(),
+            deviceInfo: deviceInfo,
+          );
     } else {
-      ref.read(confirmAttendanceNotifierProvider.notifier).confirm(
-        code: code,
-        confirmed: _confirmed,
-      );
+      ref
+          .read(confirmAttendanceNotifierProvider.notifier)
+          .confirm(code: code, confirmed: _confirmed ?? true);
     }
   }
 
@@ -127,23 +130,10 @@ class _ConfirmAttendanceScreenState extends ConsumerState<ConfirmAttendanceScree
               children: [
                 const Text('Confirmado: '),
                 Radio<bool?>(
-                  value: null,
-                  groupValue: _confirmed,
-                  onChanged: (value) => setState(() => _confirmed = value),
-                ),
-                const Text('No especificar'),
-                Radio<bool?>(
                   value: true,
                   groupValue: _confirmed,
                   onChanged: (value) => setState(() => _confirmed = value),
                 ),
-                const Text('Sí'),
-                Radio<bool?>(
-                  value: false,
-                  groupValue: _confirmed,
-                  onChanged: (value) => setState(() => _confirmed = value),
-                ),
-                const Text('No'),
               ],
             ),
             const SizedBox(height: 16),
@@ -288,7 +278,10 @@ class _ConfirmAttendanceScreenState extends ConsumerState<ConfirmAttendanceScree
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.check_circle, color: Colors.green.shade700),
+                          Icon(
+                            Icons.check_circle,
+                            color: Colors.green.shade700,
+                          ),
                           const SizedBox(width: 8),
                           Text(
                             'Asistencia Confirmada',
@@ -303,19 +296,33 @@ class _ConfirmAttendanceScreenState extends ConsumerState<ConfirmAttendanceScree
                       if (response.data != null) ...[
                         Text('Mensaje: ${response.data!.message}'),
                         const SizedBox(height: 8),
-                        Text('Empleado: ${response.data!.attendance.employee.fullName}'),
+                        Text(
+                          'Empleado: ${response.data!.attendance.employee.fullName}',
+                        ),
                         Text('DNI: ${response.data!.attendance.employee.dni}'),
                         Text('Estado: ${response.data!.attendance.status}'),
-                        Text('Fecha: ${response.data!.attendance.date.toString().split(' ')[0]}'),
+                        Text(
+                          'Fecha: ${response.data!.attendance.date.toString().split(' ')[0]}',
+                        ),
                         if (response.data!.attendance.checkInTime != null)
-                          Text('Hora de entrada: ${response.data!.attendance.checkInTime.toString().split(' ')[1].substring(0, 8)}'),
+                          Text(
+                            'Hora de entrada: ${response.data!.attendance.checkInTime.toString().split(' ')[1].substring(0, 8)}',
+                          ),
                         if (response.data!.attendance.checkOutTime != null)
-                          Text('Hora de salida: ${response.data!.attendance.checkOutTime.toString().split(' ')[1].substring(0, 8)}'),
-                        Text('Duración: ${response.data!.attendance.durationMins} minutos'),
+                          Text(
+                            'Hora de salida: ${response.data!.attendance.checkOutTime.toString().split(' ')[1].substring(0, 8)}',
+                          ),
+                        Text(
+                          'Duración: ${response.data!.attendance.durationMins} minutos',
+                        ),
                         if (response.data!.attendance.checkInLocation != null)
-                          Text('Ubicación entrada: ${response.data!.attendance.checkInLocation!.name}'),
+                          Text(
+                            'Ubicación entrada: ${response.data!.attendance.checkInLocation!.name}',
+                          ),
                         if (response.data!.attendance.checkOutLocation != null)
-                          Text('Ubicación salida: ${response.data!.attendance.checkOutLocation!.name}'),
+                          Text(
+                            'Ubicación salida: ${response.data!.attendance.checkOutLocation!.name}',
+                          ),
                       ],
                     ],
                   ),

@@ -1,8 +1,8 @@
+import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_request.dart';
+import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_response.dart';
+import 'package:attendance_app/src/features/attendance/presentation/providers/attendance_providers.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_response.dart';
-import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_request.dart';
-import 'package:attendance_app/src/features/attendance/presentation/providers/attendance_providers.dart';
 
 part 'confirm_attendance_state_provider.freezed.dart';
 part 'confirm_attendance_state_provider.g.dart';
@@ -11,7 +11,9 @@ part 'confirm_attendance_state_provider.g.dart';
 abstract class ConfirmAttendanceState with _$ConfirmAttendanceState {
   const factory ConfirmAttendanceState.initial() = _Initial;
   const factory ConfirmAttendanceState.loading() = _Loading;
-  const factory ConfirmAttendanceState.success(ConfirmAttendanceResponse response) = _Success;
+  const factory ConfirmAttendanceState.success(
+    ConfirmAttendanceResponse response,
+  ) = _Success;
   const factory ConfirmAttendanceState.error(String message) = _Error;
 }
 
@@ -27,19 +29,13 @@ class ConfirmAttendanceNotifier extends _$ConfirmAttendanceNotifier {
   }
 
   /// Confirm attendance with code only
-  Future<void> confirm({
-    required String code,
-    bool? confirmed,
-  }) async {
+  Future<void> confirm({required String code, required bool confirmed}) async {
     ref.invalidateSelf();
     state = const ConfirmAttendanceState.loading();
-    
+
     final useCase = ref.read(confirmAttendanceUseCaseProvider);
-    final result = await useCase(
-      code: code,
-      confirmed: confirmed,
-    );
-    
+    final result = await useCase(code: code, confirmed: confirmed);
+
     result.fold(
       (failure) => state = ConfirmAttendanceState.error(failure.message),
       (response) => state = ConfirmAttendanceState.success(response),
@@ -49,7 +45,7 @@ class ConfirmAttendanceNotifier extends _$ConfirmAttendanceNotifier {
   /// Confirm attendance with location data
   Future<void> confirmWithLocation({
     required String code,
-    bool? confirmed,
+    required bool confirmed,
     String? locationId,
     double? latitude,
     double? longitude,
@@ -59,7 +55,7 @@ class ConfirmAttendanceNotifier extends _$ConfirmAttendanceNotifier {
   }) async {
     ref.invalidateSelf();
     state = const ConfirmAttendanceState.loading();
-    
+
     final useCase = ref.read(confirmAttendanceUseCaseProvider);
     final result = await useCase.confirmWithLocation(
       code: code,
@@ -71,7 +67,7 @@ class ConfirmAttendanceNotifier extends _$ConfirmAttendanceNotifier {
       name: name,
       deviceInfo: deviceInfo,
     );
-    
+
     result.fold(
       (failure) => state = ConfirmAttendanceState.error(failure.message),
       (response) => state = ConfirmAttendanceState.success(response),

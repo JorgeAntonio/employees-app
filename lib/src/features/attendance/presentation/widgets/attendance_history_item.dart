@@ -135,7 +135,8 @@ class AttendanceHistoryItemWidget extends StatelessWidget {
     );
   }
 
-  String _formatDuration(int minutes) {
+  String _formatDuration(int? minutes) {
+    if (minutes == null) return 'N/A';
     if (minutes == 0) return '0 minutos';
 
     final hours = minutes ~/ 60;

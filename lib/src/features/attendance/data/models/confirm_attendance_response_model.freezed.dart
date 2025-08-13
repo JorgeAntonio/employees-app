@@ -592,7 +592,7 @@ $AttendanceModelCopyWith<$Res> get attendance {
 /// @nodoc
 mixin _$AttendanceModel {
 
- String get id; String get employeeId; DateTime get date; DateTime? get checkInTime; DateTime? get checkOutTime; int get durationMins; String get status; String? get checkInLocationId; String? get checkOutLocationId; String? get deviceId; DateTime get createdAt; DateTime get updatedAt; AttendanceEmployeeModel get employee; AttendanceLocationModel? get checkInLocation; AttendanceLocationModel? get checkOutLocation; AttendanceDeviceModel? get device;
+ String get id; String get employeeId; DateTime get date; DateTime? get checkInTime; DateTime? get checkOutTime; int? get durationMins; String get status; String? get checkInLocationId; String? get checkOutLocationId; String? get deviceId; DateTime get createdAt; DateTime get updatedAt; AttendanceEmployeeModel get employee; AttendanceLocationModel? get checkInLocation; AttendanceLocationModel? get checkOutLocation; AttendanceDeviceModel? get device;
 /// Create a copy of AttendanceModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -625,7 +625,7 @@ abstract mixin class $AttendanceModelCopyWith<$Res>  {
   factory $AttendanceModelCopyWith(AttendanceModel value, $Res Function(AttendanceModel) _then) = _$AttendanceModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String employeeId, DateTime date, DateTime? checkInTime, DateTime? checkOutTime, int durationMins, String status, String? checkInLocationId, String? checkOutLocationId, String? deviceId, DateTime createdAt, DateTime updatedAt, AttendanceEmployeeModel employee, AttendanceLocationModel? checkInLocation, AttendanceLocationModel? checkOutLocation, AttendanceDeviceModel? device
+ String id, String employeeId, DateTime date, DateTime? checkInTime, DateTime? checkOutTime, int? durationMins, String status, String? checkInLocationId, String? checkOutLocationId, String? deviceId, DateTime createdAt, DateTime updatedAt, AttendanceEmployeeModel employee, AttendanceLocationModel? checkInLocation, AttendanceLocationModel? checkOutLocation, AttendanceDeviceModel? device
 });
 
 
@@ -642,15 +642,15 @@ class _$AttendanceModelCopyWithImpl<$Res>
 
 /// Create a copy of AttendanceModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? employeeId = null,Object? date = null,Object? checkInTime = freezed,Object? checkOutTime = freezed,Object? durationMins = null,Object? status = null,Object? checkInLocationId = freezed,Object? checkOutLocationId = freezed,Object? deviceId = freezed,Object? createdAt = null,Object? updatedAt = null,Object? employee = null,Object? checkInLocation = freezed,Object? checkOutLocation = freezed,Object? device = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? employeeId = null,Object? date = null,Object? checkInTime = freezed,Object? checkOutTime = freezed,Object? durationMins = freezed,Object? status = null,Object? checkInLocationId = freezed,Object? checkOutLocationId = freezed,Object? deviceId = freezed,Object? createdAt = null,Object? updatedAt = null,Object? employee = null,Object? checkInLocation = freezed,Object? checkOutLocation = freezed,Object? device = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,employeeId: null == employeeId ? _self.employeeId : employeeId // ignore: cast_nullable_to_non_nullable
 as String,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
 as DateTime,checkInTime: freezed == checkInTime ? _self.checkInTime : checkInTime // ignore: cast_nullable_to_non_nullable
 as DateTime?,checkOutTime: freezed == checkOutTime ? _self.checkOutTime : checkOutTime // ignore: cast_nullable_to_non_nullable
-as DateTime?,durationMins: null == durationMins ? _self.durationMins : durationMins // ignore: cast_nullable_to_non_nullable
-as int,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as DateTime?,durationMins: freezed == durationMins ? _self.durationMins : durationMins // ignore: cast_nullable_to_non_nullable
+as int?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,checkInLocationId: freezed == checkInLocationId ? _self.checkInLocationId : checkInLocationId // ignore: cast_nullable_to_non_nullable
 as String?,checkOutLocationId: freezed == checkOutLocationId ? _self.checkOutLocationId : checkOutLocationId // ignore: cast_nullable_to_non_nullable
 as String?,deviceId: freezed == deviceId ? _self.deviceId : deviceId // ignore: cast_nullable_to_non_nullable
@@ -790,7 +790,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String employeeId,  DateTime date,  DateTime? checkInTime,  DateTime? checkOutTime,  int durationMins,  String status,  String? checkInLocationId,  String? checkOutLocationId,  String? deviceId,  DateTime createdAt,  DateTime updatedAt,  AttendanceEmployeeModel employee,  AttendanceLocationModel? checkInLocation,  AttendanceLocationModel? checkOutLocation,  AttendanceDeviceModel? device)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String employeeId,  DateTime date,  DateTime? checkInTime,  DateTime? checkOutTime,  int? durationMins,  String status,  String? checkInLocationId,  String? checkOutLocationId,  String? deviceId,  DateTime createdAt,  DateTime updatedAt,  AttendanceEmployeeModel employee,  AttendanceLocationModel? checkInLocation,  AttendanceLocationModel? checkOutLocation,  AttendanceDeviceModel? device)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AttendanceModel() when $default != null:
 return $default(_that.id,_that.employeeId,_that.date,_that.checkInTime,_that.checkOutTime,_that.durationMins,_that.status,_that.checkInLocationId,_that.checkOutLocationId,_that.deviceId,_that.createdAt,_that.updatedAt,_that.employee,_that.checkInLocation,_that.checkOutLocation,_that.device);case _:
@@ -811,7 +811,7 @@ return $default(_that.id,_that.employeeId,_that.date,_that.checkInTime,_that.che
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String employeeId,  DateTime date,  DateTime? checkInTime,  DateTime? checkOutTime,  int durationMins,  String status,  String? checkInLocationId,  String? checkOutLocationId,  String? deviceId,  DateTime createdAt,  DateTime updatedAt,  AttendanceEmployeeModel employee,  AttendanceLocationModel? checkInLocation,  AttendanceLocationModel? checkOutLocation,  AttendanceDeviceModel? device)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String employeeId,  DateTime date,  DateTime? checkInTime,  DateTime? checkOutTime,  int? durationMins,  String status,  String? checkInLocationId,  String? checkOutLocationId,  String? deviceId,  DateTime createdAt,  DateTime updatedAt,  AttendanceEmployeeModel employee,  AttendanceLocationModel? checkInLocation,  AttendanceLocationModel? checkOutLocation,  AttendanceDeviceModel? device)  $default,) {final _that = this;
 switch (_that) {
 case _AttendanceModel():
 return $default(_that.id,_that.employeeId,_that.date,_that.checkInTime,_that.checkOutTime,_that.durationMins,_that.status,_that.checkInLocationId,_that.checkOutLocationId,_that.deviceId,_that.createdAt,_that.updatedAt,_that.employee,_that.checkInLocation,_that.checkOutLocation,_that.device);case _:
@@ -831,7 +831,7 @@ return $default(_that.id,_that.employeeId,_that.date,_that.checkInTime,_that.che
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String employeeId,  DateTime date,  DateTime? checkInTime,  DateTime? checkOutTime,  int durationMins,  String status,  String? checkInLocationId,  String? checkOutLocationId,  String? deviceId,  DateTime createdAt,  DateTime updatedAt,  AttendanceEmployeeModel employee,  AttendanceLocationModel? checkInLocation,  AttendanceLocationModel? checkOutLocation,  AttendanceDeviceModel? device)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String employeeId,  DateTime date,  DateTime? checkInTime,  DateTime? checkOutTime,  int? durationMins,  String status,  String? checkInLocationId,  String? checkOutLocationId,  String? deviceId,  DateTime createdAt,  DateTime updatedAt,  AttendanceEmployeeModel employee,  AttendanceLocationModel? checkInLocation,  AttendanceLocationModel? checkOutLocation,  AttendanceDeviceModel? device)?  $default,) {final _that = this;
 switch (_that) {
 case _AttendanceModel() when $default != null:
 return $default(_that.id,_that.employeeId,_that.date,_that.checkInTime,_that.checkOutTime,_that.durationMins,_that.status,_that.checkInLocationId,_that.checkOutLocationId,_that.deviceId,_that.createdAt,_that.updatedAt,_that.employee,_that.checkInLocation,_that.checkOutLocation,_that.device);case _:
@@ -846,7 +846,7 @@ return $default(_that.id,_that.employeeId,_that.date,_that.checkInTime,_that.che
 @JsonSerializable()
 
 class _AttendanceModel implements AttendanceModel {
-  const _AttendanceModel({required this.id, required this.employeeId, required this.date, this.checkInTime, this.checkOutTime, required this.durationMins, required this.status, this.checkInLocationId, this.checkOutLocationId, this.deviceId, required this.createdAt, required this.updatedAt, required this.employee, this.checkInLocation, this.checkOutLocation, this.device});
+  const _AttendanceModel({required this.id, required this.employeeId, required this.date, this.checkInTime, this.checkOutTime, this.durationMins, required this.status, this.checkInLocationId, this.checkOutLocationId, this.deviceId, required this.createdAt, required this.updatedAt, required this.employee, this.checkInLocation, this.checkOutLocation, this.device});
   factory _AttendanceModel.fromJson(Map<String, dynamic> json) => _$AttendanceModelFromJson(json);
 
 @override final  String id;
@@ -854,7 +854,7 @@ class _AttendanceModel implements AttendanceModel {
 @override final  DateTime date;
 @override final  DateTime? checkInTime;
 @override final  DateTime? checkOutTime;
-@override final  int durationMins;
+@override final  int? durationMins;
 @override final  String status;
 @override final  String? checkInLocationId;
 @override final  String? checkOutLocationId;
@@ -899,7 +899,7 @@ abstract mixin class _$AttendanceModelCopyWith<$Res> implements $AttendanceModel
   factory _$AttendanceModelCopyWith(_AttendanceModel value, $Res Function(_AttendanceModel) _then) = __$AttendanceModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String employeeId, DateTime date, DateTime? checkInTime, DateTime? checkOutTime, int durationMins, String status, String? checkInLocationId, String? checkOutLocationId, String? deviceId, DateTime createdAt, DateTime updatedAt, AttendanceEmployeeModel employee, AttendanceLocationModel? checkInLocation, AttendanceLocationModel? checkOutLocation, AttendanceDeviceModel? device
+ String id, String employeeId, DateTime date, DateTime? checkInTime, DateTime? checkOutTime, int? durationMins, String status, String? checkInLocationId, String? checkOutLocationId, String? deviceId, DateTime createdAt, DateTime updatedAt, AttendanceEmployeeModel employee, AttendanceLocationModel? checkInLocation, AttendanceLocationModel? checkOutLocation, AttendanceDeviceModel? device
 });
 
 
@@ -916,15 +916,15 @@ class __$AttendanceModelCopyWithImpl<$Res>
 
 /// Create a copy of AttendanceModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? employeeId = null,Object? date = null,Object? checkInTime = freezed,Object? checkOutTime = freezed,Object? durationMins = null,Object? status = null,Object? checkInLocationId = freezed,Object? checkOutLocationId = freezed,Object? deviceId = freezed,Object? createdAt = null,Object? updatedAt = null,Object? employee = null,Object? checkInLocation = freezed,Object? checkOutLocation = freezed,Object? device = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? employeeId = null,Object? date = null,Object? checkInTime = freezed,Object? checkOutTime = freezed,Object? durationMins = freezed,Object? status = null,Object? checkInLocationId = freezed,Object? checkOutLocationId = freezed,Object? deviceId = freezed,Object? createdAt = null,Object? updatedAt = null,Object? employee = null,Object? checkInLocation = freezed,Object? checkOutLocation = freezed,Object? device = freezed,}) {
   return _then(_AttendanceModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,employeeId: null == employeeId ? _self.employeeId : employeeId // ignore: cast_nullable_to_non_nullable
 as String,date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
 as DateTime,checkInTime: freezed == checkInTime ? _self.checkInTime : checkInTime // ignore: cast_nullable_to_non_nullable
 as DateTime?,checkOutTime: freezed == checkOutTime ? _self.checkOutTime : checkOutTime // ignore: cast_nullable_to_non_nullable
-as DateTime?,durationMins: null == durationMins ? _self.durationMins : durationMins // ignore: cast_nullable_to_non_nullable
-as int,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as DateTime?,durationMins: freezed == durationMins ? _self.durationMins : durationMins // ignore: cast_nullable_to_non_nullable
+as int?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as String,checkInLocationId: freezed == checkInLocationId ? _self.checkInLocationId : checkInLocationId // ignore: cast_nullable_to_non_nullable
 as String?,checkOutLocationId: freezed == checkOutLocationId ? _self.checkOutLocationId : checkOutLocationId // ignore: cast_nullable_to_non_nullable
 as String?,deviceId: freezed == deviceId ? _self.deviceId : deviceId // ignore: cast_nullable_to_non_nullable

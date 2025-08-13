@@ -1,20 +1,21 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_request.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'confirm_attendance_request_model.freezed.dart';
 part 'confirm_attendance_request_model.g.dart';
 
 @freezed
-abstract class ConfirmAttendanceRequestModel with _$ConfirmAttendanceRequestModel {
+abstract class ConfirmAttendanceRequestModel
+    with _$ConfirmAttendanceRequestModel {
   const factory ConfirmAttendanceRequestModel({
     required String code,
-    bool? confirmed,
-    String? locationId,
-    double? latitude,
-    double? longitude,
-    double? accuracy,
-    String? name,
-    DeviceInfoModel? deviceInfo,
+    required bool confirmed,
+    @JsonKey(includeIfNull: false) String? locationId,
+    @JsonKey(includeIfNull: false) double? latitude,
+    @JsonKey(includeIfNull: false) double? longitude,
+    @JsonKey(includeIfNull: false) double? accuracy,
+    @JsonKey(includeIfNull: false) String? name,
+    @JsonKey(includeIfNull: false) DeviceInfoModel? deviceInfo,
   }) = _ConfirmAttendanceRequestModel;
 
   factory ConfirmAttendanceRequestModel.fromJson(Map<String, dynamic> json) =>

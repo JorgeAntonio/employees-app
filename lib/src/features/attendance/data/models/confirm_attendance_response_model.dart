@@ -35,7 +35,7 @@ abstract class AttendanceModel with _$AttendanceModel {
     required DateTime date,
     DateTime? checkInTime,
     DateTime? checkOutTime,
-    required int durationMins,
+    int? durationMins,
     required String status,
     String? checkInLocationId,
     String? checkOutLocationId,

@@ -3,6 +3,7 @@ import 'package:attendance_app/src/features/attendance/data/models/attendance_hi
 import 'package:attendance_app/src/features/attendance/data/models/confirm_attendance_request_model.dart';
 import 'package:attendance_app/src/features/attendance/data/models/confirm_attendance_response_model.dart';
 import 'package:attendance_app/src/features/attendance/data/models/qr_code_response/qr_code_response_model.dart';
+import 'package:attendance_app/src/features/attendance/data/models/validate_code_request/validate_code_request_model.dart';
 import 'package:attendance_app/src/features/attendance/data/models/validate_code_response/validate_code_response_model.dart';
 import 'package:attendance_app/src/features/attendance/domain/datasources/api/attendance_datasource.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_request.dart';
@@ -54,6 +55,8 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
             return left(AttendanceFailure(message));
           }
         } else {
+          print('Error Response Status: ${response.statusCode}');
+          print('Error Response Data: ${response.data}');
           return left(
             ServerFailure(
               'Error del servidor: ${response.statusCode} - ${response.statusMessage}',
@@ -62,8 +65,13 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
         }
       });
     } on DioException catch (e) {
+      print('DioException caught:');
+      print('Status Code: ${e.response?.statusCode}');
+      print('Response Data: ${e.response?.data}');
+      print('Error Message: ${e.message}');
       return left(_handleDioError(e));
     } catch (e) {
+      print('Unexpected error: $e');
       return left(ServerFailure('Error inesperado: $e'));
     }
   }
@@ -231,7 +239,7 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
 
         final response = await _dio.post(
           '/attendance/validate',
-          data: request.toJson(),
+          data: request.toModel().toJson(),
           options: Options(
             headers: {
               'Authorization': 'Bearer $token',
@@ -276,10 +284,16 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
 
         // Convertir la entidad del dominio al modelo de datos
         final requestModel = request.toModel();
-
+        final jsonData = requestModel.toJson();
+        
+        // Log para debugging
+        print('=== CONFIRM ATTENDANCE DEBUG ===');
+        print('Request JSON: $jsonData');
+        print('Token: ${token?.substring(0, 20)}...');
+        
         final response = await _dio.post(
           '/attendance/confirm',
-          data: requestModel.toJson(),
+          data: jsonData,
           options: Options(
             headers: {
               'Authorization': 'Bearer $token',
@@ -287,6 +301,9 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
             },
           ),
         );
+        
+        print('Response Status: ${response.statusCode}');
+        print('Response Data: ${response.data}');
 
         if (response.statusCode == 200 || response.statusCode == 201) {
           final confirmAttendanceResponseModel =

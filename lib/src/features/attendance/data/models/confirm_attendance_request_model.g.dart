@@ -10,7 +10,7 @@ _ConfirmAttendanceRequestModel _$ConfirmAttendanceRequestModelFromJson(
   Map<String, dynamic> json,
 ) => _ConfirmAttendanceRequestModel(
   code: json['code'] as String,
-  confirmed: json['confirmed'] as bool?,
+  confirmed: json['confirmed'] as bool,
   locationId: json['locationId'] as String?,
   latitude: (json['latitude'] as num?)?.toDouble(),
   longitude: (json['longitude'] as num?)?.toDouble(),
@@ -26,12 +26,12 @@ Map<String, dynamic> _$ConfirmAttendanceRequestModelToJson(
 ) => <String, dynamic>{
   'code': instance.code,
   'confirmed': instance.confirmed,
-  'locationId': instance.locationId,
-  'latitude': instance.latitude,
-  'longitude': instance.longitude,
-  'accuracy': instance.accuracy,
-  'name': instance.name,
-  'deviceInfo': instance.deviceInfo,
+  'locationId': ?instance.locationId,
+  'latitude': ?instance.latitude,
+  'longitude': ?instance.longitude,
+  'accuracy': ?instance.accuracy,
+  'name': ?instance.name,
+  'deviceInfo': ?instance.deviceInfo,
 };
 
 _DeviceInfoModel _$DeviceInfoModelFromJson(Map<String, dynamic> json) =>

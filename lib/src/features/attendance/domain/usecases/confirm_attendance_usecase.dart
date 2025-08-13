@@ -12,7 +12,7 @@ class ConfirmAttendanceUseCase {
   /// Confirm attendance with code only
   FutureEither<ConfirmAttendanceResponse> call({
     required String code,
-    bool? confirmed,
+    required bool confirmed,
   }) async {
     // Validar que el código no esté vacío
     if (code.trim().isEmpty) {
@@ -30,7 +30,7 @@ class ConfirmAttendanceUseCase {
   /// Confirm attendance with location data
   FutureEither<ConfirmAttendanceResponse> confirmWithLocation({
     required String code,
-    bool? confirmed,
+    required bool confirmed,
     String? locationId,
     double? latitude,
     double? longitude,
