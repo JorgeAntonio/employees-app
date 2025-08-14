@@ -6,6 +6,7 @@ import 'package:attendance_app/src/features/dashboard/screens/dashboard_screen.d
 import 'package:attendance_app/src/features/history/screens/attendance_history_screen.dart';
 import 'package:attendance_app/src/features/home/presentation/sccreens/home_screen.dart';
 import 'package:attendance_app/src/features/profile/presentation/screens/profile_screen.dart';
+import 'package:attendance_app/src/features/qr_reader/screens/qr_reader_screen.dart';
 import 'package:attendance_app/src/features/scanner/screen/scanner_screen.dart';
 import 'package:attendance_app/src/features/welcome/welcome_screen.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.scanner.path,
         name: Routes.scanner.name,
         builder: (context, state) => const ScannerScreen(),
+      ),
+
+      GoRoute(
+        path: Routes.qrReader.path,
+        name: Routes.qrReader.name,
+        builder: (context, state) => const QrReaderScreen(),
       ),
 
       GoRoute(

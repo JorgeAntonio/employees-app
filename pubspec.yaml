@@ -71,6 +71,9 @@ dependencies:
   fpdart: ^1.1.1
   shared_preferences: ^2.5.3
 
+  # Scanning
+  mobile_scanner: ^7.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
