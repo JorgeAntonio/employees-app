@@ -4,15 +4,16 @@ import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/core/shared/widgets/section_title.dart';
 import 'package:attendance_app/src/features/history/widgets/filters_bottom_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class HistoryScreen extends StatefulWidget {
+class HistoryScreen extends ConsumerStatefulWidget {
   const HistoryScreen({super.key});
 
   @override
-  State<HistoryScreen> createState() => _HistoryScreenState();
+  ConsumerState<HistoryScreen> createState() => _HistoryScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> {
+class _HistoryScreenState extends ConsumerState<HistoryScreen> {
   // Mock data for demonstration
   final List<Map<String, dynamic>> _attendanceHistory = [
     {

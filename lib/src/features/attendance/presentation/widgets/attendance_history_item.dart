@@ -1,3 +1,4 @@
+import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_response.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -16,11 +17,14 @@ class AttendanceHistoryItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('dd/MM/yyyy');
     final timeFormat = DateFormat('HH:mm');
+    final textTheme = context.appTextTheme;
+    final colorTheme = context.appColorScheme;
 
     return Container(
       margin: EdgeInsets.only(bottom: isLast ? 0 : 12),
       child: Card(
-        elevation: 2,
+        color: colorTheme.surface,
+        elevation: 1,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -32,7 +36,7 @@ class AttendanceHistoryItemWidget extends StatelessWidget {
                 children: [
                   Text(
                     dateFormat.format(attendance.date),
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -41,51 +45,20 @@ class AttendanceHistoryItemWidget extends StatelessWidget {
               ),
               const SizedBox(height: 12),
 
-              // Employee info
-              _InfoRow(
-                icon: Icons.person,
-                label: 'Empleado',
-                value:
-                    '${attendance.employee.firstName} ${attendance.employee.lastName}',
-              ),
-              _InfoRow(
-                icon: Icons.badge,
-                label: 'DNI',
-                value: attendance.employee.dni,
-              ),
-              _InfoRow(
-                icon: Icons.work,
-                label: 'Cargo',
-                value: attendance.employee.position,
-              ),
-              _InfoRow(
-                icon: Icons.business,
-                label: 'Departamento',
-                value: attendance.employee.department,
-              ),
-
-              const Divider(height: 24),
-
-              // Time info
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: _TimeInfo(
-                      icon: Icons.login,
-                      label: 'Entrada',
-                      time: attendance.checkInTime,
-                      timeFormat: timeFormat,
-                      color: Colors.green,
+                  Text(
+                    'Entrada: ${attendance.checkInTime != null ? timeFormat.format(attendance.checkInTime!) : '--:--'}',
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorTheme.onSurfaceVariant,
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: _TimeInfo(
-                      icon: Icons.logout,
-                      label: 'Salida',
-                      time: attendance.checkOutTime,
-                      timeFormat: timeFormat,
-                      color: Colors.red,
+                  Text(
+                    'Salida: ${attendance.checkOutTime != null ? timeFormat.format(attendance.checkOutTime!) : '--:--'}',
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorTheme.onSurfaceVariant,
                     ),
                   ),
                 ],
@@ -231,54 +204,6 @@ class _InfoRow extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(value, style: Theme.of(context).textTheme.bodyMedium),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _TimeInfo extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final DateTime? time;
-  final DateFormat timeFormat;
-  final Color color;
-
-  const _TimeInfo({
-    required this.icon,
-    required this.label,
-    required this.time,
-    required this.timeFormat,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: color, size: 20),
-          const SizedBox(height: 4),
-          Text(
-            label,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: color,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            time != null ? timeFormat.format(time!) : '--:--',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
         ],
       ),
