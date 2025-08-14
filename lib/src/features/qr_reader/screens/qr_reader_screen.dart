@@ -245,23 +245,38 @@ class QrReaderScreen extends HookConsumerWidget {
                       validateCodeState.when(
                         initial: () => const SizedBox.shrink(),
                         loading: () => const SizedBox.shrink(),
-                        success: (response) => ElevatedButton(
-                          onPressed: confirmAttendanceState.isLoading
-                              ? null
-                              : () {
-                                  if (currentCode.value != null) {
-                                    confirmAttendance(currentCode.value!, ref);
-                                  }
-                                },
-                          child: confirmAttendanceState.isLoading
-                              ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Text('Confirmar asistencia'),
+                        success: (response) => Column(
+                          children: [
+                            ElevatedButton(
+                              onPressed: confirmAttendanceState.isLoading
+                                  ? null
+                                  : () {
+                                      if (currentCode.value != null) {
+                                        confirmAttendance(currentCode.value!, ref);
+                                      }
+                                    },
+                              child: confirmAttendanceState.isLoading
+                                  ? const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : const Text('Confirmar asistencia'),
+                            ),
+                            if (confirmAttendanceState.isLoading) ...[
+                              Gaps.gap8,
+                              Text(
+                                'Confirmando asistencia...',
+                                style: textTheme.bodySmall?.copyWith(
+                                  color: colorScheme.primary,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                         error: (message) => const SizedBox.shrink(),
                       ),
