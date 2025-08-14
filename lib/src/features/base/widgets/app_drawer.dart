@@ -37,12 +37,6 @@ class AppDrawer extends HookConsumerWidget {
         'onTap': () => context.pushNamed(Routes.confirmAttendance.name),
       },
       {
-        'icon': Icons.history_rounded,
-        'title': 'Historial de Asistencia',
-        'subtitle': 'Ver historial de asistencias',
-        'onTap': () => context.pushNamed(Routes.attendanceHistory.name),
-      },
-      {
         'icon': Icons.notifications_rounded,
         'title': 'Notificaciones',
         'subtitle': 'Configurar alertas de asistencia',

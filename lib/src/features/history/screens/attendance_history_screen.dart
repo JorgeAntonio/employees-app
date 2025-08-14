@@ -1,7 +1,8 @@
+import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_request.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/attendance_history_provider.dart';
-import 'package:attendance_app/src/features/attendance/presentation/widgets/attendance_history_filters.dart';
-import 'package:attendance_app/src/features/attendance/presentation/widgets/attendance_history_list.dart';
+import 'package:attendance_app/src/features/history/widgets/attendance_history_filters.dart';
+import 'package:attendance_app/src/features/history/widgets/attendance_history_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -62,19 +63,18 @@ class _AttendanceHistoryScreenState
     final attendanceHistoryState = ref.watch(attendanceHistoryNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Historial de Asistencia'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: Column(
-        children: [
-          // Filters section
+      appBar: AttendanceAppBar(
+        title: 'Historial',
+        actions: [
           AttendanceHistoryFilters(
             startDate: _startDate,
             endDate: _endDate,
             onFiltersChanged: _onFiltersChanged,
           ),
-          const Divider(),
+        ],
+      ),
+      body: Column(
+        children: [
           // Content section
           Expanded(
             child: attendanceHistoryState.when(

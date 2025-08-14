@@ -32,13 +32,6 @@ class AttendanceHistoryFilters extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: [
-          Text(
-            'Filtros',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Spacer(),
           ElevatedButton.icon(
             onPressed: () => _showFiltersBottomSheet(context),
             icon: const Icon(Icons.filter_list),
@@ -201,9 +194,9 @@ class _DatePickerField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            fontWeight: FontWeight.w500,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
         ),
         const SizedBox(height: 4),
         InkWell(
@@ -227,15 +220,13 @@ class _DatePickerField extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(
-                  Icons.calendar_today,
-                  size: 20,
-                  color: Colors.grey[600],
-                ),
+                Icon(Icons.calendar_today, size: 20, color: Colors.grey[600]),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    date != null ? dateFormat.format(date!) : 'Seleccionar fecha',
+                    date != null
+                        ? dateFormat.format(date!)
+                        : 'Seleccionar fecha',
                     style: TextStyle(
                       color: date != null ? Colors.black87 : Colors.grey[600],
                     ),
@@ -244,11 +235,7 @@ class _DatePickerField extends StatelessWidget {
                 if (date != null)
                   GestureDetector(
                     onTap: () => onDateSelected(null),
-                    child: Icon(
-                      Icons.clear,
-                      size: 20,
-                      color: Colors.grey[600],
-                    ),
+                    child: Icon(Icons.clear, size: 20, color: Colors.grey[600]),
                   ),
               ],
             ),

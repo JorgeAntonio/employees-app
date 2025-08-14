@@ -1,10 +1,9 @@
-import 'package:attendance_app/src/features/attendance/presentation/screens/attendance_history_screen.dart';
 import 'package:attendance_app/src/features/attendance/presentation/screens/screens.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/session_provider.dart';
 import 'package:attendance_app/src/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:attendance_app/src/features/base/screens/main_screen.dart';
 import 'package:attendance_app/src/features/dashboard/screens/dashboard_screen.dart';
-import 'package:attendance_app/src/features/history/screens/history_screen.dart';
+import 'package:attendance_app/src/features/history/screens/attendance_history_screen.dart';
 import 'package:attendance_app/src/features/home/presentation/sccreens/home_screen.dart';
 import 'package:attendance_app/src/features/profile/presentation/screens/profile_screen.dart';
 import 'package:attendance_app/src/features/scanner/screen/scanner_screen.dart';
@@ -118,7 +117,7 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: Routes.history.path,
                 name: Routes.history.name,
-                builder: (context, state) => const HistoryScreen(),
+                builder: (context, state) => const AttendanceHistoryScreen(),
               ),
             ],
           ),
