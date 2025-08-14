@@ -2,90 +2,88 @@ import 'dart:convert';
 
 import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
+import 'package:attendance_app/src/features/attendance/presentation/providers/confirm_attendance_state_provider.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/validate_code_state_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-class QrReaderScreen extends ConsumerStatefulWidget {
+class QrReaderScreen extends HookConsumerWidget {
   const QrReaderScreen({super.key});
 
   @override
-  ConsumerState<QrReaderScreen> createState() => _QrReaderScreenState();
-}
-
-class _QrReaderScreenState extends ConsumerState<QrReaderScreen> {
-  late MobileScannerController _controller;
-  bool _isScanning = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = MobileScannerController(
-      detectionSpeed: DetectionSpeed.noDuplicates,
-      returnImage: false,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = useMemoized(
+      () => MobileScannerController(
+        detectionSpeed: DetectionSpeed.noDuplicates,
+        returnImage: false,
+      ),
     );
-  }
+    final isScanning = useState(true);
+    final currentCode = useState<String?>(null);
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+    useEffect(() {
+      return controller.dispose;
+    }, [controller]);
 
-  void _onDetect(BarcodeCapture capture) {
-    if (!_isScanning) return;
-
-    final List<Barcode> barcodes = capture.barcodes;
-    if (barcodes.isNotEmpty) {
-      final String? code = barcodes.first.rawValue;
-      if (code != null && code.isNotEmpty) {
-        setState(() {
-          _isScanning = false;
-        });
-
-        // Validate the scanned QR code
-        _validateQrCode(code);
-      }
-    }
-  }
-
-  void _validateQrCode(String code) {
-    String codeToValidate = code;
-
-    // Try to parse the QR code as JSON to extract only the 'code' field
-    try {
-      final Map<String, dynamic> qrData = json.decode(code);
-      if (qrData.containsKey('code')) {
-        codeToValidate = qrData['code'];
-      }
-    } catch (e) {
-      // If parsing fails, use the original code as is
-      codeToValidate = code;
+    void validateQrCode(String code, WidgetRef ref) {
+      ref
+          .read(validateCodeNotifierProvider.notifier)
+          .validateCodeWithoutLocation(code);
     }
 
-    ref
-        .read(validateCodeNotifierProvider.notifier)
-        .validateCodeWithoutLocation(codeToValidate);
-  }
+    void onDetect(BarcodeCapture capture) {
+      if (!isScanning.value) return;
 
-  void _resetScanner() {
-    setState(() {
-      _isScanning = true;
-    });
-  }
+      final List<Barcode> barcodes = capture.barcodes;
+      if (barcodes.isNotEmpty) {
+        final String? code = barcodes.first.rawValue;
+        if (code != null && code.isNotEmpty) {
+          isScanning.value = false;
 
-  @override
-  Widget build(BuildContext context) {
+          // Extract the actual code to validate and store
+          String codeToUse = code;
+          try {
+            final Map<String, dynamic> qrData = json.decode(code);
+            if (qrData.containsKey('code')) {
+              codeToUse = qrData['code'];
+            }
+          } catch (e) {
+            // If parsing fails, use the original code as is
+            codeToUse = code;
+          }
+
+          currentCode.value = codeToUse;
+
+          // Validate the scanned QR code
+          validateQrCode(codeToUse, ref);
+        }
+      }
+    }
+
+    void resetScanner() {
+      isScanning.value = true;
+      currentCode.value = null;
+    }
+
+    void confirmAttendance(String code, WidgetRef ref) {
+      ref
+          .read(confirmAttendanceNotifierProvider.notifier)
+          .confirm(code: code, confirmed: true);
+    }
+
     final validateCodeState = ref.watch(validateCodeNotifierProvider);
+    final confirmAttendanceState = ref.watch(confirmAttendanceNotifierProvider);
     final colorScheme = context.appColorScheme;
     final textTheme = context.appTextTheme;
 
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Escanear Código QR'),
+        title: const Text('Escanear QR'),
+        centerTitle: true,
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
         elevation: 0,
@@ -96,20 +94,20 @@ class _QrReaderScreenState extends ConsumerState<QrReaderScreen> {
         actions: [
           IconButton(
             icon: Icon(
-              _controller.torchEnabled ? Icons.flash_on : Icons.flash_off,
+              controller.torchEnabled ? Icons.flash_on : Icons.flash_off,
             ),
-            onPressed: () => _controller.toggleTorch(),
+            onPressed: () => controller.toggleTorch(),
           ),
         ],
       ),
       body: Stack(
         children: [
           // Camera view
-          if (_isScanning)
-            MobileScanner(controller: _controller, onDetect: _onDetect),
+          if (isScanning.value)
+            MobileScanner(controller: controller, onDetect: onDetect),
 
           // Overlay with scanning frame
-          if (_isScanning)
+          if (isScanning.value)
             Container(
               decoration: ShapeDecoration(
                 shape: QrScannerOverlayShape(
@@ -123,7 +121,7 @@ class _QrReaderScreenState extends ConsumerState<QrReaderScreen> {
             ),
 
           // Instructions at the bottom
-          if (_isScanning)
+          if (isScanning.value)
             Positioned(
               bottom: 100,
               left: 0,
@@ -144,7 +142,7 @@ class _QrReaderScreenState extends ConsumerState<QrReaderScreen> {
             ),
 
           // Result overlay
-          if (!_isScanning)
+          if (!isScanning.value)
             Container(
               color: Colors.black.withValues(alpha: 0.8),
               child: Center(
@@ -243,11 +241,107 @@ class _QrReaderScreenState extends ConsumerState<QrReaderScreen> {
                         ),
                       ),
                       Gaps.gap24,
+                      // Confirm attendance
+                      validateCodeState.when(
+                        initial: () => const SizedBox.shrink(),
+                        loading: () => const SizedBox.shrink(),
+                        success: (response) => ElevatedButton(
+                          onPressed: confirmAttendanceState.isLoading
+                              ? null
+                              : () {
+                                  if (currentCode.value != null) {
+                                    confirmAttendance(currentCode.value!, ref);
+                                  }
+                                },
+                          child: confirmAttendanceState.isLoading
+                              ? const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                  ),
+                                )
+                              : const Text('Confirmar asistencia'),
+                        ),
+                        error: (message) => const SizedBox.shrink(),
+                      ),
+
+                      // Confirmation result
+                      confirmAttendanceState.when(
+                        initial: () => const SizedBox.shrink(),
+                        loading: () => const SizedBox.shrink(),
+                        success: (response) => Container(
+                          margin: const EdgeInsets.only(top: 16),
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.check_circle,
+                                color: colorScheme.primary,
+                                size: 32,
+                              ),
+                              Gaps.gap8,
+                              Text(
+                                'Asistencia Confirmada',
+                                style: textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: colorScheme.primary,
+                                ),
+                              ),
+                              if (response.data?.message != null) ...[
+                                Gaps.gap4,
+                                Text(
+                                  response.data!.message,
+                                  style: textTheme.bodyMedium,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                        error: (message) => Container(
+                          margin: const EdgeInsets.only(top: 16),
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: colorScheme.errorContainer,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.error,
+                                color: colorScheme.error,
+                                size: 32,
+                              ),
+                              Gaps.gap8,
+                              Text(
+                                'Error al confirmar',
+                                style: textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: colorScheme.error,
+                                ),
+                              ),
+                              Gaps.gap4,
+                              Text(
+                                message,
+                                style: textTheme.bodyMedium,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      Gaps.gap24,
                       Row(
                         children: [
                           Expanded(
                             child: OutlinedButton(
-                              onPressed: _resetScanner,
+                              onPressed: resetScanner,
                               child: const Text('Escanear otro'),
                             ),
                           ),
