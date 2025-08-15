@@ -139,7 +139,7 @@ class ImportEmployeesScreen extends ConsumerWidget {
     ImportEmployeesNotifier notifier,
   ) {
     return switch (state) {
-      _TemplateDownloaded(:final file) => Card(
+      _TemplateDownloaded(file: final file) => Card(
           color: Theme.of(context).colorScheme.primaryContainer,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -180,7 +180,7 @@ class ImportEmployeesScreen extends ConsumerWidget {
             ),
           ),
         ),
-      _UploadCompleted(:final response) => Card(
+      _UploadCompleted(response: final response) => Card(
           color: response.success
               ? Theme.of(context).colorScheme.primaryContainer
               : Theme.of(context).colorScheme.errorContainer,
@@ -222,7 +222,7 @@ class ImportEmployeesScreen extends ConsumerWidget {
                         : Theme.of(context).colorScheme.onErrorContainer,
                   ),
                 ),
-                if (response.success && response.importedCount > 0) ..[
+                if (response.success && response.importedCount > 0) ...[
                   const SizedBox(height: 8),
                   Text(
                     'Empleados importados: ${response.importedCount}',
@@ -232,7 +232,7 @@ class ImportEmployeesScreen extends ConsumerWidget {
                     ),
                   ),
                 ],
-                if (response.errors.isNotEmpty) ..[
+                if (response.errors.isNotEmpty) ...[
                   const SizedBox(height: 12),
                   Text(
                     'Errores encontrados:',
@@ -264,7 +264,7 @@ class ImportEmployeesScreen extends ConsumerWidget {
             ),
           ),
         ),
-      _Error(:final message) => Card(
+      _Error(message: final message) => Card(
           color: Theme.of(context).colorScheme.errorContainer,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -357,7 +357,7 @@ class ImportEmployeesScreen extends ConsumerWidget {
 
       if (result != null && result.files.single.path != null) {
         final file = File(result.files.single.path!);
-        await notifier.uploadFile(file);
+        await notifier.uploadEmployeesFile(file);
       }
     } catch (e) {
       if (context.mounted) {
