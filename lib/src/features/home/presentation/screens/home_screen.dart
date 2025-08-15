@@ -132,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             // Custom App Bar
-            const HomeAppBar(),
+            // const HomeAppBar(),
 
             // Main Content
             Padding(

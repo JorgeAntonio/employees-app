@@ -4,7 +4,7 @@ import 'package:attendance_app/src/features/auth/presentation/screens/sign_in_sc
 import 'package:attendance_app/src/features/base/screens/main_screen.dart';
 import 'package:attendance_app/src/features/dashboard/screens/dashboard_screen.dart';
 import 'package:attendance_app/src/features/history/screens/attendance_history_screen.dart';
-import 'package:attendance_app/src/features/home/presentation/sccreens/home_screen.dart';
+import 'package:attendance_app/src/features/home/presentation/screens/home_screen.dart';
 import 'package:attendance_app/src/features/profile/presentation/screens/profile_screen.dart';
 import 'package:attendance_app/src/features/qr_reader/presentation/screens/qr_reader_screen.dart';
 import 'package:attendance_app/src/features/welcome/welcome_screen.dart';

@@ -42,31 +42,24 @@ class HomeAppBar extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Row(
+                    Column(
                       spacing: DoubleSizes.size4,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Column(
-                          spacing: DoubleSizes.size4,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              getGreeting(),
-                              style: textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w400,
-                                color: colorScheme.onPrimary,
-                              ),
-                            ),
-                            Text(
-                              '${user.employee.firstName} ${user.employee.lastName}',
-                              style: textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w400,
-                                color: colorScheme.onPrimary,
-                              ),
-                            ),
-                          ],
+                        Text(
+                          getGreeting(),
+                          style: textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w400,
+                            color: colorScheme.onPrimary,
+                          ),
+                        ),
+                        Text(
+                          '${user.employee.firstName} ${user.employee.lastName}',
+                          style: textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.w400,
+                            color: colorScheme.onPrimary,
+                          ),
                         ),
                       ],
                     ),
