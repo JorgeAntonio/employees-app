@@ -13,12 +13,16 @@ class EmployeesScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AttendanceAppBar(title: 'Gestionar Empleados'),
+      appBar: AttendanceAppBar(
+        title: 'Gestionar Empleados',
+        leading: true,
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(DoubleSizes.size16),
           child: Column(
-            spacing: DoubleSizes.size8,
+            spacing: DoubleSizes.size16,
             children: [
               SectionTitle(title: 'Empleados registrados'),
               _EmployeesList(),
