@@ -17,11 +17,16 @@ class EmployeesScreen extends ConsumerWidget {
         title: 'Gestionar Empleados',
         leading: true,
         centerTitle: true,
+        actions: [
+          // import excel
+          IconButton(onPressed: () {}, icon: Icon(Icons.import_export)),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(DoubleSizes.size16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             spacing: DoubleSizes.size16,
             children: [
               SectionTitle(title: 'Empleados registrados'),
