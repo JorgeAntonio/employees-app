@@ -1,10 +1,9 @@
-import 'package:attendance_app/src/core/router/router.dart';
 import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
+import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/confirm_attendance_state_provider.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/validate_code_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class ValidateCodeScreen extends ConsumerStatefulWidget {
   const ValidateCodeScreen({super.key});
@@ -87,13 +86,8 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
     final validateCodeState = ref.watch(validateCodeNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: context.appColorScheme.primary,
-        centerTitle: true,
-        title: Text(
-          'Validar Código',
-          style: TextStyle(color: context.appColorScheme.onPrimary),
-        ),
+      appBar: AttendanceAppBar(
+        title: 'Validar Código',
         actions: [
           IconButton(
             onPressed: _reset,
@@ -101,13 +95,8 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
             tooltip: 'Limpiar',
           ),
         ],
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: context.appColorScheme.onPrimary,
-          ),
-          onPressed: () => context.pushNamed(Routes.home.name),
-        ),
+        leading: true,
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(

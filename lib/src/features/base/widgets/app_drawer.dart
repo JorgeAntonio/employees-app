@@ -25,21 +25,21 @@ class AppDrawer extends HookConsumerWidget {
         'onTap': () => context.pushNamed(Routes.dashboard.name),
       },
       {
-        'icon': Icons.qr_code_scanner_rounded,
-        'title': 'Validar Código',
-        'subtitle': 'Validar código QR o manual',
-        'onTap': () => context.pushNamed(Routes.validateCode.name),
-      },
-      {
         'icon': Icons.qr_code_2_rounded,
         'title': 'Leer Código QR',
         'subtitle': 'Escanear código QR con la cámara',
-        'onTap': () => context.pushNamed(Routes.qrReader.name),
+        'onTap': () => context.pushNamed(Routes.scanner.name),
+      },
+      {
+        'icon': Icons.qr_code_scanner_rounded,
+        'title': 'Validar Código QR',
+        'subtitle': 'Validar código QR manual',
+        'onTap': () => context.pushNamed(Routes.validateCode.name),
       },
       {
         'icon': Icons.check_circle_rounded,
         'title': 'Confirmar Asistencia',
-        'subtitle': 'Confirmar asistencia con código',
+        'subtitle': 'Confirmar asistencia con código manual',
         'onTap': () => context.pushNamed(Routes.confirmAttendance.name),
       },
       {

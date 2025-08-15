@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:attendance_app/src/core/router/router.dart';
 import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
+import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/confirm_attendance_state_provider.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/validate_code_state_provider.dart';
 import 'package:flutter/material.dart';
@@ -82,16 +83,11 @@ class QrReaderScreen extends HookConsumerWidget {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: const Text('Escanear QR'),
-        centerTitle: true,
+      appBar: AttendanceAppBar(
+        title: 'Escanear QR',
         backgroundColor: Colors.transparent,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
-        ),
+        leading: true,
+        centerTitle: true,
         actions: [
           IconButton(
             icon: Icon(
@@ -164,7 +160,7 @@ class QrReaderScreen extends HookConsumerWidget {
                     ),
                     TextButton(
                       onPressed: () {
-                        context.goNamed(Routes.validateCode.name);
+                        context.pushNamed(Routes.validateCode.name);
                       },
                       child: Row(
                         children: [
