@@ -375,69 +375,60 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: validateCodeState.maybeWhen(
-        success: (response) => Container(
-          width: 200,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            color: context.appColorScheme.primary,
-          ),
-          child: FilledButton(
-            onPressed: ref
-                .watch(confirmAttendanceNotifierProvider)
-                .maybeWhen(
-                  loading: () => null,
-                  orElse: () => () {
-                    if (currentCode != null) {
-                      // Limpiar los inputs
-                      _codeController.clear();
-                      _latitudeController.clear();
-                      _longitudeController.clear();
-                      _accuracyController.clear();
-                      setState(() {
-                        _includeLocation = false;
-                      });
-                      // Limpiar el estado de validación
-                      ref.read(validateCodeNotifierProvider.notifier).reset();
-                      // Confirmar la asistencia
-                      ref
-                          .read(confirmAttendanceNotifierProvider.notifier)
-                          .confirm(code: currentCode!, confirmed: true);
-                    }
-                  },
-                ),
-            style: FilledButton.styleFrom(padding: const EdgeInsets.all(16)),
-            child: ref
-                .watch(confirmAttendanceNotifierProvider)
-                .maybeWhen(
-                  loading: () => const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Confirmando...',
-                        style: TextStyle(color: Colors.white),
+        success: (response) => FilledButton(
+          onPressed: ref
+              .watch(confirmAttendanceNotifierProvider)
+              .maybeWhen(
+                loading: () => null,
+                orElse: () => () {
+                  if (currentCode != null) {
+                    // Limpiar los inputs
+                    _codeController.clear();
+                    _latitudeController.clear();
+                    _longitudeController.clear();
+                    _accuracyController.clear();
+                    setState(() {
+                      _includeLocation = false;
+                    });
+                    // Limpiar el estado de validación
+                    ref.read(validateCodeNotifierProvider.notifier).reset();
+                    // Confirmar la asistencia
+                    ref
+                        .read(confirmAttendanceNotifierProvider.notifier)
+                        .confirm(code: currentCode!, confirmed: true);
+                  }
+                },
+              ),
+          style: FilledButton.styleFrom(padding: const EdgeInsets.all(16)),
+          child: ref
+              .watch(confirmAttendanceNotifierProvider)
+              .maybeWhen(
+                loading: () => const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Confirmando...',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    Spacer(),
+                    SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
-                      Spacer(),
-                      SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  orElse: () => Row(
-                    children: [
-                      const Text('Confirmar', style: TextStyle(fontSize: 16)),
-                      const Spacer(),
-                      const Icon(Icons.check, color: Colors.white),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-          ),
+                orElse: () => Row(
+                  children: [
+                    const Text('Confirmar', style: TextStyle(fontSize: 16)),
+                    const Spacer(),
+                    const Icon(Icons.check, color: Colors.white),
+                  ],
+                ),
+              ),
         ),
         orElse: () => Container(
           width: 200,
