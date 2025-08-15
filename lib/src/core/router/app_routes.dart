@@ -3,6 +3,7 @@ import 'package:attendance_app/src/features/auth/presentation/providers/session_
 import 'package:attendance_app/src/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:attendance_app/src/features/base/screens/main_screen.dart';
 import 'package:attendance_app/src/features/dashboard/screens/dashboard_screen.dart';
+import 'package:attendance_app/src/features/employees/presentation/screens/employees_screen.dart';
 import 'package:attendance_app/src/features/history/screens/attendance_history_screen.dart';
 import 'package:attendance_app/src/features/home/presentation/screens/home_screen.dart';
 import 'package:attendance_app/src/features/profile/presentation/screens/profile_screen.dart';
@@ -85,6 +86,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.attendanceHistory.path,
         name: Routes.attendanceHistory.name,
         builder: (context, state) => const AttendanceHistoryScreen(),
+      ),
+      GoRoute(
+        path: Routes.employees.path,
+        name: Routes.employees.name,
+        builder: (context, state) => const EmployeesScreen(),
       ),
 
       StatefulShellRoute.indexedStack(

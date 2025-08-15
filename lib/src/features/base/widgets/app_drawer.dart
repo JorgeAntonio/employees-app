@@ -43,11 +43,11 @@ class AppDrawer extends HookConsumerWidget {
         'onTap': () => context.pushNamed(Routes.confirmAttendance.name),
       },
       {
-        'icon': Icons.person_2,
+        'icon': Icons.person_add,
         'title': 'Empleados',
         'subtitle': 'Administrar empleados',
         'requiresAdmin': true,
-        'onTap': () {},
+        'onTap': () => context.pushNamed(Routes.employees.name),
       },
       {
         'icon': Icons.notifications_rounded,

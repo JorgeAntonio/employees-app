@@ -38,4 +38,7 @@ class Routes {
 
   static Routes get attendanceHistory =>
       const Routes._(name: 'attendance-history', path: '/attendance-history');
+
+  static Routes get employees =>
+      const Routes._(name: 'employees', path: '/employees');
 }
