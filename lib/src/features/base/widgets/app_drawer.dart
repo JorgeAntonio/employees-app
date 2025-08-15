@@ -43,15 +43,24 @@ class AppDrawer extends HookConsumerWidget {
         'onTap': () => context.pushNamed(Routes.confirmAttendance.name),
       },
       {
+        'icon': Icons.person_2,
+        'title': 'Empleados',
+        'subtitle': 'Administrar empleados',
+        'requiresAdmin': true,
+        'onTap': () {},
+      },
+      {
         'icon': Icons.notifications_rounded,
         'title': 'Notificaciones',
         'subtitle': 'Configurar alertas de asistencia',
+        'requiresAdmin': true,
         'onTap': () {},
       },
       {
         'icon': Icons.security_rounded,
         'title': 'Seguridad',
         'subtitle': 'Cambiar contraseña y configuración',
+        'requiresAdmin': true,
         'onTap': () {},
       },
       {
@@ -108,6 +117,16 @@ class AppDrawer extends HookConsumerWidget {
     AuthSession authSession,
   ) {
     final user = authSession.data.user;
+    final role = authSession.data.user.role;
+
+    // Filtrar los items según el rol del usuario
+    final filteredMenuItems = menuItems.where((item) {
+      // Si el item requiere ser admin y el usuario no lo es, se oculta
+      if (item['requiresAdmin'] == true && role != 'ADMIN') {
+        return false;
+      }
+      return true;
+    }).toList();
 
     return Drawer(
       width: context.screenWidth * 0.8,
@@ -162,7 +181,7 @@ class AppDrawer extends HookConsumerWidget {
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: menuItems.length,
+            itemCount: filteredMenuItems.length,
             separatorBuilder: (context, index) => Divider(
               height: 1,
               color: colorScheme.outlineVariant,
@@ -170,7 +189,7 @@ class AppDrawer extends HookConsumerWidget {
               endIndent: 16,
             ),
             itemBuilder: (context, index) {
-              final item = menuItems[index];
+              final item = filteredMenuItems[index];
               final isDestructive = item['isDestructive'] == true;
 
               return ListTile(
