@@ -8,13 +8,14 @@ class AttendanceAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String? title;
   final List<Widget>? actions;
   final bool? leading;
+  final bool? centerTitle = false;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: context.appColorScheme.primary,
+      centerTitle: centerTitle,
       elevation: 0,
-      centerTitle: true,
       title: Text(
         title ?? 'Attendance App',
         style: TextStyle(color: context.appColorScheme.onPrimary),

@@ -1,3 +1,4 @@
+import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_request.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/attendance_history_provider.dart';
@@ -73,56 +74,60 @@ class _AttendanceHistoryScreenState
           ),
         ],
       ),
-      body: Column(
-        children: [
-          // Content section
-          Expanded(
-            child: attendanceHistoryState.when(
-              data: (historyResponse) {
-                if (historyResponse == null) {
-                  return const Center(
-                    child: Text('No hay datos de historial disponibles'),
-                  );
-                }
+      body: Padding(
+        padding: const EdgeInsets.only(bottom: 48.0),
+        child: Column(
+          children: [
+            // Content section
+            Expanded(
+              child: attendanceHistoryState.when(
+                data: (historyResponse) {
+                  if (historyResponse == null) {
+                    return const Center(
+                      child: Text('No hay datos de historial disponibles'),
+                    );
+                  }
 
-                return AttendanceHistoryList(
-                  historyResponse: historyResponse,
-                  currentPage: _currentPage,
-                  onPageChanged: _onPageChanged,
-                );
-              },
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stackTrace) => Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.error_outline,
-                      size: 64,
-                      color: Colors.red,
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Error al cargar el historial',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      error.toString(),
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: _loadAttendanceHistory,
-                      child: const Text('Reintentar'),
-                    ),
-                  ],
+                  return AttendanceHistoryList(
+                    historyResponse: historyResponse,
+                    currentPage: _currentPage,
+                    onPageChanged: _onPageChanged,
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stackTrace) => Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.error_outline,
+                        size: 64,
+                        color: Colors.red,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'Error al cargar el historial',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        error.toString(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: _loadAttendanceHistory,
+                        child: const Text('Reintentar'),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
+            Gaps.gap48,
+          ],
+        ),
       ),
     );
   }
