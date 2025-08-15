@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:attendance_app/src/core/router/router.dart';
 import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/confirm_attendance_state_provider.dart';
@@ -111,10 +112,10 @@ class QrReaderScreen extends HookConsumerWidget {
             Container(
               decoration: ShapeDecoration(
                 shape: QrScannerOverlayShape(
-                  borderColor: colorScheme.primary,
+                  borderColor: colorScheme.surface,
                   borderRadius: 10,
                   borderLength: 30,
-                  borderWidth: 10,
+                  borderWidth: 5,
                   cutOutSize: 300,
                 ),
               ),
@@ -123,20 +124,66 @@ class QrReaderScreen extends HookConsumerWidget {
           // Instructions at the bottom
           if (isScanning.value)
             Positioned(
-              bottom: 100,
+              top: 100,
               left: 0,
               right: 0,
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 24),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.black.withValues(alpha: 0.7),
+                  color: colorScheme.tertiary,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   'Coloca el código QR dentro del marco para escanearlo',
                   style: textTheme.bodyMedium?.copyWith(color: Colors.white),
                   textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+
+          if (isScanning.value)
+            Positioned(
+              bottom: 50,
+              left: 0,
+              right: 0,
+              child: Container(
+                margin: const EdgeInsets.symmetric(horizontal: 24),
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      '¿Tienes dificultades para escanear el código QR?',
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.surface,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        context.goNamed(Routes.validateCode.name);
+                      },
+                      child: Row(
+                        children: [
+                          Text(
+                            'INGRESAR CÓDIGO MANUAL',
+                            style: textTheme.bodyLarge?.copyWith(
+                              color: colorScheme.secondary,
+                            ),
+                          ),
+                          Spacer(),
+                          Icon(
+                            Icons.navigate_next,
+                            color: colorScheme.secondary,
+                            size: 32,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -252,7 +299,10 @@ class QrReaderScreen extends HookConsumerWidget {
                                   ? null
                                   : () {
                                       if (currentCode.value != null) {
-                                        confirmAttendance(currentCode.value!, ref);
+                                        confirmAttendance(
+                                          currentCode.value!,
+                                          ref,
+                                        );
                                       }
                                     },
                               child: confirmAttendanceState.isLoading

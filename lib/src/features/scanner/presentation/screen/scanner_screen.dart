@@ -2,7 +2,7 @@ import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/qr_code_state_provider.dart';
 import 'package:attendance_app/src/features/attendance/presentation/widgets/widgets.dart';
-import 'package:attendance_app/src/features/scanner/widgets/widgets.dart';
+import 'package:attendance_app/src/features/scanner/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -47,7 +47,9 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
                       Container(
                         decoration: BoxDecoration(
                           color: context.appColorScheme.surfaceContainerHighest,
-                          borderRadius: BorderRadius.circular(DoubleSizes.size12),
+                          borderRadius: BorderRadius.circular(
+                            DoubleSizes.size12,
+                          ),
                         ),
                         child: Row(
                           children: [
@@ -73,18 +75,25 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
                                         Icons.login,
                                         color: _isCheckIn
                                             ? context.appColorScheme.onPrimary
-                                            : context.appColorScheme.onSurfaceVariant,
+                                            : context
+                                                  .appColorScheme
+                                                  .onSurfaceVariant,
                                         size: 20,
                                       ),
                                       Gaps.gap8,
                                       Text(
                                         'Entrada',
-                                        style: context.appTextTheme.bodyMedium?.copyWith(
-                                          color: _isCheckIn
-                                              ? context.appColorScheme.onPrimary
-                                              : context.appColorScheme.onSurfaceVariant,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                        style: context.appTextTheme.bodyMedium
+                                            ?.copyWith(
+                                              color: _isCheckIn
+                                                  ? context
+                                                        .appColorScheme
+                                                        .onPrimary
+                                                  : context
+                                                        .appColorScheme
+                                                        .onSurfaceVariant,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -113,18 +122,25 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
                                         Icons.logout,
                                         color: !_isCheckIn
                                             ? context.appColorScheme.onPrimary
-                                            : context.appColorScheme.onSurfaceVariant,
+                                            : context
+                                                  .appColorScheme
+                                                  .onSurfaceVariant,
                                         size: 20,
                                       ),
                                       Gaps.gap8,
                                       Text(
                                         'Salida',
-                                        style: context.appTextTheme.bodyMedium?.copyWith(
-                                          color: !_isCheckIn
-                                              ? context.appColorScheme.onPrimary
-                                              : context.appColorScheme.onSurfaceVariant,
-                                          fontWeight: FontWeight.w600,
-                                        ),
+                                        style: context.appTextTheme.bodyMedium
+                                            ?.copyWith(
+                                              color: !_isCheckIn
+                                                  ? context
+                                                        .appColorScheme
+                                                        .onPrimary
+                                                  : context
+                                                        .appColorScheme
+                                                        .onSurfaceVariant,
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                       ),
                                     ],
                                   ),
@@ -202,8 +218,14 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen> {
                                         .generateCheckOutQr();
                                   }
                                 },
-                                icon: Icon(_isCheckIn ? Icons.login : Icons.logout),
-                                label: Text(_isCheckIn ? 'Generar QR de Entrada' : 'Generar QR de Salida'),
+                                icon: Icon(
+                                  _isCheckIn ? Icons.login : Icons.logout,
+                                ),
+                                label: Text(
+                                  _isCheckIn
+                                      ? 'Generar QR de Entrada'
+                                      : 'Generar QR de Salida',
+                                ),
                                 style: ElevatedButton.styleFrom(
                                   padding: EdgeInsets.symmetric(
                                     vertical: DoubleSizes.size16,
