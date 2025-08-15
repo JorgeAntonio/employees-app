@@ -1,5 +1,6 @@
 import 'package:attendance_app/src/core/router/router.dart';
 import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
+import 'package:attendance_app/src/features/attendance/presentation/providers/confirm_attendance_state_provider.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/validate_code_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,6 +20,7 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
   final _accuracyController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _includeLocation = false;
+  String? currentCode;
 
   @override
   void dispose() {
@@ -33,6 +35,9 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
     if (!_formKey.currentState!.validate()) return;
 
     final code = _codeController.text.trim();
+    setState(() {
+      currentCode = code;
+    });
 
     if (_includeLocation) {
       final latitude = double.tryParse(_latitudeController.text);
@@ -71,8 +76,10 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
     _accuracyController.clear();
     setState(() {
       _includeLocation = false;
+      currentCode = null;
     });
     ref.read(validateCodeNotifierProvider.notifier).reset();
+    ref.read(confirmAttendanceNotifierProvider.notifier).reset();
   }
 
   @override
@@ -207,7 +214,7 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
                 ),
                 const SizedBox(height: 24),
 
-                // Resultado
+                // Resultado de la validación
                 validateCodeState.when(
                   initial: () => const SizedBox.shrink(),
                   loading: () => const SizedBox.shrink(),
@@ -298,46 +305,186 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
                     ),
                   ),
                 ),
+
+                // Resultado de la confirmación
+                const SizedBox(height: 16),
+                ref
+                    .watch(confirmAttendanceNotifierProvider)
+                    .maybeWhen(
+                      success: (response) => Card(
+                        color: context.appColorScheme.primaryContainer,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.check_circle,
+                                color: context.appColorScheme.primary,
+                                size: 32,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Asistencia Confirmada',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: context.appColorScheme.primary,
+                                ),
+                              ),
+                              if (response.data?.message != null) ...[
+                                const SizedBox(height: 4),
+                                Text(
+                                  response.data!.message,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: context.appColorScheme.primary,
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ),
+                      error: (message) => Card(
+                        color: context.appColorScheme.errorContainer,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.error,
+                                color: context.appColorScheme.error,
+                                size: 32,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                'Error al confirmar',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: context.appColorScheme.error,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                message,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: context.appColorScheme.error,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      orElse: () => const SizedBox.shrink(),
+                    ),
               ],
             ),
           ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Container(
-        width: 200,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          color: context.appColorScheme.primary,
-        ),
-        child: FilledButton(
-          onPressed: validateCodeState.maybeWhen(
-            loading: () => null,
-            orElse: () => _validateCode,
+      floatingActionButton: validateCodeState.maybeWhen(
+        success: (response) => Container(
+          width: 200,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            color: context.appColorScheme.primary,
           ),
-          style: FilledButton.styleFrom(padding: const EdgeInsets.all(16)),
-          child: validateCodeState.maybeWhen(
-            loading: () => const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Validando...', style: TextStyle(color: Colors.white)),
-                Spacer(),
-                SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          child: FilledButton(
+            onPressed: ref
+                .watch(confirmAttendanceNotifierProvider)
+                .maybeWhen(
+                  loading: () => null,
+                  orElse: () => () {
+                    if (currentCode != null) {
+                      // Limpiar los inputs
+                      _codeController.clear();
+                      _latitudeController.clear();
+                      _longitudeController.clear();
+                      _accuracyController.clear();
+                      setState(() {
+                        _includeLocation = false;
+                      });
+                      // Limpiar el estado de validación
+                      ref.read(validateCodeNotifierProvider.notifier).reset();
+                      // Confirmar la asistencia
+                      ref
+                          .read(confirmAttendanceNotifierProvider.notifier)
+                          .confirm(code: currentCode!, confirmed: true);
+                    }
+                  },
+                ),
+            style: FilledButton.styleFrom(padding: const EdgeInsets.all(16)),
+            child: ref
+                .watch(confirmAttendanceNotifierProvider)
+                .maybeWhen(
+                  loading: () => const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Confirmando...',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Spacer(),
+                      SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  orElse: () => Row(
+                    children: [
+                      const Text('Confirmar', style: TextStyle(fontSize: 16)),
+                      const Spacer(),
+                      const Icon(Icons.check, color: Colors.white),
+                    ],
                   ),
                 ),
-              ],
+          ),
+        ),
+        orElse: () => Container(
+          width: 200,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(25),
+            color: context.appColorScheme.primary,
+          ),
+          child: FilledButton(
+            onPressed: validateCodeState.maybeWhen(
+              loading: () => null,
+              orElse: () => _validateCode,
             ),
-            orElse: () => Row(
-              children: [
-                const Text('Validar Código', style: TextStyle(fontSize: 16)),
-                const Spacer(),
-                const Icon(Icons.check, color: Colors.white),
-              ],
+            style: FilledButton.styleFrom(padding: const EdgeInsets.all(16)),
+            child: validateCodeState.maybeWhen(
+              loading: () => const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Validando...', style: TextStyle(color: Colors.white)),
+                  Spacer(),
+                  SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+              orElse: () => Row(
+                children: [
+                  const Text('Validar Código', style: TextStyle(fontSize: 16)),
+                  const Spacer(),
+                  const Icon(Icons.check, color: Colors.white),
+                ],
+              ),
             ),
           ),
         ),
