@@ -139,187 +139,217 @@ class ImportEmployeesScreen extends ConsumerWidget {
     ImportEmployeesNotifier notifier,
   ) {
     return switch (state) {
-      _TemplateDownloaded(file: final file) => Card(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
+      ImportEmployeesState() when state.runtimeType.toString() == '_TemplateDownloaded' => 
+        _buildTemplateDownloadedCard(context, state, notifier),
+      ImportEmployeesState() when state.runtimeType.toString() == '_UploadCompleted' => 
+        _buildUploadCompletedCard(context, state, notifier),
+      ImportEmployeesState() when state.runtimeType.toString() == '_Error' => 
+        _buildErrorCard(context, state, notifier),
+      _ => const SizedBox.shrink(),
+    };
+  }
+
+  Widget _buildTemplateDownloadedCard(
+    BuildContext context,
+    ImportEmployeesState state,
+    ImportEmployeesNotifier notifier,
+  ) {
+    // Cast to dynamic to access the file property
+    final file = (state as dynamic).file as File;
+    
+    return Card(
+      color: Theme.of(context).colorScheme.primaryContainer,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Row(
               children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.check_circle,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'Template descargado exitosamente',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onPrimaryContainer,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
+                Icon(
+                  Icons.check_circle,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  'Ubicación: ${file.path}',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
-                    fontSize: 12,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                ElevatedButton(
-                  onPressed: () => notifier.resetState(),
-                  child: const Text('Cerrar'),
-                ),
-              ],
-            ),
-          ),
-        ),
-      _UploadCompleted(response: final response) => Card(
-          color: response.success
-              ? Theme.of(context).colorScheme.primaryContainer
-              : Theme.of(context).colorScheme.errorContainer,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      response.success ? Icons.check_circle : Icons.error,
-                      color: response.success
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.error,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        response.success
-                            ? 'Importación completada'
-                            : 'Error en la importación',
-                        style: TextStyle(
-                          color: response.success
-                              ? Theme.of(context).colorScheme.onPrimaryContainer
-                              : Theme.of(context).colorScheme.onErrorContainer,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  response.message,
-                  style: TextStyle(
-                    color: response.success
-                        ? Theme.of(context).colorScheme.onPrimaryContainer
-                        : Theme.of(context).colorScheme.onErrorContainer,
-                  ),
-                ),
-                if (response.success && response.importedCount > 0) ...[
-                  const SizedBox(height: 8),
-                  Text(
-                    'Empleados importados: ${response.importedCount}',
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Template descargado exitosamente',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimaryContainer,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                ],
-                if (response.errors.isNotEmpty) ...[
-                  const SizedBox(height: 12),
-                  Text(
-                    'Errores encontrados:',
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Ubicación: ${file.path}',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+                fontSize: 12,
+              ),
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () => notifier.resetState(),
+              child: const Text('Cerrar'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildUploadCompletedCard(
+    BuildContext context,
+    ImportEmployeesState state,
+    ImportEmployeesNotifier notifier,
+  ) {
+    // Cast to dynamic to access the response property
+    final response = (state as dynamic).response;
+    
+    return Card(
+      color: response.success
+          ? Theme.of(context).colorScheme.primaryContainer
+          : Theme.of(context).colorScheme.errorContainer,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  response.success ? Icons.check_circle : Icons.error,
+                  color: response.success
+                      ? Theme.of(context).colorScheme.primary
+                      : Theme.of(context).colorScheme.error,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    response.success
+                        ? 'Importación completada'
+                        : 'Error en la importación',
+                    style: TextStyle(
+                      color: response.success
+                          ? Theme.of(context).colorScheme.onPrimaryContainer
+                          : Theme.of(context).colorScheme.onErrorContainer,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              response.message,
+              style: TextStyle(
+                color: response.success
+                    ? Theme.of(context).colorScheme.onPrimaryContainer
+                    : Theme.of(context).colorScheme.onErrorContainer,
+              ),
+            ),
+            if (response.success && response.importedCount > 0) ...[
+              const SizedBox(height: 8),
+              Text(
+                'Empleados importados: ${response.importedCount}',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+            if (response.errors.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              Text(
+                'Errores encontrados:',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onErrorContainer,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 4),
+              ...response.errors.map(
+                (error) => Padding(
+                  padding: const EdgeInsets.only(left: 16, top: 2),
+                  child: Text(
+                    '• $error',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onErrorContainer,
+                      fontSize: 12,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () => notifier.resetState(),
+              child: const Text('Cerrar'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildErrorCard(
+    BuildContext context,
+    ImportEmployeesState state,
+    ImportEmployeesNotifier notifier,
+  ) {
+    // Cast to dynamic to access the message property
+    final message = (state as dynamic).message as String;
+    
+    return Card(
+      color: Theme.of(context).colorScheme.errorContainer,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.error,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Error',
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onErrorContainer,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  ...response.errors.map(
-                    (error) => Padding(
-                      padding: const EdgeInsets.only(left: 16, top: 2),
-                      child: Text(
-                        '• $error',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onErrorContainer,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-                const SizedBox(height: 12),
-                ElevatedButton(
-                  onPressed: () => notifier.resetState(),
-                  child: const Text('Cerrar'),
                 ),
               ],
             ),
-          ),
-        ),
-      _Error(message: final message) => Card(
-          color: Theme.of(context).colorScheme.errorContainer,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.error,
-                      color: Theme.of(context).colorScheme.error,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        'Error',
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onErrorContainer,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  message,
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.onErrorContainer,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                ElevatedButton(
-                  onPressed: () => notifier.resetState(),
-                  child: const Text('Cerrar'),
-                ),
-              ],
+            const SizedBox(height: 8),
+            Text(
+              message,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onErrorContainer,
+              ),
             ),
-          ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () => notifier.resetState(),
+              child: const Text('Cerrar'),
+            ),
+          ],
         ),
-      _ => const SizedBox.shrink(),
-    };
+      ),
+    );
   }
 
   bool _isDownloading(ImportEmployeesState state) {
-    return switch (state) {
-      _DownloadingTemplate() => true,
-      _ => false,
-    };
+    return state.runtimeType.toString() == '_DownloadingTemplate';
   }
 
   bool _isUploading(ImportEmployeesState state) {
-    return switch (state) {
-      _Uploading() => true,
-      _ => false,
-    };
+    return state.runtimeType.toString() == '_Uploading';
   }
 
   Future<void> _downloadTemplate(

@@ -1,3 +1,4 @@
+import 'package:attendance_app/src/core/router/router.dart';
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/core/shared/widgets/section_title.dart';
@@ -6,6 +7,7 @@ import 'package:attendance_app/src/features/employees/domain/entities/employee_e
 import 'package:attendance_app/src/features/employees/presentation/providers/employees_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class EmployeesScreen extends ConsumerWidget {
   const EmployeesScreen({super.key});
@@ -19,7 +21,12 @@ class EmployeesScreen extends ConsumerWidget {
         centerTitle: true,
         actions: [
           // import excel
-          IconButton(onPressed: () {}, icon: Icon(Icons.import_export)),
+          IconButton(
+            onPressed: () {
+              context.pushNamed(Routes.importEmployees.name);
+            },
+            icon: Icon(Icons.import_export),
+          ),
         ],
       ),
       body: SingleChildScrollView(

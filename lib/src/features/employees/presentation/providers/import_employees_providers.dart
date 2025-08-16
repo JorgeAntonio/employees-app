@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:attendance_app/src/core/core.dart';
+import 'package:attendance_app/src/features/auth/presentation/providers/auth_providers.dart';
 import 'package:attendance_app/src/features/employees/data/datasources/api/import_employees_datasource_impl.dart';
 import 'package:attendance_app/src/features/employees/data/repositories/import_employees_repository_impl.dart';
 import 'package:attendance_app/src/features/employees/domain/datasources/api/import_employees_datasource.dart';
@@ -24,7 +25,8 @@ Dio importEmployeesDio(Ref ref) {
 @riverpod
 ImportEmployeesDataSource importEmployeesDataSource(Ref ref) {
   final dio = ref.watch(importEmployeesDioProvider);
-  return ImportEmployeesDataSourceImpl(dio);
+  final authLocalDataSource = ref.watch(authLocalDataSourceProvider);
+  return ImportEmployeesDataSourceImpl(dio, authLocalDataSource);
 }
 
 // Import Repository Provider
@@ -57,10 +59,10 @@ class ImportEmployeesNotifier extends _$ImportEmployeesNotifier {
 
   Future<void> downloadTemplate() async {
     state = const ImportEmployeesState.downloadingTemplate();
-    
+
     final downloadUseCase = ref.read(downloadTemplateUseCaseProvider);
     final result = await downloadUseCase();
-    
+
     result.fold(
       (failure) => state = ImportEmployeesState.error(failure.message),
       (file) => state = ImportEmployeesState.templateDownloaded(file),
@@ -69,10 +71,10 @@ class ImportEmployeesNotifier extends _$ImportEmployeesNotifier {
 
   Future<void> uploadEmployeesFile(File file) async {
     state = const ImportEmployeesState.uploading();
-    
+
     final uploadUseCase = ref.read(uploadEmployeesFileUseCaseProvider);
     final result = await uploadUseCase(file);
-    
+
     result.fold(
       (failure) => state = ImportEmployeesState.error(failure.message),
       (response) => state = ImportEmployeesState.uploadCompleted(response),

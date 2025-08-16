@@ -41,4 +41,7 @@ class Routes {
 
   static Routes get employees =>
       const Routes._(name: 'employees', path: '/employees');
+
+  static Routes get importEmployees =>
+      const Routes._(name: 'import-employees', path: '/employees/import');
 }
