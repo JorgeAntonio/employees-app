@@ -1,3 +1,4 @@
+import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_response.dart';
 import 'package:flutter/material.dart';
 
@@ -106,7 +107,7 @@ class _PaginationControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         // Previous button
         IconButton(
@@ -116,7 +117,7 @@ class _PaginationControls extends StatelessWidget {
           icon: const Icon(Icons.chevron_left),
         ),
         // Page numbers
-        ..._buildPageNumbers(),
+        ..._buildPageNumbers(context),
         // Next button
         IconButton(
           onPressed: currentPage < totalPages
@@ -128,12 +129,12 @@ class _PaginationControls extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildPageNumbers() {
+  List<Widget> _buildPageNumbers(BuildContext context) {
     List<Widget> pages = [];
 
     // Show first page
     if (currentPage > 3) {
-      pages.add(_buildPageButton(1));
+      pages.add(_buildPageButton(1, context));
       if (currentPage > 4) {
         pages.add(const Text('...'));
       }
@@ -144,7 +145,7 @@ class _PaginationControls extends StatelessWidget {
     int end = (currentPage + 2).clamp(1, totalPages);
 
     for (int i = start; i <= end; i++) {
-      pages.add(_buildPageButton(i));
+      pages.add(_buildPageButton(i, context));
     }
 
     // Show last page
@@ -152,13 +153,13 @@ class _PaginationControls extends StatelessWidget {
       if (currentPage < totalPages - 3) {
         pages.add(const Text('...'));
       }
-      pages.add(_buildPageButton(totalPages));
+      pages.add(_buildPageButton(totalPages, context));
     }
 
     return pages;
   }
 
-  Widget _buildPageButton(int page) {
+  Widget _buildPageButton(int page, BuildContext context) {
     final isCurrentPage = page == currentPage;
 
     return Padding(
@@ -169,10 +170,14 @@ class _PaginationControls extends StatelessWidget {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: isCurrentPage ? Colors.blue : Colors.transparent,
+            color: isCurrentPage
+                ? context.appColorScheme.primary
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(8),
             border: Border.all(
-              color: isCurrentPage ? Colors.blue : Colors.grey[300]!,
+              color: isCurrentPage
+                  ? context.appColorScheme.primary
+                  : Colors.grey[300]!,
             ),
           ),
           child: Center(

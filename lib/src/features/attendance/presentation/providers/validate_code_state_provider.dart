@@ -1,4 +1,3 @@
-import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/validate_code_request.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/validate_code_response.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/attendance_providers.dart';
@@ -12,7 +11,8 @@ part 'validate_code_state_provider.g.dart';
 class ValidateCodeState with _$ValidateCodeState {
   const factory ValidateCodeState.initial() = _Initial;
   const factory ValidateCodeState.loading() = _Loading;
-  const factory ValidateCodeState.success(ValidateCodeResponse response) = _Success;
+  const factory ValidateCodeState.success(ValidateCodeResponse response) =
+      _Success;
   const factory ValidateCodeState.error(String message) = _Error;
 }
 
@@ -49,7 +49,7 @@ class ValidateCodeNotifier extends _$ValidateCodeNotifier {
       longitude: longitude,
       accuracy: accuracy,
     );
-    
+
     await validateCode(request);
   }
 

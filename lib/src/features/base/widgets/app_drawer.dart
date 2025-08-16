@@ -1,6 +1,7 @@
 import 'package:attendance_app/src/core/router/routes.dart';
 import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
+import 'package:attendance_app/src/features/auth/domain/entities/auth_session.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/auth_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +15,8 @@ class AppDrawer extends HookConsumerWidget {
     final colorScheme = context.appColorScheme;
     final textTheme = context.appTextTheme;
 
+    final session = ref.watch(authStateProvider);
+
     final menuItems = [
       {
         'icon': Icons.dashboard_rounded,
@@ -22,33 +25,42 @@ class AppDrawer extends HookConsumerWidget {
         'onTap': () => context.pushNamed(Routes.dashboard.name),
       },
       {
+        'icon': Icons.qr_code_2_rounded,
+        'title': 'Leer Código QR',
+        'subtitle': 'Escanear código QR con la cámara',
+        'onTap': () => context.pushNamed(Routes.scanner.name),
+      },
+      {
         'icon': Icons.qr_code_scanner_rounded,
-        'title': 'Validar Código',
-        'subtitle': 'Validar código QR o manual',
+        'title': 'Validar Código QR',
+        'subtitle': 'Validar código QR manual',
         'onTap': () => context.pushNamed(Routes.validateCode.name),
       },
       {
         'icon': Icons.check_circle_rounded,
         'title': 'Confirmar Asistencia',
-        'subtitle': 'Confirmar asistencia con código',
+        'subtitle': 'Confirmar asistencia con código manual',
         'onTap': () => context.pushNamed(Routes.confirmAttendance.name),
       },
       {
-        'icon': Icons.history_rounded,
-        'title': 'Historial de Asistencia',
-        'subtitle': 'Ver historial de asistencias',
-        'onTap': () => context.pushNamed(Routes.attendanceHistory.name),
+        'icon': Icons.person_add,
+        'title': 'Empleados',
+        'subtitle': 'Administrar empleados',
+        'requiresAdmin': true,
+        'onTap': () => context.pushNamed(Routes.employees.name),
       },
       {
         'icon': Icons.notifications_rounded,
         'title': 'Notificaciones',
         'subtitle': 'Configurar alertas de asistencia',
+        'requiresAdmin': true,
         'onTap': () {},
       },
       {
         'icon': Icons.security_rounded,
         'title': 'Seguridad',
         'subtitle': 'Cambiar contraseña y configuración',
+        'requiresAdmin': true,
         'onTap': () {},
       },
       {
@@ -73,6 +85,48 @@ class AppDrawer extends HookConsumerWidget {
         },
       },
     ];
+
+    return session.when(
+      loading: () =>
+          const Drawer(child: Center(child: CircularProgressIndicator())),
+      error: (error, stack) =>
+          Drawer(child: Center(child: Text('Error: $error'))),
+      data: (authSession) {
+        if (authSession == null) {
+          return const Drawer(
+            child: Center(child: Text('No hay sesión activa')),
+          );
+        }
+
+        return _buildDrawer(
+          context,
+          colorScheme,
+          textTheme,
+          menuItems,
+          authSession,
+        );
+      },
+    );
+  }
+
+  Widget _buildDrawer(
+    BuildContext context,
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+    List<Map<String, dynamic>> menuItems,
+    AuthSession authSession,
+  ) {
+    final user = authSession.data.user;
+    final role = authSession.data.user.role;
+
+    // Filtrar los items según el rol del usuario
+    final filteredMenuItems = menuItems.where((item) {
+      // Si el item requiere ser admin y el usuario no lo es, se oculta
+      if (item['requiresAdmin'] == true && role != 'ADMIN') {
+        return false;
+      }
+      return true;
+    }).toList();
 
     return Drawer(
       width: context.screenWidth * 0.8,
@@ -104,14 +158,14 @@ class AppDrawer extends HookConsumerWidget {
                     context.pushNamed(Routes.profile.name);
                   },
                   title: Text(
-                    'Juan Perez',
+                    '${user.employee.firstName} ${user.employee.lastName}',
                     style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w600,
                       color: colorScheme.onPrimary,
                     ),
                   ),
                   subtitle: Text(
-                    'Desarrollador de Software',
+                    user.employee.position,
                     style: textTheme.bodySmall?.copyWith(
                       color: colorScheme.onPrimary.withValues(alpha: 0.8),
                     ),
@@ -127,7 +181,7 @@ class AppDrawer extends HookConsumerWidget {
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: menuItems.length,
+            itemCount: filteredMenuItems.length,
             separatorBuilder: (context, index) => Divider(
               height: 1,
               color: colorScheme.outlineVariant,
@@ -135,7 +189,7 @@ class AppDrawer extends HookConsumerWidget {
               endIndent: 16,
             ),
             itemBuilder: (context, index) {
-              final item = menuItems[index];
+              final item = filteredMenuItems[index];
               final isDestructive = item['isDestructive'] == true;
 
               return ListTile(

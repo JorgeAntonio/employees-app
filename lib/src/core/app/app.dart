@@ -9,7 +9,11 @@ class AttendanceApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    TextTheme textTheme = createTextTheme(context, "Poppins", "Mochiy Pop One");
+    TextTheme textTheme = createTextTheme(
+      context,
+      "Roboto", // body font
+      "Playfair Display", // title font
+    );
 
     MaterialTheme theme = MaterialTheme(textTheme);
 

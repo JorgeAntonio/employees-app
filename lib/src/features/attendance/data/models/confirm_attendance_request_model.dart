@@ -10,12 +10,12 @@ abstract class ConfirmAttendanceRequestModel
   const factory ConfirmAttendanceRequestModel({
     required String code,
     required bool confirmed,
-    @JsonKey(includeIfNull: false) String? locationId,
-    @JsonKey(includeIfNull: false) double? latitude,
-    @JsonKey(includeIfNull: false) double? longitude,
-    @JsonKey(includeIfNull: false) double? accuracy,
-    @JsonKey(includeIfNull: false) String? name,
-    @JsonKey(includeIfNull: false) DeviceInfoModel? deviceInfo,
+    String? locationId,
+    double? latitude,
+    double? longitude,
+    double? accuracy,
+    String? name,
+    DeviceInfoModel? deviceInfo,
   }) = _ConfirmAttendanceRequestModel;
 
   factory ConfirmAttendanceRequestModel.fromJson(Map<String, dynamic> json) =>
