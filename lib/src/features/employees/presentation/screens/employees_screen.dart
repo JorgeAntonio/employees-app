@@ -23,7 +23,7 @@ class EmployeesScreen extends ConsumerWidget {
           // refresh button
           IconButton(
             onPressed: () {
-              ref.refresh(_employeesProvider);
+              ref.invalidate(_employeesProvider);
             },
             icon: Icon(Icons.refresh),
             tooltip: 'Actualizar lista',
