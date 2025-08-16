@@ -1,8 +1,11 @@
 import 'dart:io';
+
+import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+
 import '../providers/import_employees_providers.dart';
 
 class ImportEmployeesScreen extends ConsumerWidget {
@@ -14,9 +17,10 @@ class ImportEmployeesScreen extends ConsumerWidget {
     final importNotifier = ref.read(importEmployeesNotifierProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Importar Empleados'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      appBar: AttendanceAppBar(
+        title: 'Importar Empleados',
+        centerTitle: true,
+        leading: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -39,9 +43,8 @@ class ImportEmployeesScreen extends ConsumerWidget {
                         const SizedBox(width: 8),
                         Text(
                           'Formato del archivo',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -53,15 +56,14 @@ class ImportEmployeesScreen extends ConsumerWidget {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surfaceVariant,
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.surfaceContainerHighest,
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: const Text(
                         'firstName, lastName, dni, email, phone, position, department, shiftName',
-                        style: TextStyle(
-                          fontFamily: 'monospace',
-                          fontSize: 12,
-                        ),
+                        style: TextStyle(fontFamily: 'monospace', fontSize: 12),
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -74,57 +76,57 @@ class ImportEmployeesScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 24),
-            
+
             // Botón para descargar template
-             ElevatedButton.icon(
-               onPressed: _isDownloading(importState)
-                   ? null
-                   : () => _downloadTemplate(context, importNotifier),
-               icon: _isDownloading(importState)
-                   ? const SizedBox(
-                       width: 16,
-                       height: 16,
-                       child: CircularProgressIndicator(strokeWidth: 2),
-                     )
-                   : const Icon(Icons.download),
-               label: Text(
-                 _isDownloading(importState)
-                     ? 'Descargando...'
-                     : 'Descargar Template',
-               ),
-               style: ElevatedButton.styleFrom(
-                 padding: const EdgeInsets.symmetric(vertical: 16),
-               ),
-             ),
-             
-             const SizedBox(height: 16),
-             
-             // Botón para subir archivo
-             ElevatedButton.icon(
-               onPressed: _isUploading(importState)
-                   ? null
-                   : () => _pickAndUploadFile(context, importNotifier),
-               icon: _isUploading(importState)
-                   ? const SizedBox(
-                       width: 16,
-                       height: 16,
-                       child: CircularProgressIndicator(strokeWidth: 2),
-                     )
-                   : const Icon(Icons.upload_file),
-               label: Text(
-                 _isUploading(importState)
-                     ? 'Subiendo archivo...'
-                     : 'Seleccionar y Subir Archivo',
-               ),
-               style: ElevatedButton.styleFrom(
-                 padding: const EdgeInsets.symmetric(vertical: 16),
-                 backgroundColor: Theme.of(context).colorScheme.secondary,
-                 foregroundColor: Theme.of(context).colorScheme.onSecondary,
-               ),
-             ),
-            
+            ElevatedButton.icon(
+              onPressed: _isDownloading(importState)
+                  ? null
+                  : () => _downloadTemplate(context, importNotifier),
+              icon: _isDownloading(importState)
+                  ? const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.download),
+              label: Text(
+                _isDownloading(importState)
+                    ? 'Descargando...'
+                    : 'Descargar Template',
+              ),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Botón para subir archivo
+            ElevatedButton.icon(
+              onPressed: _isUploading(importState)
+                  ? null
+                  : () => _pickAndUploadFile(context, importNotifier),
+              icon: _isUploading(importState)
+                  ? const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    )
+                  : const Icon(Icons.upload_file),
+              label: Text(
+                _isUploading(importState)
+                    ? 'Subiendo archivo...'
+                    : 'Seleccionar y Subir Archivo',
+              ),
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                backgroundColor: Theme.of(context).colorScheme.secondary,
+                foregroundColor: Theme.of(context).colorScheme.onSecondary,
+              ),
+            ),
+
             const SizedBox(height: 24),
-            
+
             // Mostrar resultado
             _buildResultWidget(context, importState, importNotifier),
           ],
@@ -139,11 +141,13 @@ class ImportEmployeesScreen extends ConsumerWidget {
     ImportEmployeesNotifier notifier,
   ) {
     return switch (state) {
-      ImportEmployeesState() when state.runtimeType.toString() == '_TemplateDownloaded' => 
+      ImportEmployeesState()
+          when state.runtimeType.toString() == '_TemplateDownloaded' =>
         _buildTemplateDownloadedCard(context, state, notifier),
-      ImportEmployeesState() when state.runtimeType.toString() == '_UploadCompleted' => 
+      ImportEmployeesState()
+          when state.runtimeType.toString() == '_UploadCompleted' =>
         _buildUploadCompletedCard(context, state, notifier),
-      ImportEmployeesState() when state.runtimeType.toString() == '_Error' => 
+      ImportEmployeesState() when state.runtimeType.toString() == '_Error' =>
         _buildErrorCard(context, state, notifier),
       _ => const SizedBox.shrink(),
     };
@@ -156,7 +160,7 @@ class ImportEmployeesScreen extends ConsumerWidget {
   ) {
     // Cast to dynamic to access the file property
     final file = (state as dynamic).file as File;
-    
+
     return Card(
       color: Theme.of(context).colorScheme.primaryContainer,
       child: Padding(
@@ -207,7 +211,7 @@ class ImportEmployeesScreen extends ConsumerWidget {
   ) {
     // Cast to dynamic to access the response property
     final response = (state as dynamic).response;
-    
+
     return Card(
       color: response.success
           ? Theme.of(context).colorScheme.primaryContainer
@@ -301,7 +305,7 @@ class ImportEmployeesScreen extends ConsumerWidget {
   ) {
     // Cast to dynamic to access the message property
     final message = (state as dynamic).message as String;
-    
+
     return Card(
       color: Theme.of(context).colorScheme.errorContainer,
       child: Padding(
@@ -310,10 +314,7 @@ class ImportEmployeesScreen extends ConsumerWidget {
           children: [
             Row(
               children: [
-                Icon(
-                  Icons.error,
-                  color: Theme.of(context).colorScheme.error,
-                ),
+                Icon(Icons.error, color: Theme.of(context).colorScheme.error),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
@@ -362,7 +363,9 @@ class ImportEmployeesScreen extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Se requieren permisos de almacenamiento para descargar el archivo'),
+            content: Text(
+              'Se requieren permisos de almacenamiento para descargar el archivo',
+            ),
             backgroundColor: Colors.orange,
           ),
         );

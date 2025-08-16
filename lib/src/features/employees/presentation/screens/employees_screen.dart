@@ -20,12 +20,21 @@ class EmployeesScreen extends ConsumerWidget {
         leading: true,
         centerTitle: true,
         actions: [
+          // refresh button
+          IconButton(
+            onPressed: () {
+              ref.refresh(_employeesProvider);
+            },
+            icon: Icon(Icons.refresh),
+            tooltip: 'Actualizar lista',
+          ),
           // import excel
           IconButton(
             onPressed: () {
               context.pushNamed(Routes.importEmployees.name);
             },
             icon: Icon(Icons.import_export),
+            tooltip: 'Importar empleados',
           ),
         ],
       ),
