@@ -26,12 +26,12 @@ Map<String, dynamic> _$ConfirmAttendanceRequestModelToJson(
 ) => <String, dynamic>{
   'code': instance.code,
   'confirmed': instance.confirmed,
-  'locationId': ?instance.locationId,
-  'latitude': ?instance.latitude,
-  'longitude': ?instance.longitude,
-  'accuracy': ?instance.accuracy,
-  'name': ?instance.name,
-  'deviceInfo': ?instance.deviceInfo,
+  'locationId': instance.locationId,
+  'latitude': instance.latitude,
+  'longitude': instance.longitude,
+  'accuracy': instance.accuracy,
+  'name': instance.name,
+  'deviceInfo': instance.deviceInfo,
 };
 
 _DeviceInfoModel _$DeviceInfoModelFromJson(Map<String, dynamic> json) =>

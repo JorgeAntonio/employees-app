@@ -1,3 +1,5 @@
+import 'package:attendance_app/src/core/shared/layout/double_value.dart';
+import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_request.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/confirm_attendance_state_provider.dart';
 import 'package:flutter/material.dart';
@@ -105,9 +107,32 @@ class _ConfirmAttendanceScreenState
     final state = ref.watch(confirmAttendanceNotifierProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Confirmar Asistencia - Test'),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      appBar: AttendanceAppBar(
+        title: 'Confirmar Asistencia',
+        centerTitle: true,
+        actions: [
+          // clear button
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              _codeController.clear();
+              _latitudeController.clear();
+              _longitudeController.clear();
+              _accuracyController.clear();
+              _locationIdController.clear();
+              _nameController.clear();
+              _deviceNameController.clear();
+              _deviceOsController.clear();
+              _deviceBrowserController.clear();
+              _deviceUserAgentController.clear();
+              setState(() {
+                _includeLocation = false;
+                _includeDeviceInfo = false;
+                _confirmed = true;
+              });
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -248,14 +273,14 @@ class _ConfirmAttendanceScreenState
             const SizedBox(height: 24),
 
             // Botón de confirmación
-            ElevatedButton(
-              onPressed: state.isLoading ? null : _confirmAttendance,
-              child: state.isLoading
-                  ? const CircularProgressIndicator()
-                  : const Text('Confirmar Asistencia'),
-            ),
+            // ElevatedButton(
+            //   onPressed: state.isLoading ? null : _confirmAttendance,
+            //   child: state.isLoading
+            //       ? const CircularProgressIndicator()
+            //       : const Text('Confirmar Asistencia'),
+            // ),
 
-            const SizedBox(height: 16),
+            // const SizedBox(height: 16),
 
             // Resultado
             state.when(
@@ -348,6 +373,31 @@ class _ConfirmAttendanceScreenState
               ),
             ),
           ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: SizedBox(
+        width: 200,
+        child: FilledButton(
+          onPressed: state.isLoading ? null : _confirmAttendance,
+          style: FilledButton.styleFrom(padding: const EdgeInsets.all(16)),
+          child: state.isLoading
+              ? Row(
+                  spacing: DoubleSizes.size12,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Confirmando...'),
+                    const CircularProgressIndicator(),
+                  ],
+                )
+              : Row(
+                  spacing: DoubleSizes.size12,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Confirmar Asistencia'),
+                    const Icon(Icons.check, color: Colors.white),
+                  ],
+                ),
         ),
       ),
     );

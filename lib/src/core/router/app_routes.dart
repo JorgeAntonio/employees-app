@@ -1,14 +1,15 @@
+import 'package:attendance_app/src/features/attendance/presentation/screens/screens.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/session_provider.dart';
 import 'package:attendance_app/src/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:attendance_app/src/features/base/screens/main_screen.dart';
 import 'package:attendance_app/src/features/dashboard/screens/dashboard_screen.dart';
-import 'package:attendance_app/src/features/history/history_screen.dart';
-import 'package:attendance_app/src/features/home/presentation/sccreens/home_screen.dart';
-import 'package:attendance_app/src/features/profile/profile_screen.dart';
-import 'package:attendance_app/src/features/scanner/screen/scanner_screen.dart';
+import 'package:attendance_app/src/features/employees/presentation/screens/employees_screen.dart';
+import 'package:attendance_app/src/features/employees/presentation/screens/import_employees_screen.dart';
+import 'package:attendance_app/src/features/history/screens/attendance_history_screen.dart';
+import 'package:attendance_app/src/features/home/presentation/screens/home_screen.dart';
+import 'package:attendance_app/src/features/profile/presentation/screens/profile_screen.dart';
+import 'package:attendance_app/src/features/qr_reader/presentation/screens/qr_reader_screen.dart';
 import 'package:attendance_app/src/features/welcome/welcome_screen.dart';
-import 'package:attendance_app/src/features/attendance/presentation/screens/screens.dart';
-import 'package:attendance_app/src/features/attendance/presentation/screens/attendance_history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -64,9 +65,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.scanner.path,
         name: Routes.scanner.name,
-        builder: (context, state) => const ScannerScreen(),
+        builder: (context, state) => const QrReaderScreen(),
       ),
-
       GoRoute(
         path: Routes.dashboard.path,
         name: Routes.dashboard.name,
@@ -74,20 +74,31 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
 
       GoRoute(
-          path: Routes.validateCode.path,
-          name: Routes.validateCode.name,
-          builder: (context, state) => const ValidateCodeScreen(),
-        ),
-        GoRoute(
-          path: Routes.confirmAttendance.path,
-          name: Routes.confirmAttendance.name,
-          builder: (context, state) => const ConfirmAttendanceScreen(),
-        ),
-        GoRoute(
-          path: Routes.attendanceHistory.path,
-          name: Routes.attendanceHistory.name,
-          builder: (context, state) => const AttendanceHistoryScreen(),
-        ),
+        path: Routes.validateCode.path,
+        name: Routes.validateCode.name,
+        builder: (context, state) => const ValidateCodeScreen(),
+      ),
+      GoRoute(
+        path: Routes.confirmAttendance.path,
+        name: Routes.confirmAttendance.name,
+        builder: (context, state) => const ConfirmAttendanceScreen(),
+      ),
+      GoRoute(
+        path: Routes.attendanceHistory.path,
+        name: Routes.attendanceHistory.name,
+        builder: (context, state) => const AttendanceHistoryScreen(),
+      ),
+      GoRoute(
+        path: Routes.employees.path,
+        name: Routes.employees.name,
+        builder: (context, state) => const EmployeesScreen(),
+      ),
+
+      GoRoute(
+        path: Routes.importEmployees.path,
+        name: Routes.importEmployees.name,
+        builder: (context, state) => const ImportEmployeesScreen(),
+      ),
 
       StatefulShellRoute.indexedStack(
         key: _shellNavigatorKey,
@@ -118,7 +129,7 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: Routes.history.path,
                 name: Routes.history.name,
-                builder: (context, state) => const HistoryScreen(),
+                builder: (context, state) => const AttendanceHistoryScreen(),
               ),
             ],
           ),

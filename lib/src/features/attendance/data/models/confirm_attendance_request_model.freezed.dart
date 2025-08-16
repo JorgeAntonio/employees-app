@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ConfirmAttendanceRequestModel {
 
- String get code; bool get confirmed;@JsonKey(includeIfNull: false) String? get locationId;@JsonKey(includeIfNull: false) double? get latitude;@JsonKey(includeIfNull: false) double? get longitude;@JsonKey(includeIfNull: false) double? get accuracy;@JsonKey(includeIfNull: false) String? get name;@JsonKey(includeIfNull: false) DeviceInfoModel? get deviceInfo;
+ String get code; bool get confirmed; String? get locationId; double? get latitude; double? get longitude; double? get accuracy; String? get name; DeviceInfoModel? get deviceInfo;
 /// Create a copy of ConfirmAttendanceRequestModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $ConfirmAttendanceRequestModelCopyWith<$Res>  {
   factory $ConfirmAttendanceRequestModelCopyWith(ConfirmAttendanceRequestModel value, $Res Function(ConfirmAttendanceRequestModel) _then) = _$ConfirmAttendanceRequestModelCopyWithImpl;
 @useResult
 $Res call({
- String code, bool confirmed,@JsonKey(includeIfNull: false) String? locationId,@JsonKey(includeIfNull: false) double? latitude,@JsonKey(includeIfNull: false) double? longitude,@JsonKey(includeIfNull: false) double? accuracy,@JsonKey(includeIfNull: false) String? name,@JsonKey(includeIfNull: false) DeviceInfoModel? deviceInfo
+ String code, bool confirmed, String? locationId, double? latitude, double? longitude, double? accuracy, String? name, DeviceInfoModel? deviceInfo
 });
 
 
@@ -172,7 +172,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String code,  bool confirmed, @JsonKey(includeIfNull: false)  String? locationId, @JsonKey(includeIfNull: false)  double? latitude, @JsonKey(includeIfNull: false)  double? longitude, @JsonKey(includeIfNull: false)  double? accuracy, @JsonKey(includeIfNull: false)  String? name, @JsonKey(includeIfNull: false)  DeviceInfoModel? deviceInfo)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String code,  bool confirmed,  String? locationId,  double? latitude,  double? longitude,  double? accuracy,  String? name,  DeviceInfoModel? deviceInfo)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ConfirmAttendanceRequestModel() when $default != null:
 return $default(_that.code,_that.confirmed,_that.locationId,_that.latitude,_that.longitude,_that.accuracy,_that.name,_that.deviceInfo);case _:
@@ -193,7 +193,7 @@ return $default(_that.code,_that.confirmed,_that.locationId,_that.latitude,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String code,  bool confirmed, @JsonKey(includeIfNull: false)  String? locationId, @JsonKey(includeIfNull: false)  double? latitude, @JsonKey(includeIfNull: false)  double? longitude, @JsonKey(includeIfNull: false)  double? accuracy, @JsonKey(includeIfNull: false)  String? name, @JsonKey(includeIfNull: false)  DeviceInfoModel? deviceInfo)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String code,  bool confirmed,  String? locationId,  double? latitude,  double? longitude,  double? accuracy,  String? name,  DeviceInfoModel? deviceInfo)  $default,) {final _that = this;
 switch (_that) {
 case _ConfirmAttendanceRequestModel():
 return $default(_that.code,_that.confirmed,_that.locationId,_that.latitude,_that.longitude,_that.accuracy,_that.name,_that.deviceInfo);case _:
@@ -213,7 +213,7 @@ return $default(_that.code,_that.confirmed,_that.locationId,_that.latitude,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String code,  bool confirmed, @JsonKey(includeIfNull: false)  String? locationId, @JsonKey(includeIfNull: false)  double? latitude, @JsonKey(includeIfNull: false)  double? longitude, @JsonKey(includeIfNull: false)  double? accuracy, @JsonKey(includeIfNull: false)  String? name, @JsonKey(includeIfNull: false)  DeviceInfoModel? deviceInfo)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String code,  bool confirmed,  String? locationId,  double? latitude,  double? longitude,  double? accuracy,  String? name,  DeviceInfoModel? deviceInfo)?  $default,) {final _that = this;
 switch (_that) {
 case _ConfirmAttendanceRequestModel() when $default != null:
 return $default(_that.code,_that.confirmed,_that.locationId,_that.latitude,_that.longitude,_that.accuracy,_that.name,_that.deviceInfo);case _:
@@ -228,17 +228,17 @@ return $default(_that.code,_that.confirmed,_that.locationId,_that.latitude,_that
 @JsonSerializable()
 
 class _ConfirmAttendanceRequestModel implements ConfirmAttendanceRequestModel {
-  const _ConfirmAttendanceRequestModel({required this.code, required this.confirmed, @JsonKey(includeIfNull: false) this.locationId, @JsonKey(includeIfNull: false) this.latitude, @JsonKey(includeIfNull: false) this.longitude, @JsonKey(includeIfNull: false) this.accuracy, @JsonKey(includeIfNull: false) this.name, @JsonKey(includeIfNull: false) this.deviceInfo});
+  const _ConfirmAttendanceRequestModel({required this.code, required this.confirmed, this.locationId, this.latitude, this.longitude, this.accuracy, this.name, this.deviceInfo});
   factory _ConfirmAttendanceRequestModel.fromJson(Map<String, dynamic> json) => _$ConfirmAttendanceRequestModelFromJson(json);
 
 @override final  String code;
 @override final  bool confirmed;
-@override@JsonKey(includeIfNull: false) final  String? locationId;
-@override@JsonKey(includeIfNull: false) final  double? latitude;
-@override@JsonKey(includeIfNull: false) final  double? longitude;
-@override@JsonKey(includeIfNull: false) final  double? accuracy;
-@override@JsonKey(includeIfNull: false) final  String? name;
-@override@JsonKey(includeIfNull: false) final  DeviceInfoModel? deviceInfo;
+@override final  String? locationId;
+@override final  double? latitude;
+@override final  double? longitude;
+@override final  double? accuracy;
+@override final  String? name;
+@override final  DeviceInfoModel? deviceInfo;
 
 /// Create a copy of ConfirmAttendanceRequestModel
 /// with the given fields replaced by the non-null parameter values.
@@ -273,7 +273,7 @@ abstract mixin class _$ConfirmAttendanceRequestModelCopyWith<$Res> implements $C
   factory _$ConfirmAttendanceRequestModelCopyWith(_ConfirmAttendanceRequestModel value, $Res Function(_ConfirmAttendanceRequestModel) _then) = __$ConfirmAttendanceRequestModelCopyWithImpl;
 @override @useResult
 $Res call({
- String code, bool confirmed,@JsonKey(includeIfNull: false) String? locationId,@JsonKey(includeIfNull: false) double? latitude,@JsonKey(includeIfNull: false) double? longitude,@JsonKey(includeIfNull: false) double? accuracy,@JsonKey(includeIfNull: false) String? name,@JsonKey(includeIfNull: false) DeviceInfoModel? deviceInfo
+ String code, bool confirmed, String? locationId, double? latitude, double? longitude, double? accuracy, String? name, DeviceInfoModel? deviceInfo
 });
 
 

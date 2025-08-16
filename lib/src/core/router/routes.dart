@@ -33,6 +33,15 @@ class Routes {
   static Routes get confirmAttendance =>
       const Routes._(name: 'confirm-attendance', path: '/confirm-attendance');
 
+  static Routes get qrReader =>
+      const Routes._(name: 'qr-reader', path: '/qr-reader');
+
   static Routes get attendanceHistory =>
       const Routes._(name: 'attendance-history', path: '/attendance-history');
+
+  static Routes get employees =>
+      const Routes._(name: 'employees', path: '/employees');
+
+  static Routes get importEmployees =>
+      const Routes._(name: 'import-employees', path: '/employees/import');
 }
