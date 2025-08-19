@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:attendance_app/src/core/router/router.dart';
 import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
-import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/confirm_attendance_state_provider.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/validate_code_state_provider.dart';
 import 'package:flutter/material.dart';
@@ -83,19 +82,27 @@ class QrReaderScreen extends HookConsumerWidget {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AttendanceAppBar(
-        title: 'Escanear QR',
+      appBar: AppBar(
+        title: Text(
+          'Leer QR',
+          style: TextStyle(color: colorScheme.onSecondary),
+        ),
+        iconTheme: IconThemeData(color: colorScheme.onSecondary),
         backgroundColor: Colors.transparent,
-        leading: true,
         centerTitle: true,
         actions: [
           IconButton(
             icon: Icon(
               controller.torchEnabled ? Icons.flash_on : Icons.flash_off,
             ),
+            color: colorScheme.onSecondary,
             onPressed: () => controller.toggleTorch(),
           ),
         ],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new, color: colorScheme.onSecondary),
+          onPressed: () => context.pop(),
+        ),
       ),
       body: Stack(
         children: [

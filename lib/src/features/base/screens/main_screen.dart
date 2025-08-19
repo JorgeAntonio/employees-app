@@ -1,3 +1,4 @@
+import 'package:attendance_app/src/core/assets/image_assets.dart';
 import 'package:attendance_app/src/core/router/router.dart';
 import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
@@ -25,7 +26,32 @@ class MainScreen extends StatelessWidget {
 
     return Scaffold(
       extendBody: true, // to make floating action button notch transparent
-      appBar: AppBar(title: const Text('Attendance App'), centerTitle: true),
+      appBar: AppBar(
+        centerTitle: true,
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              ImageAssets.logo,
+              height: DoubleSizes.size32,
+              width: DoubleSizes.size32,
+            ),
+            const SizedBox(width: DoubleSizes.size8),
+            Column(
+              children: [
+                Text('CONSORCIO', style: TextStyle(color: colorScheme.primary)),
+                Text(
+                  'EJECUTOR EL TIGRE',
+                  style: context.appTextTheme.bodySmall?.copyWith(
+                    color: colorScheme.primary.withValues(alpha: 0.7),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
       drawer: const AppDrawer(),
 
       body: child,

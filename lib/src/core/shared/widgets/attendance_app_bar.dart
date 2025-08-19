@@ -21,20 +21,20 @@ class AttendanceAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: backgroundColor ?? context.appColorScheme.primary,
-      iconTheme: IconThemeData(color: context.appColorScheme.onPrimary),
+      backgroundColor: backgroundColor ?? Colors.transparent,
+      iconTheme: IconThemeData(color: context.appColorScheme.onSurface),
       centerTitle: centerTitle ?? false,
       elevation: 0,
       title: Text(
-        title ?? 'Attendance App',
-        style: TextStyle(color: context.appColorScheme.onPrimary),
+        title ?? 'CONSORCIO',
+        style: TextStyle(color: context.appColorScheme.onSurface),
       ),
       actions: actions,
       leading: (leading ?? false) && context.canPop()
           ? IconButton(
               icon: Icon(
                 Icons.arrow_back_ios_new,
-                color: context.appColorScheme.onPrimary,
+                color: context.appColorScheme.onSurface,
               ),
               onPressed: () => context.pop(),
             )

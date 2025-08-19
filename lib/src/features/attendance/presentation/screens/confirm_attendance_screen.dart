@@ -110,6 +110,7 @@ class _ConfirmAttendanceScreenState
       appBar: AttendanceAppBar(
         title: 'Confirmar Asistencia',
         centerTitle: true,
+        leading: true,
         actions: [
           // clear button
           IconButton(

@@ -91,7 +91,7 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
         actions: [
           IconButton(
             onPressed: _reset,
-            icon: Icon(Icons.refresh, color: context.appColorScheme.onPrimary),
+            icon: Icon(Icons.refresh, color: context.appColorScheme.onSurface),
             tooltip: 'Limpiar',
           ),
         ],
