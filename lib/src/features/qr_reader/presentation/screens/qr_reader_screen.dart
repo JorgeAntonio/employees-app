@@ -249,7 +249,7 @@ class QrReaderScreen extends HookConsumerWidget {
                             ),
                             if (response.data?.employee.fullName != null) ...[
                               Text(
-                                'Empleado: ${response.data?.employee.fullName}',
+                                '${response.data?.employee.fullName}',
                                 style: textTheme.bodyLarge?.copyWith(
                                   fontWeight: FontWeight.w600,
                                 ),
