@@ -228,20 +228,19 @@ class QrReaderScreen extends HookConsumerWidget {
                           ],
                         ),
                         success: (response) => Column(
+                          spacing: DoubleSizes.size16,
                           children: [
                             Icon(
                               Icons.check_circle,
-                              color: colorScheme.primary,
+                              color: Colors.green,
                               size: 64,
                             ),
-                            Gaps.gap16,
                             Text(
                               'Código válido',
                               style: textTheme.titleLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Gaps.gap8,
                             Text(
                               response.message ??
                                   'Código validado correctamente',
@@ -249,7 +248,6 @@ class QrReaderScreen extends HookConsumerWidget {
                               textAlign: TextAlign.center,
                             ),
                             if (response.data?.employee.fullName != null) ...[
-                              Gaps.gap16,
                               Text(
                                 'Empleado: ${response.data?.employee.fullName}',
                                 style: textTheme.bodyLarge?.copyWith(
@@ -258,9 +256,19 @@ class QrReaderScreen extends HookConsumerWidget {
                               ),
                             ],
                             if (response.data?.action != null) ...[
-                              Gaps.gap8,
+                              response.data?.action == 'CHECK_IN'
+                                  ? Icon(
+                                      Icons.login,
+                                      size: 64,
+                                      color: Colors.green.shade700,
+                                    )
+                                  : Icon(
+                                      Icons.logout,
+                                      color: colorScheme.error,
+                                      size: 64,
+                                    ),
                               Text(
-                                'Tipo: ${response.data?.action}',
+                                'Tipo: ${response.data?.action == 'CHECK_IN' ? 'INGRESO' : 'SALIDA'}',
                                 style: textTheme.bodyMedium,
                               ),
                             ],
@@ -298,6 +306,11 @@ class QrReaderScreen extends HookConsumerWidget {
                         success: (response) => Column(
                           children: [
                             ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: colorScheme.primary,
+                                foregroundColor: colorScheme.onPrimary,
+                                minimumSize: const Size(double.infinity, 48),
+                              ),
                               onPressed: confirmAttendanceState.isLoading
                                   ? null
                                   : () {
@@ -404,21 +417,30 @@ class QrReaderScreen extends HookConsumerWidget {
                         ),
                       ),
 
-                      Gaps.gap24,
+                      Gaps.gap48,
                       Row(
+                        spacing: DoubleSizes.size4,
                         children: [
-                          Expanded(
-                            child: OutlinedButton(
-                              onPressed: resetScanner,
-                              child: const Text('Escanear otro'),
+                          ElevatedButton.icon(
+                            onPressed: resetScanner,
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: colorScheme.onSecondary,
+                              backgroundColor: colorScheme.secondary,
                             ),
+                            icon: const Icon(Icons.refresh),
+                            label: const Text('Escanear otro'),
                           ),
-                          Gaps.gap16,
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () => context.pop(),
-                              child: const Text('Cerrar'),
+                          OutlinedButton.icon(
+                            onPressed: () => context.pop(),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: colorScheme.secondary,
+                              side: BorderSide(
+                                color: colorScheme.secondary,
+                                width: 0.5,
+                              ),
                             ),
+                            icon: const Icon(Icons.close),
+                            label: const Text('Cerrar'),
                           ),
                         ],
                       ),
