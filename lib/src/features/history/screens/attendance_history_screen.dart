@@ -21,6 +21,7 @@ class _AttendanceHistoryScreenState
   DateTime? _endDate;
   int _currentPage = 1;
   final int _limit = 10;
+  bool _isLoadingMore = false;
 
   @override
   void initState() {
@@ -48,26 +49,59 @@ class _AttendanceHistoryScreenState
       _startDate = startDate;
       _endDate = endDate;
       _currentPage = 1; // Reset to first page when filters change
+      _isLoadingMore = false;
     });
+    
+    // Clear existing data when filters change
+    ref.read(attendanceHistoryNotifierProvider.notifier).clearHistory();
     _loadAttendanceHistory();
   }
 
   void _onPageChanged(int page) {
-    setState(() {
-      _currentPage = page;
-    });
-    _loadAttendanceHistory();
+    if (page > _currentPage) {
+      // Loading more data (infinite scroll)
+      setState(() {
+        _currentPage = page;
+        _isLoadingMore = true;
+      });
+      
+      final request = AttendanceHistoryRequest(
+        page: _currentPage,
+        limit: _limit,
+        startDate: _startDate,
+        endDate: _endDate,
+      );
+
+      ref
+          .read(attendanceHistoryNotifierProvider.notifier)
+          .loadMoreAttendanceHistory(request)
+          .then((_) {
+        if (mounted) {
+          setState(() {
+            _isLoadingMore = false;
+          });
+        }
+      });
+    } else {
+      // Regular page change (shouldn't happen with infinite scroll)
+      setState(() {
+        _currentPage = page;
+      });
+      _loadAttendanceHistory();
+    }
   }
 
   Future<void> _onRefresh() async {
     // Reset to first page and reload data
     setState(() {
       _currentPage = 1;
+      _isLoadingMore = false;
     });
+    
+    // Clear existing data and load fresh data
+    ref.read(attendanceHistoryNotifierProvider.notifier).clearHistory();
     _loadAttendanceHistory();
     
-    // Wait for the provider to complete the request
-    final completer = ref.read(attendanceHistoryNotifierProvider.notifier);
     // Add a small delay to ensure the UI shows the refresh indicator
     await Future.delayed(const Duration(milliseconds: 500));
   }
@@ -107,6 +141,7 @@ class _AttendanceHistoryScreenState
                       historyResponse: historyResponse,
                       currentPage: _currentPage,
                       onPageChanged: _onPageChanged,
+                      isLoading: _isLoadingMore,
                     );
                   },
                   loading: () => const Center(child: CircularProgressIndicator()),

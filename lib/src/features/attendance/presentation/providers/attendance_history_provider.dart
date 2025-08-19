@@ -24,6 +24,42 @@ class AttendanceHistoryNotifier extends _$AttendanceHistoryNotifier {
     );
   }
 
+  Future<void> loadMoreAttendanceHistory(AttendanceHistoryRequest request) async {
+    final currentState = state;
+    if (!currentState.hasValue) return;
+
+    final useCase = ref.read(getAttendanceHistoryUseCaseProvider);
+    final result = await useCase(request);
+
+    result.fold(
+      (failure) => state = AsyncValue.error(failure, StackTrace.current),
+      (newResponse) {
+        final currentResponse = currentState.value;
+        if (currentResponse?.data != null && newResponse.data != null) {
+          // Combine existing attendances with new ones
+          final combinedAttendances = [
+            ...currentResponse!.data!.attendances,
+            ...newResponse.data!.attendances,
+          ];
+          
+          // Create new response with combined data
+          final combinedResponse = AttendanceHistoryResponse(
+            success: newResponse.success,
+            message: newResponse.message,
+            data: AttendanceHistoryData(
+              attendances: combinedAttendances,
+              pagination: newResponse.data!.pagination, // Use new pagination info
+            ),
+          );
+          
+          state = AsyncValue.data(combinedResponse);
+        } else {
+          state = AsyncValue.data(newResponse);
+        }
+      },
+    );
+  }
+
   Future<void> getAttendanceHistoryForEmployee(
     String employeeId,
     AttendanceHistoryRequest request,

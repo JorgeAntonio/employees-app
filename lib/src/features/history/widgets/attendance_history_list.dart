@@ -1,25 +1,58 @@
-import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_response.dart';
 import 'package:flutter/material.dart';
 
 import 'attendance_history_item.dart';
 
-class AttendanceHistoryList extends StatelessWidget {
+class AttendanceHistoryList extends StatefulWidget {
   final AttendanceHistoryResponse historyResponse;
   final int currentPage;
   final Function(int) onPageChanged;
+  final bool isLoading;
 
   const AttendanceHistoryList({
     super.key,
     required this.historyResponse,
     required this.currentPage,
     required this.onPageChanged,
+    this.isLoading = false,
   });
 
   @override
+  State<AttendanceHistoryList> createState() => _AttendanceHistoryListState();
+}
+
+class _AttendanceHistoryListState extends State<AttendanceHistoryList> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      // Load more data when user is 200 pixels from the bottom
+      final pagination = widget.historyResponse.data?.pagination;
+      if (pagination != null &&
+          widget.currentPage < pagination.totalPages &&
+          !widget.isLoading) {
+        widget.onPageChanged(widget.currentPage + 1);
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final attendances = historyResponse.data?.attendances ?? [];
-    final pagination = historyResponse.data?.pagination;
+    final attendances = widget.historyResponse.data?.attendances ?? [];
+    final pagination = widget.historyResponse.data?.pagination;
 
     if (attendances.isEmpty) {
       return SingleChildScrollView(
@@ -54,6 +87,9 @@ class AttendanceHistoryList extends StatelessWidget {
       );
     }
 
+    final hasMorePages =
+        pagination != null && widget.currentPage < pagination.totalPages;
+
     return Column(
       children: [
         // Header with total count
@@ -67,141 +103,38 @@ class AttendanceHistoryList extends StatelessWidget {
                   context,
                 ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
               ),
-              const Spacer(),
-              Text(
-                'Página ${pagination?.page ?? 1} de ${pagination?.totalPages ?? 1}',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
             ],
           ),
         ),
-        // List of attendance records
+        // List of attendance records with infinite scroll
         Expanded(
           child: ListView.builder(
+            controller: _scrollController,
+            physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            itemCount: attendances.length,
+            itemCount: attendances.length + (hasMorePages ? 1 : 0),
             itemBuilder: (context, index) {
+              if (index == attendances.length) {
+                // Loading indicator at the bottom
+                return Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Center(
+                    child: widget.isLoading
+                        ? const CircularProgressIndicator()
+                        : const SizedBox.shrink(),
+                  ),
+                );
+              }
+
               final attendance = attendances[index];
               return AttendanceHistoryItemWidget(
                 attendance: attendance,
-                isLast: index == attendances.length - 1,
+                isLast: index == attendances.length - 1 && !hasMorePages,
               );
             },
           ),
         ),
-        // Pagination controls
-        if ((pagination?.totalPages ?? 1) > 1)
-          Container(
-            padding: const EdgeInsets.all(16),
-            child: _PaginationControls(
-              currentPage: currentPage,
-              totalPages: pagination?.totalPages ?? 1,
-              onPageChanged: onPageChanged,
-            ),
-          ),
       ],
-    );
-  }
-}
-
-class _PaginationControls extends StatelessWidget {
-  final int currentPage;
-  final int totalPages;
-  final Function(int) onPageChanged;
-
-  const _PaginationControls({
-    required this.currentPage,
-    required this.totalPages,
-    required this.onPageChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        // Previous button
-        IconButton(
-          onPressed: currentPage > 1
-              ? () => onPageChanged(currentPage - 1)
-              : null,
-          icon: const Icon(Icons.chevron_left),
-        ),
-        // Page numbers
-        ..._buildPageNumbers(context),
-        // Next button
-        IconButton(
-          onPressed: currentPage < totalPages
-              ? () => onPageChanged(currentPage + 1)
-              : null,
-          icon: const Icon(Icons.chevron_right),
-        ),
-      ],
-    );
-  }
-
-  List<Widget> _buildPageNumbers(BuildContext context) {
-    List<Widget> pages = [];
-
-    // Show first page
-    if (currentPage > 3) {
-      pages.add(_buildPageButton(1, context));
-      if (currentPage > 4) {
-        pages.add(const Text('...'));
-      }
-    }
-
-    // Show pages around current page
-    int start = (currentPage - 2).clamp(1, totalPages);
-    int end = (currentPage + 2).clamp(1, totalPages);
-
-    for (int i = start; i <= end; i++) {
-      pages.add(_buildPageButton(i, context));
-    }
-
-    // Show last page
-    if (currentPage < totalPages - 2) {
-      if (currentPage < totalPages - 3) {
-        pages.add(const Text('...'));
-      }
-      pages.add(_buildPageButton(totalPages, context));
-    }
-
-    return pages;
-  }
-
-  Widget _buildPageButton(int page, BuildContext context) {
-    final isCurrentPage = page == currentPage;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4),
-      child: GestureDetector(
-        onTap: isCurrentPage ? null : () => onPageChanged(page),
-        child: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: isCurrentPage
-                ? context.appColorScheme.primary
-                : Colors.transparent,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(
-              color: isCurrentPage
-                  ? context.appColorScheme.primary
-                  : Colors.grey[300]!,
-            ),
-          ),
-          child: Center(
-            child: Text(
-              page.toString(),
-              style: TextStyle(
-                color: isCurrentPage ? Colors.white : Colors.black87,
-                fontWeight: isCurrentPage ? FontWeight.bold : FontWeight.normal,
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }
