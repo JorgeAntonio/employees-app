@@ -1,6 +1,7 @@
+import 'package:attendance_app/src/core/assets/image_assets.dart';
 import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
-import 'package:attendance_app/src/core/shared/layout/double_value.dart';
+import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/auth_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -91,25 +92,39 @@ class SignInScreen extends HookConsumerWidget {
                       height: DoubleSizes.size80,
                       decoration: BoxDecoration(
                         color: colorScheme.primaryContainer,
-                        borderRadius: BorderRadius.circular(DoubleSizes.size20),
                       ),
-                      child: Icon(
-                        Icons.access_time_filled_rounded,
-                        size: DoubleSizes.size40,
-                        color: colorScheme.onPrimaryContainer,
-                      ),
+                      child: Image.asset(ImageAssets.logo, fit: BoxFit.cover),
                     ),
 
                     // Title
-                    Text(
-                      'Iniciar sesión',
-                      style: textTheme.headlineLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: colorScheme.onSurface,
-                      ),
+                    Column(
+                      children: [
+                        Text(
+                          'CONSORCIO',
+                          textAlign: TextAlign.center,
+                          style: textTheme.headlineLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                        Text(
+                          'EJECUTOR EL TIGRE',
+                          textAlign: TextAlign.center,
+                          style: textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                      ],
                     ),
 
-                    const SizedBox(height: DoubleSizes.size16),
+                    Gaps.gap16,
+
+                    Text(
+                      'Inicia sesión para continuar',
+                      textAlign: TextAlign.center,
+                      style: textTheme.bodyMedium,
+                    ),
 
                     // Email field
                     TextFormField(
@@ -185,7 +200,7 @@ class SignInScreen extends HookConsumerWidget {
                       },
                     ),
 
-                    const SizedBox(height: DoubleSizes.size16),
+                    Gaps.gap16,
 
                     // Sign in button
                     SizedBox(
@@ -221,6 +236,8 @@ class SignInScreen extends HookConsumerWidget {
                               ),
                       ),
                     ),
+
+                    Gaps.gap16,
 
                     // Terms and conditions
                     Row(
