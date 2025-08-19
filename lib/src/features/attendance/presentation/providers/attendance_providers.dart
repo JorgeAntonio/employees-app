@@ -23,9 +23,8 @@ Dio attendanceDio(Ref ref) {
 // API DataSource Provider
 @riverpod
 AttendanceDataSourceImpl attendanceApiDataSource(Ref ref) {
-  final dio = ref.watch(attendanceDioProvider);
   final authLocalDataSource = ref.watch(authLocalDataSourceProvider);
-  return AttendanceDataSourceImpl(dio, authLocalDataSource);
+  return AttendanceDataSourceImpl.withoutInterceptors(authLocalDataSource);
 }
 
 // Repository Provider

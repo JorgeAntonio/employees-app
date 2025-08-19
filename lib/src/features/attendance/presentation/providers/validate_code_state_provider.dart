@@ -25,15 +25,24 @@ class ValidateCodeNotifier extends _$ValidateCodeNotifier {
 
   /// Validate QR code or manual code
   Future<void> validateCode(ValidateCodeRequest request) async {
-    state = const ValidateCodeState.loading();
+    try {
+      state = const ValidateCodeState.loading();
 
-    final useCase = ref.read(validateCodeUseCaseProvider);
-    final result = await useCase(request);
+      final useCase = ref.read(validateCodeUseCaseProvider);
+      final result = await useCase(request);
 
-    result.fold(
-      (failure) => state = ValidateCodeState.error(failure.message),
-      (response) => state = ValidateCodeState.success(response),
-    );
+      result.fold(
+        (failure) {
+          state = ValidateCodeState.error(failure.message);
+        },
+        (response) {
+          state = ValidateCodeState.success(response);
+        },
+      );
+    } catch (e) {
+      // Solo capturar errores realmente inesperados, no DioException que ya maneja el datasource
+      state = ValidateCodeState.error('Error del sistema: ${e.toString()}');
+    }
   }
 
   /// Validate code with location data

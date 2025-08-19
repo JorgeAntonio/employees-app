@@ -67,6 +67,10 @@ class QrReaderScreen extends HookConsumerWidget {
     void resetScanner() {
       isScanning.value = true;
       currentCode.value = null;
+      // Reset the validate code state
+      ref.read(validateCodeNotifierProvider.notifier).reset();
+      // Reset the confirm attendance state
+      ref.read(confirmAttendanceNotifierProvider.notifier).reset();
     }
 
     void confirmAttendance(String code, WidgetRef ref) {
@@ -274,29 +278,31 @@ class QrReaderScreen extends HookConsumerWidget {
                             ],
                           ],
                         ),
-                        error: (error) => Column(
-                          children: [
-                            Icon(
-                              Icons.error,
-                              color: colorScheme.error,
-                              size: 64,
-                            ),
-                            Gaps.gap16,
-                            Text(
-                              'Error al validar',
-                              style: textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
+                        error: (error) {
+                          return Column(
+                            children: [
+                              Icon(
+                                Icons.error,
                                 color: colorScheme.error,
+                                size: 64,
                               ),
-                            ),
-                            Gaps.gap8,
-                            Text(
-                              error,
-                              style: textTheme.bodyMedium,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
+                              Gaps.gap16,
+                              Text(
+                                'Error al validar',
+                                style: textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: colorScheme.error,
+                                ),
+                              ),
+                              Gaps.gap8,
+                              Text(
+                                error,
+                                style: textTheme.bodyMedium,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          );
+                        },
                       ),
                       Gaps.gap24,
                       // Confirm attendance

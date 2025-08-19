@@ -23,6 +23,24 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
 
   AttendanceDataSourceImpl(this._dio, this._authLocalDataSource);
 
+  // Constructor alternativo sin interceptores
+  AttendanceDataSourceImpl.withoutInterceptors(this._authLocalDataSource)
+    : _dio = _createSimpleDio();
+
+  static Dio _createSimpleDio() {
+    final dio = Dio();
+    dio.options.baseUrl = ApiServiceVariables.userService;
+    dio.options.connectTimeout = const Duration(seconds: 30);
+    dio.options.receiveTimeout = const Duration(seconds: 30);
+    dio.options.sendTimeout = const Duration(seconds: 30);
+    dio.options.headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+    // Sin interceptores para manejar errores directamente
+    return dio;
+  }
+
   @override
   FutureEither<QrCodeResponse> generateCheckInQr() async {
     try {
@@ -63,9 +81,11 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
         }
       });
     } on DioException catch (e) {
-      return left(_handleDioError(e));
+      final failure = _handleDioError(e);
+      return left(failure);
     } catch (e) {
-      return left(ServerFailure('Error inesperado: $e'));
+      // Si llegamos aquí, mostrar el error completo para debugging
+      return left(AttendanceFailure('Error: $e'));
     }
   }
 
@@ -111,7 +131,8 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
         }
       });
     } on DioException catch (e) {
-      return left(_handleDioError(e));
+      final failure = _handleDioError(e);
+      return left(failure);
     } catch (e) {
       return left(ServerFailure('Error inesperado: $e'));
     }
@@ -210,7 +231,8 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
         }
       });
     } on DioException catch (e) {
-      return left(_handleDioError(e));
+      final failure = _handleDioError(e);
+      return left(failure);
     } catch (e) {
       return left(ServerFailure('Error inesperado: $e'));
     }
@@ -242,10 +264,22 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
         );
 
         if (response.statusCode == 200) {
-          final validateCodeResponseModel = ValidateCodeResponseModel.fromJson(
-            response.data,
-          );
-          return right(validateCodeResponseModel.toDomain());
+          // Verificar directamente si success es true en la respuesta
+          if (response.data != null && response.data['success'] == true) {
+            // Solo parsear el modelo si es exitoso
+            final validateCodeResponseModel =
+                ValidateCodeResponseModel.fromJson(response.data);
+
+            return right(validateCodeResponseModel.toDomain());
+          } else {
+            // La API devolvió success: false, extraer el mensaje específico
+            final errorMessage = _extractErrorMessage(response.data);
+            return left(AttendanceFailure(errorMessage));
+          }
+        } else if (response.statusCode == 400 || response.statusCode == 422) {
+          // Manejar errores 400/422 que no lanzan DioException
+          final errorMessage = _extractErrorMessage(response.data);
+          return left(AttendanceFailure(errorMessage));
         } else {
           return left(
             ServerFailure(
@@ -255,7 +289,16 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
         }
       });
     } on DioException catch (e) {
-      return left(_handleDioError(e));
+      // Manejo especial para errores de validación de la API
+      if (e.response?.data != null &&
+          (e.response?.statusCode == 400 || e.response?.statusCode == 422)) {
+        // Extraer el mensaje específico de la API
+        final errorMessage = _extractErrorMessage(e.response!.data);
+        return left(AttendanceFailure(errorMessage));
+      }
+
+      final failure = _handleDioError(e);
+      return left(failure);
     } catch (e) {
       return left(ServerFailure('Error inesperado: $e'));
     }
@@ -329,12 +372,15 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
         return const NetworkFailure('Error de conexión a internet');
       case DioExceptionType.badResponse:
         final statusCode = e.response?.statusCode;
-        final message = e.response?.data?['message'] ?? 'Error del servidor';
+        final responseData = e.response?.data;
+        // Extraer mensaje de error usando el mismo patrón que auth
+        final errorMessage = _extractErrorMessage(responseData);
 
         switch (statusCode) {
           case 400:
             // Para errores 400, usar directamente el mensaje de la API
-            return AttendanceFailure(message);
+
+            return AttendanceFailure(errorMessage);
           case 401:
             return const AuthFailure('Token de autenticación inválido');
           case 403:
@@ -346,10 +392,49 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
           case 500:
             return const ServerFailure('Error interno del servidor');
           default:
-            return ServerFailure('Error del servidor: $message');
+            return ServerFailure('Error del servidor: $errorMessage');
         }
       default:
         return ServerFailure('Error de red: ${e.message}');
+    }
+  }
+
+  /// Extrae el mensaje de error del response de la API
+  String _extractErrorMessage(dynamic responseData) {
+    if (responseData == null) {
+      return 'Error desconocido';
+    }
+
+    try {
+      if (responseData is Map<String, dynamic>) {
+        // Si la API devuelve {success: false, message: "..."}
+        if (responseData.containsKey('message')) {
+          final message = responseData['message'] as String;
+          return message;
+        }
+
+        // Si la API devuelve {error: "..."}
+        if (responseData.containsKey('error')) {
+          final error = responseData['error'] as String;
+          return error;
+        }
+
+        // Si la API devuelve {detail: "..."}
+        if (responseData.containsKey('detail')) {
+          final detail = responseData['detail'] as String;
+          return detail;
+        }
+      }
+
+      // Si es un string directo
+      if (responseData is String) {
+        return responseData;
+      }
+
+      // Fallback
+      return 'Error del servidor';
+    } catch (e) {
+      return 'Error al procesar la respuesta del servidor';
     }
   }
 

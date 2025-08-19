@@ -92,7 +92,7 @@ final class AttendanceApiDataSourceProvider
 }
 
 String _$attendanceApiDataSourceHash() =>
-    r'eadeace99b5480f9abe8dee621866e8b4984917a';
+    r'82c59767ddbd8cbd2c1617fecdea4aa7ca333ed4';
 
 @ProviderFor(attendanceRepository)
 const attendanceRepositoryProvider = AttendanceRepositoryProvider._();
