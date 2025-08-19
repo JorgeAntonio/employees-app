@@ -1,4 +1,5 @@
 import 'package:attendance_app/src/core/router/router.dart';
+import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/core/shared/widgets/section_title.dart';
@@ -20,14 +21,6 @@ class EmployeesScreen extends ConsumerWidget {
         leading: true,
         centerTitle: true,
         actions: [
-          // refresh button
-          IconButton(
-            onPressed: () {
-              ref.invalidate(_employeesProvider);
-            },
-            icon: Icon(Icons.refresh),
-            tooltip: 'Actualizar lista',
-          ),
           // import excel
           IconButton(
             onPressed: () {
@@ -38,16 +31,34 @@ class EmployeesScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(DoubleSizes.size16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            spacing: DoubleSizes.size16,
-            children: [
-              SectionTitle(title: 'Empleados registrados'),
-              _EmployeesList(),
-            ],
+      body: RefreshIndicator(
+        onRefresh: () async {
+          ref.invalidate(_employeesProvider);
+          // Add a small delay to ensure the refresh indicator is visible
+          await Future.delayed(const Duration(milliseconds: 500));
+        },
+        child: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.all(DoubleSizes.size16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: DoubleSizes.size16,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.refresh,
+                      size: 20,
+                      color: context.appColorScheme.onSurfaceVariant,
+                    ),
+                    SizedBox(width: 4),
+                    SectionTitle(title: 'Pull para actualizar'),
+                  ],
+                ),
+                _EmployeesList(),
+              ],
+            ),
           ),
         ),
       ),
@@ -77,10 +88,35 @@ class _EmployeesList extends ConsumerWidget {
               data: (employeesResponse) {
                 final employees = employeesResponse.data?.employees ?? [];
                 if (employees.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      'No hay empleados registrados',
-                      style: TextStyle(fontSize: 16),
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      ref.invalidate(_employeesProvider);
+                      await Future.delayed(const Duration(milliseconds: 500));
+                    },
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.4,
+                        child: const Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'No hay empleados registrados',
+                                style: TextStyle(fontSize: 16),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Desliza hacia abajo para actualizar',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   );
                 }
@@ -111,27 +147,45 @@ class _EmployeesList extends ConsumerWidget {
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stackTrace) => Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.error_outline,
-                      size: 48,
-                      color: Colors.red,
+              error: (error, stackTrace) => RefreshIndicator(
+                onRefresh: () async {
+                  ref.invalidate(_employeesProvider);
+                  await Future.delayed(const Duration(milliseconds: 500));
+                },
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.6,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.error_outline,
+                            size: 48,
+                            color: Colors.red,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Error al cargar empleados: $error',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'Desliza hacia abajo para actualizar',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 14, color: Colors.grey),
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () => ref.refresh(_employeesProvider),
+                            child: const Text('Reintentar'),
+                          ),
+                        ],
+                      ),
                     ),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Error al cargar empleados: $error',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () => ref.refresh(_employeesProvider),
-                      child: const Text('Reintentar'),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             );

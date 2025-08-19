@@ -1,3 +1,5 @@
+import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
+import 'package:attendance_app/src/core/shared/widgets/section_title.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_response.dart';
 import 'package:flutter/material.dart';
 
@@ -97,11 +99,17 @@ class _AttendanceHistoryListState extends State<AttendanceHistoryList> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
             children: [
-              Text(
-                'Total: ${pagination?.total ?? 0} registros',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+              SectionTitle(title: 'Total: ${pagination?.total ?? 0} registros'),
+              Spacer(),
+              Row(
+                children: [
+                  Icon(
+                    Icons.refresh,
+                    color: context.appColorScheme.onSurfaceVariant,
+                  ),
+                  SizedBox(width: 4),
+                  SectionTitle(title: 'Pull para actualizar'),
+                ],
               ),
             ],
           ),

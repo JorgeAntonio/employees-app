@@ -51,7 +51,7 @@ class _AttendanceHistoryScreenState
       _currentPage = 1; // Reset to first page when filters change
       _isLoadingMore = false;
     });
-    
+
     // Clear existing data when filters change
     ref.read(attendanceHistoryNotifierProvider.notifier).clearHistory();
     _loadAttendanceHistory();
@@ -64,7 +64,7 @@ class _AttendanceHistoryScreenState
         _currentPage = page;
         _isLoadingMore = true;
       });
-      
+
       final request = AttendanceHistoryRequest(
         page: _currentPage,
         limit: _limit,
@@ -76,12 +76,12 @@ class _AttendanceHistoryScreenState
           .read(attendanceHistoryNotifierProvider.notifier)
           .loadMoreAttendanceHistory(request)
           .then((_) {
-        if (mounted) {
-          setState(() {
-            _isLoadingMore = false;
+            if (mounted) {
+              setState(() {
+                _isLoadingMore = false;
+              });
+            }
           });
-        }
-      });
     } else {
       // Regular page change (shouldn't happen with infinite scroll)
       setState(() {
@@ -97,11 +97,11 @@ class _AttendanceHistoryScreenState
       _currentPage = 1;
       _isLoadingMore = false;
     });
-    
+
     // Clear existing data and load fresh data
     ref.read(attendanceHistoryNotifierProvider.notifier).clearHistory();
     _loadAttendanceHistory();
-    
+
     // Add a small delay to ensure the UI shows the refresh indicator
     await Future.delayed(const Duration(milliseconds: 500));
   }
@@ -144,7 +144,8 @@ class _AttendanceHistoryScreenState
                       isLoading: _isLoadingMore,
                     );
                   },
-                  loading: () => const Center(child: CircularProgressIndicator()),
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
                   error: (error, stackTrace) => RefreshIndicator(
                     onRefresh: _onRefresh,
                     child: SingleChildScrollView(
@@ -163,7 +164,9 @@ class _AttendanceHistoryScreenState
                               const SizedBox(height: 16),
                               Text(
                                 'Error al cargar el historial',
-                                style: Theme.of(context).textTheme.headlineSmall,
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.headlineSmall,
                               ),
                               const SizedBox(height: 8),
                               Text(
