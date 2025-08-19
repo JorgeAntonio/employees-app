@@ -22,23 +22,34 @@ class AttendanceHistoryList extends StatelessWidget {
     final pagination = historyResponse.data?.pagination;
 
     if (attendances.isEmpty) {
-      return const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.history, size: 64, color: Colors.grey),
-            SizedBox(height: 16),
-            Text(
-              'No hay registros de asistencia',
-              style: TextStyle(fontSize: 18, color: Colors.grey),
+      return SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.7,
+          child: const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.history, size: 64, color: Colors.grey),
+                SizedBox(height: 16),
+                Text(
+                  'No hay registros de asistencia',
+                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                ),
+                SizedBox(height: 8),
+                Text(
+                  'Los registros aparecerán aquí cuando estén disponibles',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey),
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Desliza hacia abajo para actualizar',
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              ],
             ),
-            SizedBox(height: 8),
-            Text(
-              'Los registros aparecerán aquí cuando estén disponibles',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey),
-            ),
-          ],
+          ),
         ),
       );
     }

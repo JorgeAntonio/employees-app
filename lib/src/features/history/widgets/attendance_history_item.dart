@@ -35,7 +35,7 @@ class AttendanceHistoryItemWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    dateFormat.format(attendance.date),
+                    dateFormat.format(attendance.date.toLocal()),
                     style: textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -50,13 +50,13 @@ class AttendanceHistoryItemWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Entrada: ${attendance.checkInTime != null ? timeFormat.format(attendance.checkInTime!) : '--:--'}',
+                    'Entrada: ${attendance.checkInTime != null ? timeFormat.format(attendance.checkInTime!.toLocal()) : '--:--'}',
                     style: textTheme.bodyMedium?.copyWith(
                       color: colorTheme.onSurfaceVariant,
                     ),
                   ),
                   Text(
-                    'Salida: ${attendance.checkOutTime != null ? timeFormat.format(attendance.checkOutTime!) : '--:--'}',
+                    'Salida: ${attendance.checkOutTime != null ? timeFormat.format(attendance.checkOutTime!.toLocal()) : '--:--'}',
                     style: textTheme.bodyMedium?.copyWith(
                       color: colorTheme.onSurfaceVariant,
                     ),

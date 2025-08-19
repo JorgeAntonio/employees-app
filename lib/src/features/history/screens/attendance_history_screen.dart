@@ -59,6 +59,19 @@ class _AttendanceHistoryScreenState
     _loadAttendanceHistory();
   }
 
+  Future<void> _onRefresh() async {
+    // Reset to first page and reload data
+    setState(() {
+      _currentPage = 1;
+    });
+    _loadAttendanceHistory();
+    
+    // Wait for the provider to complete the request
+    final completer = ref.read(attendanceHistoryNotifierProvider.notifier);
+    // Add a small delay to ensure the UI shows the refresh indicator
+    await Future.delayed(const Duration(milliseconds: 500));
+  }
+
   @override
   Widget build(BuildContext context) {
     final attendanceHistoryState = ref.watch(attendanceHistoryNotifierProvider);
@@ -80,47 +93,59 @@ class _AttendanceHistoryScreenState
           children: [
             // Content section
             Expanded(
-              child: attendanceHistoryState.when(
-                data: (historyResponse) {
-                  if (historyResponse == null) {
-                    return const Center(
-                      child: Text('No hay datos de historial disponibles'),
-                    );
-                  }
+              child: RefreshIndicator(
+                onRefresh: _onRefresh,
+                child: attendanceHistoryState.when(
+                  data: (historyResponse) {
+                    if (historyResponse == null) {
+                      return const Center(
+                        child: Text('No hay datos de historial disponibles'),
+                      );
+                    }
 
-                  return AttendanceHistoryList(
-                    historyResponse: historyResponse,
-                    currentPage: _currentPage,
-                    onPageChanged: _onPageChanged,
-                  );
-                },
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stackTrace) => Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.error_outline,
-                        size: 64,
-                        color: Colors.red,
+                    return AttendanceHistoryList(
+                      historyResponse: historyResponse,
+                      currentPage: _currentPage,
+                      onPageChanged: _onPageChanged,
+                    );
+                  },
+                  loading: () => const Center(child: CircularProgressIndicator()),
+                  error: (error, stackTrace) => RefreshIndicator(
+                    onRefresh: _onRefresh,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.error_outline,
+                                size: 64,
+                                color: Colors.red,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'Error al cargar el historial',
+                                style: Theme.of(context).textTheme.headlineSmall,
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                error.toString(),
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: _loadAttendanceHistory,
+                                child: const Text('Reintentar'),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Error al cargar el historial',
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        error.toString(),
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: _loadAttendanceHistory,
-                        child: const Text('Reintentar'),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
