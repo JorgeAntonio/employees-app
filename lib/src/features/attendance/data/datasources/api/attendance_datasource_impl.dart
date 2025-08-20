@@ -23,23 +23,13 @@ class AttendanceDataSourceImpl implements AttendanceDataSource {
 
   AttendanceDataSourceImpl(this._dio, this._authLocalDataSource);
 
-  // Constructor alternativo sin interceptores
-  AttendanceDataSourceImpl.withoutInterceptors(this._authLocalDataSource)
-    : _dio = _createSimpleDio();
+  // Constructor para usar DioConfig centralizado
+  AttendanceDataSourceImpl.withDioConfig(this._authLocalDataSource)
+    : _dio = DioConfig.createDio(enableLogging: true);
 
-  static Dio _createSimpleDio() {
-    final dio = Dio();
-    dio.options.baseUrl = ApiServiceVariables.userService;
-    dio.options.connectTimeout = const Duration(seconds: 30);
-    dio.options.receiveTimeout = const Duration(seconds: 30);
-    dio.options.sendTimeout = const Duration(seconds: 30);
-    dio.options.headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    };
-    // Sin interceptores para manejar errores directamente
-    return dio;
-  }
+  // Constructor sin interceptores (mantenido para compatibilidad)
+  AttendanceDataSourceImpl.withoutInterceptors(this._authLocalDataSource)
+    : _dio = DioConfig.createDio(enableLogging: false);
 
   @override
   FutureEither<QrCodeResponse> generateCheckInQr() async {
