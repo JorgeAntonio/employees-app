@@ -1,3 +1,4 @@
+import 'package:alert_info/alert_info.dart';
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_request.dart';
@@ -48,8 +49,10 @@ class _ConfirmAttendanceScreenState
   void _confirmAttendance() {
     final code = _codeController.text.trim();
     if (code.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor ingresa un código')),
+      AlertInfo.show(
+        context: context,
+        text: 'Por favor ingresa un código',
+        typeInfo: TypeInfo.warning,
       );
       return;
     }

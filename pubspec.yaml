@@ -79,6 +79,9 @@ dependencies:
   path_provider: ^2.1.5
   permission_handler: ^11.3.1
 
+  # UI
+  alert_info: ^0.0.6
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

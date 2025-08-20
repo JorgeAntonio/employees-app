@@ -1,3 +1,4 @@
+import 'package:alert_info/alert_info.dart';
 import 'package:attendance_app/src/core/assets/image_assets.dart';
 import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
@@ -30,18 +31,11 @@ class SignInScreen extends HookConsumerWidget {
       next.when(
         data: (authSession) {
           if (authSession != null) {
-            // Mostrar mensaje de éxito
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Text('¡Inicio de sesión exitoso!'),
-                backgroundColor: colorScheme.primary,
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(DoubleSizes.size12),
-                ),
-              ),
+            AlertInfo.show(
+              context: context,
+              text: '¡Inicio de sesión exitoso!',
+              typeInfo: TypeInfo.success,
             );
-            // La navegación se maneja automáticamente en el router
           }
         },
         loading: () {
@@ -54,17 +48,10 @@ class SignInScreen extends HookConsumerWidget {
           } else {
             errorMessage = error.toString();
           }
-
-          // Mostrar mensaje de error
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error: $errorMessage'),
-              backgroundColor: colorScheme.error,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(DoubleSizes.size12),
-              ),
-            ),
+          AlertInfo.show(
+            context: context,
+            text: 'Error: $errorMessage',
+            typeInfo: TypeInfo.error,
           );
         },
       );

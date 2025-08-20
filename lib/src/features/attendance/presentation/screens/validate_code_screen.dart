@@ -1,3 +1,4 @@
+import 'package:alert_info/alert_info.dart';
 import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/confirm_attendance_state_provider.dart';
@@ -44,11 +45,10 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
       final accuracy = double.tryParse(_accuracyController.text);
 
       if (latitude == null || longitude == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Por favor ingresa coordenadas válidas'),
-            backgroundColor: Colors.red,
-          ),
+        AlertInfo.show(
+          context: context,
+          text: 'Por favor ingresa coordenadas válidas',
+          typeInfo: TypeInfo.warning,
         );
         return;
       }

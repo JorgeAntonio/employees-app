@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:alert_info/alert_info.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -361,13 +362,11 @@ class ImportEmployeesScreen extends ConsumerWidget {
     final status = await Permission.storage.request();
     if (!status.isGranted) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'Se requieren permisos de almacenamiento para descargar el archivo',
-            ),
-            backgroundColor: Colors.orange,
-          ),
+        AlertInfo.show(
+          context: context,
+          text:
+              'Se requieren permisos de almacenamiento\n para descargar el archivo.',
+          typeInfo: TypeInfo.warning,
         );
       }
       return;
@@ -394,11 +393,10 @@ class ImportEmployeesScreen extends ConsumerWidget {
       }
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error al seleccionar archivo: $e'),
-            backgroundColor: Colors.red,
-          ),
+        AlertInfo.show(
+          context: context,
+          text: 'Error al seleccionar archivo: $e',
+          typeInfo: TypeInfo.warning,
         );
       }
     }
