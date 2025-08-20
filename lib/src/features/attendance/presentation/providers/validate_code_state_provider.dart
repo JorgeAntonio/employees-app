@@ -40,8 +40,11 @@ class ValidateCodeNotifier extends _$ValidateCodeNotifier {
         },
       );
     } catch (e) {
-      // Solo capturar errores realmente inesperados, no DioException que ya maneja el datasource
-      state = ValidateCodeState.error('Error del sistema: ${e.toString()}');
+      // Solo capturar errores realmente inesperados que no sean de red/API
+      // Los errores de red/API ya están manejados en el datasource
+      state = const ValidateCodeState.error(
+        'Ocurrió un error inesperado. Verifica si tienes MARCADO un INGRESO activo. Debes MARCAR tu SALIDA primero e intentar nuevamente.',
+      );
     }
   }
 
