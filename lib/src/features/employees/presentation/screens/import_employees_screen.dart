@@ -159,9 +159,6 @@ class ImportEmployeesScreen extends ConsumerWidget {
     ImportEmployeesState state,
     ImportEmployeesNotifier notifier,
   ) {
-    // Cast to dynamic to access the file property
-    final file = (state as dynamic).file as File;
-
     return Card(
       color: Theme.of(context).colorScheme.primaryContainer,
       child: Padding(
@@ -188,10 +185,19 @@ class ImportEmployeesScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Ubicación: ${file.path}',
+              'El archivo se ha descargado en la carpeta de Descargas.',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
                 fontSize: 12,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Nombre: employees_template.xlsx',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 12),

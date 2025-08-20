@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:attendance_app/src/core/services/download_service.dart';
 import 'package:attendance_app/src/features/auth/data/data.dart';
 import 'package:dio/dio.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../../domain/datasources/api/import_employees_datasource.dart';
 import '../../../domain/entities/import_response_entity.dart';
@@ -26,37 +26,48 @@ class ImportEmployeesDataSourceImpl implements ImportEmployeesDataSource {
             throw Exception('Token de autenticación no encontrado');
           }
 
-          final response = await _dio.get(
-            '/employees/import/template',
-            options: Options(
-              headers: {'Authorization': 'Bearer $token'},
-              responseType: ResponseType.bytes,
-              followRedirects: false,
-              validateStatus: (status) {
-                return status! < 500;
-              },
-            ),
+          // Construir la URL completa del template
+          final baseUrl = _dio.options.baseUrl;
+          final templateUrl = '$baseUrl/employees/import/template';
+
+          // Usar flutter_downloader para descargar
+          final taskId = await DownloadService.downloadFile(
+            url: templateUrl,
+            filename: 'employees_template.xlsx',
+            headers: {'Authorization': 'Bearer $token'},
+            showNotification: true,
+            openFileFromNotification: false,
           );
 
-          if (response.statusCode == 200) {
-            // Obtener el directorio de descargas
-            final directory = await getApplicationDocumentsDirectory();
-            final filePath = '${directory.path}/employees_template.xlsx';
+          if (taskId == null) {
+            throw Exception('Error al iniciar la descarga del template');
+          }
 
-            // Crear el archivo
-            final file = File(filePath);
-            await file.writeAsBytes(response.data);
+          // Esperar a que la descarga se complete usando el método mejorado
+          final task = await DownloadService.waitForDownloadCompletion(
+            taskId,
+            maxWaitTimeSeconds: 60,
+          );
 
-            return file;
-          } else {
+          if (task == null) {
+            throw Exception('Error: no se pudo completar la descarga');
+          }
+
+          // Obtener la ruta del archivo descargado
+          final filePath = await DownloadService.getDownloadedFilePath(
+            'employees_template.xlsx',
+          );
+          final file = File(filePath);
+
+          if (!await file.exists()) {
             throw Exception(
-              'Error al descargar el template: ${response.statusCode}',
+              'El archivo descargado no se encontró en: $filePath',
             );
           }
+
+          return file;
         },
       );
-    } on DioException catch (e) {
-      throw Exception('Error de conexión al descargar template: ${e.message}');
     } catch (e) {
       throw Exception('Error inesperado al descargar template: $e');
     }

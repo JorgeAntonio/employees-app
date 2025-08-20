@@ -8,6 +8,7 @@ import 'package:attendance_app/src/features/employees/domain/entities/employee_e
 import 'package:attendance_app/src/features/employees/presentation/providers/employees_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:go_router/go_router.dart';
 
 class EmployeesScreen extends ConsumerWidget {
@@ -17,17 +18,31 @@ class EmployeesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AttendanceAppBar(
-        title: 'Gestionar Empleados',
+        title: 'Empleados',
         leading: true,
         centerTitle: true,
-        actions: [
-          // import excel
-          IconButton(
-            onPressed: () {
-              context.pushNamed(Routes.importEmployees.name);
+      ),
+      floatingActionButton: SpeedDial(
+        backgroundColor: context.appColorScheme.secondary,
+        foregroundColor: context.appColorScheme.onSecondary,
+        icon: Icons.add,
+        activeIcon: Icons.close,
+        children: [
+          SpeedDialChild(
+            backgroundColor: Colors.green,
+            foregroundColor: context.appColorScheme.onPrimary,
+            child: const Icon(Icons.upload_file),
+            label: 'Importar',
+            onTap: () => context.pushNamed(Routes.importEmployees.name),
+          ),
+          SpeedDialChild(
+            backgroundColor: Colors.purple,
+            foregroundColor: context.appColorScheme.onTertiary,
+            child: const Icon(Icons.add),
+            label: 'Agregar',
+            onTap: () {
+              // acción agregar
             },
-            icon: Icon(Icons.import_export),
-            tooltip: 'Importar empleados',
           ),
         ],
       ),
@@ -220,6 +235,7 @@ class _EmployeeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
+      color: context.appColorScheme.surface,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
