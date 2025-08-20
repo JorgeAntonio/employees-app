@@ -375,7 +375,7 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: validateCodeState.maybeWhen(
-        success: (response) => FilledButton(
+        success: (response) => FloatingActionButton.extended(
           onPressed: ref
               .watch(confirmAttendanceNotifierProvider)
               .maybeWhen(
@@ -399,18 +399,13 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
                   }
                 },
               ),
-          style: FilledButton.styleFrom(padding: const EdgeInsets.all(16)),
-          child: ref
+          label: ref
               .watch(confirmAttendanceNotifierProvider)
               .maybeWhen(
                 loading: () => const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Confirmando...',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    Spacer(),
+                    Text('Confirmando...'),
+                    SizedBox(width: 10),
                     SizedBox(
                       width: 20,
                       height: 20,
@@ -421,52 +416,33 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
                     ),
                   ],
                 ),
-                orElse: () => Row(
-                  children: [
-                    const Text('Confirmar', style: TextStyle(fontSize: 16)),
-                    const Spacer(),
-                    const Icon(Icons.check, color: Colors.white),
-                  ],
-                ),
+                orElse: () => const Text('Confirmar'),
               ),
+          icon: const Icon(Icons.check),
         ),
-        orElse: () => Container(
-          width: 200,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            color: context.appColorScheme.primary,
+        orElse: () => FloatingActionButton.extended(
+          onPressed: validateCodeState.maybeWhen(
+            loading: () => null,
+            orElse: () => _validateCode,
           ),
-          child: FilledButton(
-            onPressed: validateCodeState.maybeWhen(
-              loading: () => null,
-              orElse: () => _validateCode,
-            ),
-            style: FilledButton.styleFrom(padding: const EdgeInsets.all(16)),
-            child: validateCodeState.maybeWhen(
-              loading: () => const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Validando...', style: TextStyle(color: Colors.white)),
-                  Spacer(),
-                  SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    ),
+          label: validateCodeState.maybeWhen(
+            loading: () => const Row(
+              children: [
+                Text('Validando...'),
+                SizedBox(width: 10),
+                SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                   ),
-                ],
-              ),
-              orElse: () => Row(
-                children: [
-                  const Text('Validar Código', style: TextStyle(fontSize: 16)),
-                  const Spacer(),
-                  const Icon(Icons.check, color: Colors.white),
-                ],
-              ),
+                ),
+              ],
             ),
+            orElse: () => const Text('Validar Código'),
           ),
+          icon: const Icon(Icons.qr_code),
         ),
       ),
     );
