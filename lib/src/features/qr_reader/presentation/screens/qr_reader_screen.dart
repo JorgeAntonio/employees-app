@@ -305,40 +305,46 @@ class QrReaderScreen extends HookConsumerWidget {
                         },
                       ),
                       Gaps.gap24,
-                      // Confirm attendance
+                      // Confirm attendance - Solo mostrar si no está confirmada exitosamente
                       validateCodeState.when(
                         initial: () => const SizedBox.shrink(),
                         loading: () => const SizedBox.shrink(),
-                        success: (response) => Column(
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: colorScheme.primary,
-                                foregroundColor: colorScheme.onPrimary,
-                                minimumSize: const Size(double.infinity, 48),
+                        success: (response) => confirmAttendanceState.when(
+                          initial: () => Column(
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: colorScheme.primary,
+                                  foregroundColor: colorScheme.onPrimary,
+                                  minimumSize: const Size(double.infinity, 48),
+                                ),
+                                onPressed: () {
+                                  if (currentCode.value != null) {
+                                    confirmAttendance(currentCode.value!, ref);
+                                  }
+                                },
+                                child: const Text('Confirmar asistencia'),
                               ),
-                              onPressed: confirmAttendanceState.isLoading
-                                  ? null
-                                  : () {
-                                      if (currentCode.value != null) {
-                                        confirmAttendance(
-                                          currentCode.value!,
-                                          ref,
-                                        );
-                                      }
-                                    },
-                              child: confirmAttendanceState.isLoading
-                                  ? const SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : const Text('Confirmar asistencia'),
-                            ),
-                            if (confirmAttendanceState.isLoading) ...[
+                            ],
+                          ),
+                          loading: () => Column(
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: colorScheme.primary,
+                                  foregroundColor: colorScheme.onPrimary,
+                                  minimumSize: const Size(double.infinity, 48),
+                                ),
+                                onPressed: null,
+                                child: const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
                               Gaps.gap8,
                               Text(
                                 'Confirmando asistencia...',
@@ -348,7 +354,26 @@ class QrReaderScreen extends HookConsumerWidget {
                                 ),
                               ),
                             ],
-                          ],
+                          ),
+                          success: (confirmResponse) =>
+                              const SizedBox.shrink(), // Ocultar botón cuando ya está confirmada
+                          error: (errorMessage) => Column(
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: colorScheme.primary,
+                                  foregroundColor: colorScheme.onPrimary,
+                                  minimumSize: const Size(double.infinity, 48),
+                                ),
+                                onPressed: () {
+                                  if (currentCode.value != null) {
+                                    confirmAttendance(currentCode.value!, ref);
+                                  }
+                                },
+                                child: const Text('Reintentar confirmación'),
+                              ),
+                            ],
+                          ),
                         ),
                         error: (message) => const SizedBox.shrink(),
                       ),
