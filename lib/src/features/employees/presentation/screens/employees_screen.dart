@@ -1,6 +1,6 @@
 import 'package:attendance_app/src/core/router/router.dart';
-import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
-import 'package:attendance_app/src/core/shared/layout/double_value.dart';
+import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
+import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/core/shared/widgets/section_title.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_response.dart';
@@ -233,95 +233,105 @@ class _EmployeeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 8),
-      color: context.appColorScheme.surface,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 24,
-                  backgroundImage: employee.photoUrl != null
-                      ? NetworkImage(employee.photoUrl!)
-                      : null,
-                  child: employee.photoUrl == null
-                      ? Text(
-                          '${employee.firstName[0]}${employee.lastName[0]}',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        )
-                      : null,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${employee.firstName} ${employee.lastName}',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        employee.position,
-                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            _InfoRow(label: 'DNI', value: employee.dni),
-            _InfoRow(label: 'Departamento', value: employee.department),
-            _InfoRow(label: 'Email', value: employee.user.email),
-            _InfoRow(label: 'Rol', value: employee.user.role),
-            if (employee.phone != null)
-              _InfoRow(label: 'Teléfono', value: employee.phone!),
-            if (employee.shift != null)
-              _InfoRow(
-                label: 'Turno',
-                value:
-                    '${employee.shift!.name} (${employee.shift!.startTime} - ${employee.shift!.endTime})',
+    return GestureDetector(
+      onTap: () => _showEmployeeDetails(context, employee),
+      child: Card(
+        elevation: 0,
+        margin: EdgeInsets.only(bottom: DoubleSizes.size16),
+        color: context.appColorScheme.surfaceContainerLow,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            spacing: DoubleSizes.size12,
+            children: [
+              CircleAvatar(
+                radius: 40,
+                backgroundImage: employee.photoUrl != null
+                    ? NetworkImage(employee.photoUrl!)
+                    : null,
+                child: employee.photoUrl == null
+                    ? Text(
+                        '${employee.firstName[0]}${employee.lastName[0]}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      )
+                    : null,
               ),
-          ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          child: Text(
+                            '${employee.firstName} ${employee.lastName}',
+                            style: context.appTextTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.chevron_right_outlined,
+                          size: 20,
+                          color: context.appColorScheme.gray,
+                        ),
+                      ],
+                    ),
+                    Gaps.gap8,
+                    _InfoRow(icon: Icon(Icons.work), value: employee.position),
+                    _InfoRow(
+                      icon: Icon(Icons.business),
+                      value: employee.department,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  void _showEmployeeDetails(BuildContext context, Employee employee) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: _EmployeeDetailsContent(employee: employee),
+        );
+      },
     );
   }
 }
 
 class _InfoRow extends StatelessWidget {
-  final String label;
+  final Icon icon;
   final String value;
 
-  const _InfoRow({required this.label, required this.value});
+  const _InfoRow({required this.icon, required this.value});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 100,
-            child: Text(
-              '$label:',
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: Colors.grey[700],
-              ),
-            ),
-          ),
-          Expanded(child: Text(value, style: const TextStyle(fontSize: 14))),
-        ],
-      ),
+    return Row(
+      spacing: DoubleSizes.size4,
+      children: [
+        Icon(icon.icon, size: 14, color: context.appColorScheme.gray),
+        Text(
+          value,
+          style: TextStyle(fontSize: 14, color: context.appColorScheme.gray),
+        ),
+      ],
     );
   }
 }
@@ -349,6 +359,284 @@ class _PaginationInfo extends StatelessWidget {
           Text(
             'Total: ${pagination.total} empleados',
             style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _EmployeeDetailsContent extends StatelessWidget {
+  final Employee employee;
+
+  const _EmployeeDetailsContent({required this.employee});
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: DraggableScrollableSheet(
+        initialChildSize: 0.5,
+        minChildSize: 0.3,
+        maxChildSize: 0.9,
+        expand: false,
+        builder: (context, scrollController) {
+          return Padding(
+            padding: const EdgeInsets.all(DoubleSizes.size16),
+            child: Column(
+              children: [
+                // Header fijo con botones y título
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      onPressed: null,
+                      icon: Icon(Icons.edit_square),
+                      tooltip: 'Editar',
+                    ),
+                    Text('Detalles', style: context.appTextTheme.titleMedium),
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: Icon(Icons.expand_circle_down_sharp),
+                      tooltip: 'Cerrar',
+                    ),
+                  ],
+                ),
+                const Divider(height: DoubleSizes.size8, thickness: 1),
+
+                // Contenido scrollable
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      spacing: DoubleSizes.size16,
+                      children: [
+                        Gaps.gap4,
+
+                        // Header con foto y nombre
+                        _EmployeeHeader(employee: employee),
+
+                        // Información personal
+                        _DetailSection(
+                          title: 'Información Personal',
+                          icon: Icons.person,
+                          children: [
+                            _DetailItem(label: 'DNI', value: employee.dni),
+                            _DetailItem(
+                              label: 'Email',
+                              value: employee.user.email,
+                            ),
+                            if (employee.phone != null)
+                              _DetailItem(
+                                label: 'Teléfono',
+                                value: employee.phone!,
+                              ),
+                          ],
+                        ),
+
+                        // Información laboral
+                        _DetailSection(
+                          title: 'Información Laboral',
+                          icon: Icons.work,
+                          children: [
+                            _DetailItem(
+                              label: 'Cargo',
+                              value: employee.position,
+                            ),
+                            _DetailItem(
+                              label: 'Departamento',
+                              value: employee.department,
+                            ),
+                            _DetailItem(
+                              label: 'Rol',
+                              value: employee.user.role,
+                            ),
+                            if (employee.shift != null)
+                              _DetailItem(
+                                label: 'Turno',
+                                value: employee.shift!.name,
+                              ),
+                            if (employee.shift != null)
+                              _DetailItem(
+                                label: 'Horario',
+                                value:
+                                    '${employee.shift!.startTime} - ${employee.shift!.endTime}',
+                              ),
+                          ],
+                        ),
+
+                        // Información de cuenta
+                        _DetailSection(
+                          title: 'Información de Cuenta',
+                          icon: Icons.account_circle,
+                          children: [
+                            _DetailItem(
+                              label: 'Usuario ID',
+                              value: employee.user.id.toString(),
+                            ),
+                            _DetailItem(
+                              label: 'Empleado ID',
+                              value: employee.id.toString(),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _EmployeeHeader extends StatelessWidget {
+  final Employee employee;
+
+  const _EmployeeHeader({required this.employee});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: context.appColorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: context.appColorScheme.outline.withValues(alpha: 0.2),
+        ),
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 40,
+            backgroundImage: employee.photoUrl != null
+                ? NetworkImage(employee.photoUrl!)
+                : null,
+            child: employee.photoUrl == null
+                ? Text(
+                    '${employee.firstName[0]}${employee.lastName[0]}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                    ),
+                  )
+                : null,
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${employee.firstName} ${employee.lastName}',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  employee.position,
+                  style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DetailSection extends StatelessWidget {
+  final String title;
+  final IconData icon;
+  final List<Widget> children;
+
+  const _DetailSection({
+    required this.title,
+    required this.icon,
+    required this.children,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(icon, size: 20, color: context.appColorScheme.primary),
+            const SizedBox(width: 8),
+            Text(
+              title,
+              style: context.appTextTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: context.appColorScheme.primary,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: context.appColorScheme.surfaceContainerLow,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: context.appColorScheme.outline.withValues(alpha: 0.2),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _DetailItem extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const _DetailItem({required this.label, required this.value});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 100,
+            child: Text(
+              '$label:',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Colors.grey[700],
+                fontSize: 14,
+              ),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.black87,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
           ),
         ],
       ),
