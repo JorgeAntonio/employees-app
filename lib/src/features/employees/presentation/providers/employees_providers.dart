@@ -3,6 +3,7 @@ import 'package:attendance_app/src/features/employees/data/datasources/api/emplo
 import 'package:attendance_app/src/features/employees/data/repositories/employees_repository_impl.dart';
 import 'package:attendance_app/src/features/employees/domain/repositories/employees_repository.dart';
 import 'package:attendance_app/src/features/employees/domain/usecases/get_employees_usecase.dart';
+import 'package:attendance_app/src/features/employees/domain/usecases/add_employee_usecase.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/auth_providers.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -38,4 +39,10 @@ EmployeesRepository employeesRepository(Ref ref) {
 GetEmployeesUseCase getEmployeesUseCase(Ref ref) {
   final employeesRepository = ref.watch(employeesRepositoryProvider);
   return GetEmployeesUseCase(employeesRepository);
+}
+
+@riverpod
+AddEmployeeUseCase addEmployeeUseCase(Ref ref) {
+  final employeesRepository = ref.watch(employeesRepositoryProvider);
+  return AddEmployeeUseCase(employeesRepository);
 }

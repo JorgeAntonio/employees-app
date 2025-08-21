@@ -190,5 +190,53 @@ final class GetEmployeesUseCaseProvider
 String _$getEmployeesUseCaseHash() =>
     r'c7664faffbc267abb7e0888b92882c47890e6038';
 
+@ProviderFor(addEmployeeUseCase)
+const addEmployeeUseCaseProvider = AddEmployeeUseCaseProvider._();
+
+final class AddEmployeeUseCaseProvider
+    extends
+        $FunctionalProvider<
+          AddEmployeeUseCase,
+          AddEmployeeUseCase,
+          AddEmployeeUseCase
+        >
+    with $Provider<AddEmployeeUseCase> {
+  const AddEmployeeUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'addEmployeeUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$addEmployeeUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<AddEmployeeUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  AddEmployeeUseCase create(Ref ref) {
+    return addEmployeeUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AddEmployeeUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AddEmployeeUseCase>(value),
+    );
+  }
+}
+
+String _$addEmployeeUseCaseHash() =>
+    r'2711fd97529c757406a0059650a2b4d250cc77c0';
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
