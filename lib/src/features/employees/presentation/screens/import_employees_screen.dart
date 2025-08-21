@@ -1,14 +1,18 @@
 import 'dart:io';
 
 import 'package:alert_info/alert_info.dart';
+import 'package:attendance_app/src/core/core.dart';
+import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
+import 'package:attendance_app/src/core/shared/layout/double_value.dart';
+import 'package:attendance_app/src/core/shared/loaders/flutter_app_blurry_loader.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
+import 'package:attendance_app/src/features/employees/presentation/providers/import_employees_providers.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:permission_handler/permission_handler.dart';
-
-import '../providers/import_employees_providers.dart';
 
 class ImportEmployeesScreen extends ConsumerWidget {
   const ImportEmployeesScreen({super.key});
@@ -17,6 +21,8 @@ class ImportEmployeesScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final importState = ref.watch(importEmployeesNotifierProvider);
     final importNotifier = ref.read(importEmployeesNotifierProvider.notifier);
+    final colorScheme = context.appColorScheme;
+    final textTheme = context.appTextTheme;
 
     return Scaffold(
       appBar: AttendanceAppBar(
@@ -25,114 +31,101 @@ class ImportEmployeesScreen extends ConsumerWidget {
         leading: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(DoubleSizes.size16),
         child: Column(
+          spacing: DoubleSizes.size16,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Información sobre el formato
             Card(
+              color: Palette.warning.withValues(alpha: 0.1),
+              elevation: 0,
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  spacing: DoubleSizes.size8,
                   children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.info_outline,
-                          color: Theme.of(context).colorScheme.primary,
+                    Icon(
+                      Icons.warning,
+                      color: Palette.warning.withValues(alpha: 0.9),
+                    ),
+                    Flexible(
+                      child: Text(
+                        'Aquí puedes importar empleados desde un archivo CSV, XLS o XLSX.',
+                        textAlign: TextAlign.center,
+                        style: textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.w400,
                         ),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Formato del archivo',
-                          style: Theme.of(context).textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    const Text(
-                      'El archivo debe contener las siguientes columnas en este orden:',
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).colorScheme.surfaceContainerHighest,
-                        borderRadius: BorderRadius.circular(8),
                       ),
-                      child: const Text(
-                        'firstName, lastName, dni, email, phone, position, department, shiftName',
-                        style: TextStyle(fontFamily: 'monospace', fontSize: 12),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    const Text(
-                      'Formatos soportados: CSV, XLS, XLSX (máximo 10MB)',
-                      style: TextStyle(fontSize: 12),
                     ),
                   ],
                 ),
               ),
             ),
-            const SizedBox(height: 24),
-
-            // Botón para descargar template
-            ElevatedButton.icon(
-              onPressed: _isDownloading(importState)
-                  ? null
-                  : () => _downloadTemplate(context, importNotifier),
-              icon: _isDownloading(importState)
-                  ? const SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.download),
-              label: Text(
-                _isDownloading(importState)
-                    ? 'Descargando...'
-                    : 'Descargar Template',
-              ),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+            Text(
+              'Formato del archivo',
+              style: textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
               ),
             ),
-
-            const SizedBox(height: 16),
-
-            // Botón para subir archivo
-            ElevatedButton.icon(
-              onPressed: _isUploading(importState)
-                  ? null
-                  : () => _pickAndUploadFile(context, importNotifier),
-              icon: _isUploading(importState)
-                  ? const SizedBox(
-                      width: 16,
-                      height: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.upload_file),
-              label: Text(
-                _isUploading(importState)
-                    ? 'Subiendo archivo...'
-                    : 'Seleccionar y Subir Archivo',
-              ),
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                foregroundColor: Theme.of(context).colorScheme.onSecondary,
+            const Text(
+              'El archivo debe contener las siguientes columnas en este orden:',
+            ),
+            Card(
+              elevation: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: const Text(
+                  'firstName, lastName, dni, email, phone, position, department, shiftName',
+                  style: TextStyle(fontFamily: 'monospace', fontSize: 12),
+                ),
               ),
             ),
+            const Text('Formatos soportados: CSV, XLS, XLSX (máximo 10MB)'),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: DoubleSizes.size16),
 
             // Mostrar resultado
             _buildResultWidget(context, importState, importNotifier),
           ],
         ),
+      ),
+      floatingActionButton: SpeedDial(
+        icon: Icons.more_vert,
+        activeIcon: Icons.close,
+        backgroundColor: colorScheme.secondary,
+        foregroundColor: colorScheme.onSecondary,
+        children: [
+          SpeedDialChild(
+            foregroundColor: colorScheme.onPrimary,
+            backgroundColor: Palette.success,
+            child: const Icon(Icons.download),
+            label: 'Descargar Template',
+            onTap: () => _downloadTemplate(context, importNotifier),
+          ),
+          SpeedDialChild(
+            foregroundColor: colorScheme.onSecondary,
+            backgroundColor: Palette.blue,
+            child: const Icon(Icons.upload_file),
+            label: 'Seleccionar y Subir Archivo',
+            onTap: () => _pickAndUploadFile(context, importNotifier),
+          ),
+          SpeedDialChild(
+            foregroundColor: colorScheme.onSurface,
+            backgroundColor: colorScheme.surface,
+            child: const Icon(Icons.info_outline),
+            label: 'Ayuda',
+            onTap: () {
+              AlertInfo.show(
+                context: context,
+                text:
+                    'Asegúrate de que el archivo cumpla\n con el formato requerido.',
+                typeInfo: TypeInfo.info,
+              );
+            },
+          ),
+        ],
       ),
     );
   }
@@ -164,61 +157,64 @@ class ImportEmployeesScreen extends ConsumerWidget {
     final file = (state as dynamic).file as File;
     final filePath = file.path;
     final fileName = file.path.split('/').last;
+    final colorScheme = context.appColorScheme;
+    final textTheme = context.appTextTheme;
 
     return Card(
-      color: Theme.of(context).colorScheme.primaryContainer,
+      color: Colors.green.shade50,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(DoubleSizes.size16),
         child: Column(
+          spacing: DoubleSizes.size16,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
+              spacing: DoubleSizes.size8,
               children: [
-                Icon(
-                  Icons.check_circle,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                const SizedBox(width: 8),
+                Icon(Icons.check_circle, color: Palette.success),
                 Expanded(
                   child: Text(
                     'Template descargado exitosamente',
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      color: Palette.success,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
             Text(
               'El archivo se ha descargado en la carpeta de Descargas.',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-                fontSize: 12,
-              ),
+              style: textTheme.bodySmall,
             ),
-            const SizedBox(height: 4),
             Text(
               'Nombre: $fileName',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimaryContainer,
-                fontSize: 12,
+              style: textTheme.bodySmall?.copyWith(
+                color: colorScheme.onPrimaryContainer,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(height: 12),
-            // 👇 Nuevo botón para abrir archivo
-            ElevatedButton.icon(
-              onPressed: () => _openDownloadedFile(filePath),
-              icon: const Icon(Icons.open_in_new),
-              label: const Text('Abrir archivo'),
-            ),
-
-            const SizedBox(height: 8),
-
-            ElevatedButton(
-              onPressed: () => notifier.resetState(),
-              child: const Text('Cerrar'),
+            Row(
+              spacing: DoubleSizes.size8,
+              children: [
+                FilledButton.icon(
+                  onPressed: () => _openDownloadedFile(filePath),
+                  icon: const Icon(Icons.open_in_new),
+                  label: const Text('Abrir archivo'),
+                  style: ButtonStyle(
+                    backgroundColor: WidgetStateProperty.all<Color>(
+                      Palette.success,
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () => notifier.resetState(),
+                    icon: const Icon(Icons.close),
+                    label: const Text('Cerrar'),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -233,25 +229,27 @@ class ImportEmployeesScreen extends ConsumerWidget {
   ) {
     // Cast to dynamic to access the response property
     final response = (state as dynamic).response;
+    final colorScheme = context.appColorScheme;
 
     return Card(
       color: response.success
-          ? Theme.of(context).colorScheme.primaryContainer
-          : Theme.of(context).colorScheme.errorContainer,
+          ? colorScheme.primaryContainer
+          : colorScheme.errorContainer,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(DoubleSizes.size16),
         child: Column(
+          spacing: DoubleSizes.size16,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              spacing: DoubleSizes.size8,
               children: [
                 Icon(
                   response.success ? Icons.check_circle : Icons.error,
                   color: response.success
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).colorScheme.error,
+                      ? colorScheme.primary
+                      : colorScheme.error,
                 ),
-                const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     response.success
@@ -259,21 +257,20 @@ class ImportEmployeesScreen extends ConsumerWidget {
                         : 'Error en la importación',
                     style: TextStyle(
                       color: response.success
-                          ? Theme.of(context).colorScheme.onPrimaryContainer
-                          : Theme.of(context).colorScheme.onErrorContainer,
+                          ? colorScheme.onPrimaryContainer
+                          : colorScheme.onErrorContainer,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
             Text(
               response.message,
               style: TextStyle(
                 color: response.success
-                    ? Theme.of(context).colorScheme.onPrimaryContainer
-                    : Theme.of(context).colorScheme.onErrorContainer,
+                    ? colorScheme.onPrimaryContainer
+                    : colorScheme.onErrorContainer,
               ),
             ),
             if (response.success && response.importedCount > 0) ...[
@@ -281,7 +278,7 @@ class ImportEmployeesScreen extends ConsumerWidget {
               Text(
                 'Empleados importados: ${response.importedCount}',
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                  color: colorScheme.onPrimaryContainer,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -291,7 +288,7 @@ class ImportEmployeesScreen extends ConsumerWidget {
               Text(
                 'Errores encontrados:',
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.onErrorContainer,
+                  color: colorScheme.onErrorContainer,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -302,7 +299,7 @@ class ImportEmployeesScreen extends ConsumerWidget {
                   child: Text(
                     '• $error',
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onErrorContainer,
+                      color: colorScheme.onErrorContainer,
                       fontSize: 12,
                     ),
                   ),
@@ -310,7 +307,7 @@ class ImportEmployeesScreen extends ConsumerWidget {
               ),
             ],
             const SizedBox(height: 12),
-            ElevatedButton(
+            OutlinedButton(
               onPressed: () => notifier.resetState(),
               child: const Text('Cerrar'),
             ),
@@ -367,14 +364,6 @@ class ImportEmployeesScreen extends ConsumerWidget {
     );
   }
 
-  bool _isDownloading(ImportEmployeesState state) {
-    return state.runtimeType.toString() == '_DownloadingTemplate';
-  }
-
-  bool _isUploading(ImportEmployeesState state) {
-    return state.runtimeType.toString() == '_Uploading';
-  }
-
   Future<void> _downloadTemplate(
     BuildContext context,
     ImportEmployeesNotifier notifier,
@@ -403,7 +392,12 @@ class ImportEmployeesScreen extends ConsumerWidget {
       return;
     }
 
-    await notifier.downloadTemplate();
+    // Usar el loader con mensaje personalizado
+    await showLoader(
+      context,
+      notifier.downloadTemplate(),
+      text: 'Descargando template...',
+    );
   }
 
   Future<void> _pickAndUploadFile(
@@ -420,7 +414,15 @@ class ImportEmployeesScreen extends ConsumerWidget {
 
       if (result != null && result.files.single.path != null) {
         final file = File(result.files.single.path!);
-        await notifier.uploadEmployeesFile(file);
+
+        // Usar el loader con mensaje personalizado para la subida
+        if (context.mounted) {
+          await showLoader(
+            context,
+            notifier.uploadEmployeesFile(file),
+            text: 'Subiendo archivo...',
+          );
+        }
       }
     } catch (e) {
       if (context.mounted) {
