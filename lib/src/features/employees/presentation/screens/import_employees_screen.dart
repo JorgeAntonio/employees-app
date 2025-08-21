@@ -5,6 +5,7 @@ import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../providers/import_employees_providers.dart';
@@ -159,6 +160,11 @@ class ImportEmployeesScreen extends ConsumerWidget {
     ImportEmployeesState state,
     ImportEmployeesNotifier notifier,
   ) {
+    // Obtener el archivo del estado en lugar de hardcodear la ruta
+    final file = (state as dynamic).file as File;
+    final filePath = file.path;
+    final fileName = file.path.split('/').last;
+
     return Card(
       color: Theme.of(context).colorScheme.primaryContainer,
       child: Padding(
@@ -193,7 +199,7 @@ class ImportEmployeesScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              'Nombre: employees_template.xlsx',
+              'Nombre: $fileName',
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
                 fontSize: 12,
@@ -201,6 +207,15 @@ class ImportEmployeesScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 12),
+            // 👇 Nuevo botón para abrir archivo
+            ElevatedButton.icon(
+              onPressed: () => _openDownloadedFile(filePath),
+              icon: const Icon(Icons.open_in_new),
+              label: const Text('Abrir archivo'),
+            ),
+
+            const SizedBox(height: 8),
+
             ElevatedButton(
               onPressed: () => notifier.resetState(),
               child: const Text('Cerrar'),
@@ -415,6 +430,14 @@ class ImportEmployeesScreen extends ConsumerWidget {
           typeInfo: TypeInfo.warning,
         );
       }
+    }
+  }
+
+  Future<void> _openDownloadedFile(String filePath) async {
+    final result = await OpenFilex.open(filePath);
+
+    if (result.type != ResultType.done) {
+      debugPrint("No se pudo abrir el archivo: ${result.message}");
     }
   }
 }
