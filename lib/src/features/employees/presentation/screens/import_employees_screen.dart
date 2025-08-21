@@ -364,14 +364,24 @@ class ImportEmployeesScreen extends ConsumerWidget {
     BuildContext context,
     ImportEmployeesNotifier notifier,
   ) async {
-    // Solicitar permisos de almacenamiento
-    final status = await Permission.storage.request();
+    PermissionStatus status;
+
+    if (Platform.isAndroid) {
+      if (await Permission.manageExternalStorage.isGranted) {
+        status = PermissionStatus.granted;
+      } else {
+        status = await Permission.manageExternalStorage.request();
+      }
+    } else {
+      status = await Permission.storage.request();
+    }
+
     if (!status.isGranted) {
       if (context.mounted) {
         AlertInfo.show(
           context: context,
           text:
-              'Se requieren permisos de almacenamiento\n para descargar el archivo.',
+              'Se requieren permisos de almacenamiento\npara descargar el archivo.',
           typeInfo: TypeInfo.warning,
         );
       }
