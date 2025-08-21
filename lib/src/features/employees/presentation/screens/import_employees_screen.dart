@@ -30,65 +30,68 @@ class ImportEmployeesScreen extends ConsumerWidget {
         centerTitle: true,
         leading: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(DoubleSizes.size16),
-        child: Column(
-          spacing: DoubleSizes.size16,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Card(
-              color: Palette.warning.withValues(alpha: 0.1),
-              elevation: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  spacing: DoubleSizes.size8,
-                  children: [
-                    Icon(
-                      Icons.warning,
-                      color: Palette.warning.withValues(alpha: 0.9),
-                    ),
-                    Flexible(
-                      child: Text(
-                        'Aquí puedes importar empleados desde un archivo CSV, XLS o XLSX.',
-                        textAlign: TextAlign.center,
-                        style: textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w400,
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.all(DoubleSizes.size16),
+          child: Column(
+            spacing: DoubleSizes.size16,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Card(
+                color: Palette.warning.withValues(alpha: 0.1),
+                elevation: 0,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    spacing: DoubleSizes.size8,
+                    children: [
+                      Icon(
+                        Icons.warning,
+                        color: Palette.warning.withValues(alpha: 0.9),
+                      ),
+                      Flexible(
+                        child: Text(
+                          'Aquí puedes importar empleados desde un archivo CSV, XLS o XLSX.',
+                          textAlign: TextAlign.center,
+                          style: textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Text(
-              'Formato del archivo',
-              style: textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const Text(
-              'El archivo debe contener las siguientes columnas en este orden:',
-            ),
-            Card(
-              elevation: 0,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: const Text(
-                  'firstName, lastName, dni, email, phone, position, department, shiftName',
-                  style: TextStyle(fontFamily: 'monospace', fontSize: 12),
+              Text(
+                'Formato del archivo',
+                style: textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-            const Text('Formatos soportados: CSV, XLS, XLSX (máximo 10MB)'),
+              const Text(
+                'El archivo debe contener las siguientes columnas en este orden:',
+              ),
+              Card(
+                elevation: 0,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: const Text(
+                    'firstName, lastName, dni, email, phone, position, department, shiftName',
+                    style: TextStyle(fontFamily: 'monospace', fontSize: 12),
+                  ),
+                ),
+              ),
+              const Text('Formatos soportados: CSV, XLS, XLSX (máximo 10MB)'),
 
-            const SizedBox(height: DoubleSizes.size16),
+              const SizedBox(height: DoubleSizes.size16),
 
-            // Mostrar resultado
-            _buildResultWidget(context, importState, importNotifier),
-          ],
+              // Mostrar resultado
+              _buildResultWidget(context, importState, importNotifier),
+            ],
+          ),
         ),
       ),
       floatingActionButton: SpeedDial(
@@ -324,37 +327,36 @@ class ImportEmployeesScreen extends ConsumerWidget {
   ) {
     // Cast to dynamic to access the message property
     final message = (state as dynamic).message as String;
+    final colorScheme = context.appColorScheme;
 
     return Card(
-      color: Theme.of(context).colorScheme.errorContainer,
+      color: colorScheme.errorContainer,
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(DoubleSizes.size16),
         child: Column(
+          spacing: DoubleSizes.size16,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
+              spacing: DoubleSizes.size8,
               children: [
-                Icon(Icons.error, color: Theme.of(context).colorScheme.error),
-                const SizedBox(width: 8),
+                Icon(Icons.error, color: colorScheme.error),
                 Expanded(
                   child: Text(
                     'Error',
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onErrorContainer,
+                      color: colorScheme.onErrorContainer,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
             Text(
               message,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onErrorContainer,
-              ),
+              style: TextStyle(color: colorScheme.onErrorContainer),
             ),
-            const SizedBox(height: 12),
-            ElevatedButton(
+            OutlinedButton(
               onPressed: () => notifier.resetState(),
               child: const Text('Cerrar'),
             ),

@@ -111,11 +111,31 @@ class ImportEmployeesDataSourceImpl implements ImportEmployeesDataSource {
             final data = responseData['data'] as Map<String, dynamic>;
             final result = data['result'] as Map<String, dynamic>;
 
+            // Parsear errores correctamente
+            final errorsList = result['errors'] as List?;
+            final parsedErrors = <String>[];
+
+            if (errorsList != null) {
+              for (final error in errorsList) {
+                if (error is Map<String, dynamic>) {
+                  final row = error['row']?.toString() ?? '';
+                  final errorMessage = error['error']?.toString() ?? '';
+                  parsedErrors.add('Fila $row: $errorMessage');
+                } else if (error is String) {
+                  parsedErrors.add(error);
+                }
+              }
+            }
+
+            // Determinar si la importación fue exitosa basándose en si hay empleados importados
+            final successCount = result['success'] as int? ?? 0;
+            final isSuccessful = successCount > 0;
+
             final importResponse = ImportResponseModel(
-              success: responseData['success'] as bool,
+              success: isSuccessful,
               message: data['message'] as String,
-              importedCount: result['success'] as int,
-              errors: List<String>.from(result['errors'] as List),
+              importedCount: successCount,
+              errors: parsedErrors,
             );
             return importResponse.toDomain();
           } else {
