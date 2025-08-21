@@ -389,7 +389,10 @@ class _EmployeeDetailsContent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: null,
+                      onPressed: () => context.goNamed(
+                        Routes.editEmployee.name,
+                        pathParameters: {'id': employee.id.toString()},
+                      ),
                       icon: Icon(Icons.edit_square),
                       tooltip: 'Editar',
                     ),

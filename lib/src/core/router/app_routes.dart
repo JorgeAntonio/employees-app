@@ -3,6 +3,7 @@ import 'package:attendance_app/src/features/auth/presentation/providers/session_
 import 'package:attendance_app/src/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:attendance_app/src/features/base/screens/main_screen.dart';
 import 'package:attendance_app/src/features/dashboard/screens/dashboard_screen.dart';
+import 'package:attendance_app/src/features/employees/presentation/screens/edit_employee_screen.dart';
 import 'package:attendance_app/src/features/employees/presentation/screens/employees_screen.dart';
 import 'package:attendance_app/src/features/employees/presentation/screens/import_employees_screen.dart';
 import 'package:attendance_app/src/features/history/screens/attendance_history_screen.dart';
@@ -98,6 +99,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.importEmployees.path,
         name: Routes.importEmployees.name,
         builder: (context, state) => const ImportEmployeesScreen(),
+      ),
+      GoRoute(
+        path: Routes.editEmployee.path,
+        name: '${Routes.editEmployee.name}/:id',
+        builder: (context, state) {
+          final employeeId = state.pathParameters['id'];
+          return EditEmployeeScreen(employeeId: employeeId as String);
+        },
       ),
 
       StatefulShellRoute.indexedStack(
