@@ -40,9 +40,7 @@ class EmployeesScreen extends ConsumerWidget {
             foregroundColor: context.appColorScheme.onTertiary,
             child: const Icon(Icons.add),
             label: 'Agregar',
-            onTap: () {
-              // acción agregar
-            },
+            onTap: () => context.pushNamed(Routes.addEmployee.name),
           ),
         ],
       ),
@@ -389,7 +387,7 @@ class _EmployeeDetailsContent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                      onPressed: () => context.goNamed(
+                      onPressed: () => context.pushNamed(
                         Routes.editEmployee.name,
                         pathParameters: {'id': employee.id.toString()},
                       ),
