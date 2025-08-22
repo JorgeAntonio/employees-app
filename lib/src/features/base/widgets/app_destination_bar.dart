@@ -18,12 +18,7 @@ class AppDestinationBar extends StatelessWidget {
 
     final List<NavigationDestination> destinations = [
       NavigationDestination(
-        icon: Icon(
-          currentIndex == 0 ? Icons.home : Icons.home_outlined,
-          color: currentIndex == 0
-              ? colorScheme.primary
-              : colorScheme.onSurfaceVariant,
-        ),
+        icon: Icon(currentIndex == 0 ? Icons.home : Icons.home_outlined),
         label: 'Inicio',
       ),
       NavigationDestination(
@@ -31,9 +26,6 @@ class AppDestinationBar extends StatelessWidget {
           currentIndex == 1
               ? Icons.calendar_today
               : Icons.calendar_today_outlined,
-          color: currentIndex == 1
-              ? colorScheme.primary
-              : colorScheme.onSurfaceVariant,
         ),
         label: 'Historial',
       ),
@@ -66,7 +58,7 @@ class AppDestinationBar extends StatelessWidget {
       child: NavigationBar(
         backgroundColor: colorScheme.surface,
         elevation: 0,
-        indicatorColor: colorScheme.primaryContainer,
+        indicatorColor: colorScheme.primary.withValues(alpha: 0.1),
         selectedIndex: currentIndex,
         onDestinationSelected: onTabSelected,
         destinations: destinations,
