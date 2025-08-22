@@ -29,6 +29,13 @@ class ImportEmployeesScreen extends ConsumerWidget {
         title: 'Importar Empleados',
         centerTitle: true,
         leading: true,
+        actions: [
+          IconButton(
+            onPressed: () => _showInfoDialog(context),
+            icon: const Icon(Icons.info_outline),
+            tooltip: 'Información',
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -104,29 +111,15 @@ class ImportEmployeesScreen extends ConsumerWidget {
             foregroundColor: colorScheme.onPrimary,
             backgroundColor: Palette.success,
             child: const Icon(Icons.download),
-            label: 'Descargar Template',
+            label: 'Template',
             onTap: () => _downloadTemplate(context, importNotifier),
           ),
           SpeedDialChild(
             foregroundColor: colorScheme.onSecondary,
             backgroundColor: Palette.blue,
             child: const Icon(Icons.upload_file),
-            label: 'Seleccionar y Subir Archivo',
+            label: 'Subir Archivo',
             onTap: () => _pickAndUploadFile(context, importNotifier),
-          ),
-          SpeedDialChild(
-            foregroundColor: colorScheme.onSurface,
-            backgroundColor: colorScheme.surface,
-            child: const Icon(Icons.info_outline),
-            label: 'Ayuda',
-            onTap: () {
-              AlertInfo.show(
-                context: context,
-                text:
-                    'Asegúrate de que el archivo cumpla\n con el formato requerido.',
-                typeInfo: TypeInfo.info,
-              );
-            },
           ),
         ],
       ),
@@ -443,5 +436,60 @@ class ImportEmployeesScreen extends ConsumerWidget {
     if (result.type != ResultType.done) {
       debugPrint("No se pudo abrir el archivo: ${result.message}");
     }
+  }
+
+  // Mostrar info dialog
+  void _showInfoDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Row(
+            spacing: DoubleSizes.size8,
+            children: [
+              const Icon(Icons.info_outline, color: Palette.info),
+              const Text('Información'),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.people_outline, color: Colors.blue),
+                  title: const Text(
+                    'Aquí puedes crear múltiples empleados a la vez importando un archivo.',
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.warning_amber_outlined,
+                    color: Colors.green,
+                  ),
+                  title: const Text(
+                    'Asegúrate de que el archivo cumpla con el formato requerido.',
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.warning_amber_outlined,
+                    color: Colors.orange,
+                  ),
+                  title: const Text(
+                    'Si hay errores en el archivo, la importación fallará y se mostrará un resumen de los errores.',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cerrar'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
