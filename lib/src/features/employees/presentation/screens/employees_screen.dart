@@ -193,15 +193,15 @@ class _EmployeesScreenState extends ConsumerState<EmployeesScreen> {
         activeIcon: Icons.close,
         children: [
           SpeedDialChild(
-            backgroundColor: Colors.green,
-            foregroundColor: context.appColorScheme.onPrimary,
+            backgroundColor: context.appColorScheme.tertiary,
+            foregroundColor: context.appColorScheme.onTertiary,
             child: const Icon(Icons.upload_file),
             label: 'Importar',
             onTap: () => context.pushNamed(Routes.importEmployees.name),
           ),
           SpeedDialChild(
-            backgroundColor: Colors.purple,
-            foregroundColor: context.appColorScheme.onTertiary,
+            backgroundColor: context.appColorScheme.primary,
+            foregroundColor: context.appColorScheme.onPrimary,
             child: const Icon(Icons.add),
             label: 'Agregar',
             onTap: () => context.pushNamed(Routes.addEmployee.name),
@@ -416,109 +416,88 @@ class _SearchAndFiltersState extends ConsumerState<_SearchAndFilters> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      color: context.appColorScheme.surfaceContainerLow,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            // Barra de búsqueda
-            TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Buscar empleados...',
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _isExpanded ? Icons.expand_less : Icons.expand_more,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _isExpanded = !_isExpanded;
-                    });
-                  },
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              onChanged: (value) => _applyFilters(),
+    return Column(
+      children: [
+        // Barra de búsqueda
+        TextField(
+          controller: _searchController,
+          decoration: InputDecoration(
+            hintText: 'Buscar empleados...',
+            prefixIcon: const Icon(Icons.search),
+            suffixIcon: IconButton(
+              icon: Icon(_isExpanded ? Icons.expand_less : Icons.expand_more),
+              onPressed: () {
+                setState(() {
+                  _isExpanded = !_isExpanded;
+                });
+              },
             ),
-            // Filtros expandibles
-            if (_isExpanded) ...[
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: DropdownButtonFormField<String>(
-                      initialValue: _selectedDepartment,
-                      decoration: InputDecoration(
-                        labelText: 'Departamento',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      items: _departments.map((dept) {
-                        return DropdownMenuItem(
-                          value: dept,
-                          child: Text(
-                            dept,
-                            style: context.appTextTheme.bodyMedium,
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedDepartment = value;
-                        });
-                        _applyFilters();
-                      },
-                    ),
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+          onChanged: (value) => _applyFilters(),
+        ),
+        // Filtros expandibles
+        if (_isExpanded) ...[
+          const SizedBox(height: 16),
+          Column(
+            spacing: DoubleSizes.size12,
+            children: [
+              DropdownButtonFormField<String>(
+                initialValue: _selectedDepartment,
+                decoration: InputDecoration(
+                  labelText: 'Departamento',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: DropdownButtonFormField<String>(
-                      initialValue: _selectedPosition,
-                      decoration: InputDecoration(
-                        labelText: 'Posición',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      items: _positions.map((pos) {
-                        return DropdownMenuItem(
-                          value: pos,
-                          child: Text(
-                            pos,
-                            style: context.appTextTheme.bodyMedium,
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedPosition = value;
-                        });
-                        _applyFilters();
-                      },
-                    ),
-                  ),
-                ],
+                ),
+                items: _departments.map((dept) {
+                  return DropdownMenuItem(
+                    value: dept,
+                    child: Text(dept, style: context.appTextTheme.bodyMedium),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedDepartment = value;
+                  });
+                  _applyFilters();
+                },
               ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: _clearFilters,
-                    child: const Text('Limpiar filtros'),
+              DropdownButtonFormField<String>(
+                initialValue: _selectedPosition,
+                decoration: InputDecoration(
+                  labelText: 'Posición',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                ],
+                ),
+                items: _positions.map((pos) {
+                  return DropdownMenuItem(
+                    value: pos,
+                    child: Text(pos, style: context.appTextTheme.bodyMedium),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedPosition = value;
+                  });
+                  _applyFilters();
+                },
               ),
             ],
-          ],
-        ),
-      ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: _clearFilters,
+                child: const Text('Limpiar filtros'),
+              ),
+            ],
+          ),
+        ],
+      ],
     );
   }
 

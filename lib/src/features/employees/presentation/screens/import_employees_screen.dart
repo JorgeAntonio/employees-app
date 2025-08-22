@@ -108,15 +108,15 @@ class ImportEmployeesScreen extends ConsumerWidget {
         foregroundColor: colorScheme.onSecondary,
         children: [
           SpeedDialChild(
-            foregroundColor: colorScheme.onPrimary,
-            backgroundColor: Palette.success,
+            foregroundColor: colorScheme.onTertiary,
+            backgroundColor: colorScheme.tertiary,
             child: const Icon(Icons.download),
             label: 'Template',
             onTap: () => _downloadTemplate(context, importNotifier),
           ),
           SpeedDialChild(
-            foregroundColor: colorScheme.onSecondary,
-            backgroundColor: Palette.blue,
+            foregroundColor: colorScheme.onPrimary,
+            backgroundColor: colorScheme.primary,
             child: const Icon(Icons.upload_file),
             label: 'Subir Archivo',
             onTap: () => _pickAndUploadFile(context, importNotifier),
@@ -456,12 +456,6 @@ class ImportEmployeesScreen extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  leading: const Icon(Icons.people_outline, color: Colors.blue),
-                  title: const Text(
-                    'Aquí puedes crear múltiples empleados a la vez importando un archivo.',
-                  ),
-                ),
-                ListTile(
                   leading: const Icon(
                     Icons.warning_amber_outlined,
                     color: Colors.green,
@@ -471,12 +465,21 @@ class ImportEmployeesScreen extends ConsumerWidget {
                   ),
                 ),
                 ListTile(
-                  leading: const Icon(
-                    Icons.warning_amber_outlined,
-                    color: Colors.orange,
-                  ),
+                  leading: const Icon(Icons.download, color: Colors.green),
                   title: const Text(
-                    'Si hay errores en el archivo, la importación fallará y se mostrará un resumen de los errores.',
+                    'Para descargar el template, usa el botón de "Template" en el FAB.',
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.upload_file, color: Colors.orange),
+                  title: const Text(
+                    'Para subir un archivo, usa el botón de "Subir Archivo" en el FAB.',
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.check_circle, color: Colors.blue),
+                  title: const Text(
+                    'Para descargar el "Template", tendrá que dar permisos necesarios a la aplicación cuando se lo pida.',
                   ),
                 ),
               ],

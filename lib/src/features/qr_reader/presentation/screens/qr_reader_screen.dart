@@ -386,7 +386,7 @@ class QrReaderScreen extends HookConsumerWidget {
                           margin: const EdgeInsets.only(top: 16),
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: colorScheme.primaryContainer,
+                            color: colorScheme.secondaryContainer,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Column(
@@ -454,7 +454,7 @@ class QrReaderScreen extends HookConsumerWidget {
                         children: [
                           ElevatedButton.icon(
                             onPressed: resetScanner,
-                            style: OutlinedButton.styleFrom(
+                            style: ElevatedButton.styleFrom(
                               foregroundColor: colorScheme.onSecondary,
                               backgroundColor: colorScheme.secondary,
                             ),
