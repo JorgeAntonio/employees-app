@@ -154,27 +154,27 @@ class MaterialTheme {
       fillColor: colorScheme.surfaceContainerHighest,
       contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(32.0),
+        borderRadius: BorderRadius.circular(16.0),
         borderSide: BorderSide.none,
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide.none,
-        borderRadius: BorderRadius.circular(32.0),
+        borderRadius: BorderRadius.circular(16.0),
       ),
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(
           color: colorScheme.secondary.withValues(alpha: 0.6),
           width: 1.0,
         ),
-        borderRadius: BorderRadius.circular(16.0),
+        borderRadius: BorderRadius.circular(8.0),
       ),
       focusedErrorBorder: OutlineInputBorder(
         borderSide: BorderSide(color: colorScheme.error),
-        borderRadius: BorderRadius.circular(32.0),
+        borderRadius: BorderRadius.circular(16.0),
       ),
       errorBorder: OutlineInputBorder(
         borderSide: BorderSide(color: colorScheme.error),
-        borderRadius: BorderRadius.circular(32.0),
+        borderRadius: BorderRadius.circular(16.0),
       ),
     ),
 
@@ -188,7 +188,7 @@ class MaterialTheme {
     filledButtonTheme: FilledButtonThemeData(
       style: ButtonStyle(
         shape: WidgetStateProperty.all(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
         ),
         backgroundColor: WidgetStateProperty.all(colorScheme.primary),
         foregroundColor: WidgetStateProperty.all(colorScheme.onPrimary),
@@ -198,13 +198,15 @@ class MaterialTheme {
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         side: BorderSide(color: colorScheme.primary),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
       ),
     ),
 
     cardTheme: CardThemeData(
       surfaceTintColor: colorScheme.surfaceTint,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       margin: EdgeInsets.zero,
     ),
   );
