@@ -12,7 +12,7 @@ class AttendanceApp extends ConsumerWidget {
     TextTheme textTheme = createTextTheme(
       context,
       "Roboto", // body font
-      "Playfair Display", // title font
+      "Poppins", // title font
     );
 
     MaterialTheme theme = MaterialTheme(textTheme);
