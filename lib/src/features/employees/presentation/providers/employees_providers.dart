@@ -83,3 +83,133 @@ Future<EmployeesResponse> employees(Ref ref) async {
     (success) => success,
   );
 }
+
+// Notifier para manejar la lista acumulativa de empleados (scroll infinito)
+@riverpod
+class EmployeesNotifier extends _$EmployeesNotifier {
+  @override
+  List<Employee> build() {
+    return [];
+  }
+
+  Future<void> loadMoreEmployees(EmployeesRequest request) async {
+    try {
+      final getEmployeesUseCase = ref.read(getEmployeesUseCaseProvider);
+      final result = await getEmployeesUseCase(request);
+
+      result.fold((failure) => throw Exception(failure.message), (
+        employeesResponse,
+      ) {
+        final employees = employeesResponse.data?.employees ?? [];
+        if (request.page == 1) {
+          // Primera página, reemplazar la lista
+          state = employees;
+        } else {
+          // Páginas siguientes, agregar a la lista existente
+          state = [...state, ...employees];
+        }
+      });
+    } catch (e) {
+      // En caso de error, mantener el estado actual
+      rethrow;
+    }
+  }
+
+  void clearEmployees() {
+    state = [];
+  }
+
+  // Método para obtener la respuesta completa (útil para obtener metadatos de paginación)
+  Future<EmployeesResponse?> getEmployeesResponse(
+    EmployeesRequest request,
+  ) async {
+    try {
+      final getEmployeesUseCase = ref.read(getEmployeesUseCaseProvider);
+      final result = await getEmployeesUseCase(request);
+
+      return result.fold(
+        (failure) => null,
+        (employeesResponse) => employeesResponse,
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+}
+
+// Nuevo notifier para manejar estados con AsyncValue
+@riverpod
+class EmployeesStateNotifier extends _$EmployeesStateNotifier {
+  @override
+  AsyncValue<EmployeesResponse?> build() {
+    return const AsyncValue.loading();
+  }
+
+  Future<void> loadEmployees(EmployeesRequest request) async {
+    // Mostrar loading solo en la carga inicial
+    if (request.page == 1) {
+      state = const AsyncValue.loading();
+    }
+
+    try {
+      final getEmployeesUseCase = ref.read(getEmployeesUseCaseProvider);
+      final result = await getEmployeesUseCase(request);
+
+      result.fold(
+        (failure) {
+          state = AsyncValue.error(
+            Exception(failure.message),
+            StackTrace.current,
+          );
+        },
+        (employeesResponse) {
+          state = AsyncValue.data(employeesResponse);
+        },
+      );
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+    }
+  }
+
+  Future<void> loadMoreEmployees(EmployeesRequest request) async {
+    try {
+      final getEmployeesUseCase = ref.read(getEmployeesUseCaseProvider);
+      final result = await getEmployeesUseCase(request);
+
+      result.fold(
+        (failure) {
+          // En caso de error al cargar más, mantener el estado actual
+          throw Exception(failure.message);
+        },
+        (newResponse) {
+          // Combinar los datos existentes con los nuevos
+          final currentState = state.value;
+          if (currentState != null && currentState.data != null) {
+            final currentEmployees = currentState.data!.employees;
+            final newEmployees = newResponse.data?.employees ?? [];
+
+            final combinedResponse = EmployeesResponse(
+              success: newResponse.success,
+              message: newResponse.message,
+              data: EmployeesData(
+                employees: [...currentEmployees, ...newEmployees],
+                pagination: newResponse.data!.pagination,
+              ),
+            );
+
+            state = AsyncValue.data(combinedResponse);
+          } else {
+            state = AsyncValue.data(newResponse);
+          }
+        },
+      );
+    } catch (e) {
+      // No cambiar el estado en caso de error al cargar más
+      rethrow;
+    }
+  }
+
+  void clearEmployees() {
+    state = const AsyncValue.loading();
+  }
+}

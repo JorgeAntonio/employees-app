@@ -1,9 +1,8 @@
-import 'package:attendance_app/src/core/entities/pagination_response.dart';
 import 'package:attendance_app/src/core/router/router.dart';
 import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
-import 'package:attendance_app/src/core/shared/widgets/section_title.dart';
+import 'package:attendance_app/src/core/theme/theme.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/employee_entity.dart';
 import 'package:attendance_app/src/features/employees/presentation/providers/employees_providers.dart';
 import 'package:flutter/material.dart';
@@ -11,16 +10,181 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:go_router/go_router.dart';
 
-class EmployeesScreen extends ConsumerWidget {
+class EmployeesScreen extends ConsumerStatefulWidget {
   const EmployeesScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<EmployeesScreen> createState() => _EmployeesScreenState();
+}
+
+class _EmployeesScreenState extends ConsumerState<EmployeesScreen> {
+  int _currentPage = 1;
+  final int _limit = 10;
+  bool _isLoadingMore = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadEmployees();
+    });
+  }
+
+  Future<void> _loadEmployees() async {
+    final request = ref.read(employeesRequestNotifierProvider);
+    final employeesStateNotifier = ref.read(
+      employeesStateNotifierProvider.notifier,
+    );
+
+    await employeesStateNotifier.loadEmployees(
+      request.copyWith(page: 1, limit: _limit),
+    );
+    _currentPage = 1;
+  }
+
+  Future<void> _onPageChanged() async {
+    if (_isLoadingMore) return;
+
+    final currentState = ref.read(employeesStateNotifierProvider);
+    if (!currentState.hasValue || currentState.value == null) return;
+
+    final response = currentState.value!;
+    final hasMorePages =
+        response.data != null &&
+        response.data!.pagination.page < response.data!.pagination.totalPages;
+
+    if (!hasMorePages) return;
+
+    setState(() {
+      _isLoadingMore = true;
+    });
+
+    try {
+      final nextPage = _currentPage + 1;
+      final request = ref.read(employeesRequestNotifierProvider);
+      final employeesStateNotifier = ref.read(
+        employeesStateNotifierProvider.notifier,
+      );
+
+      await employeesStateNotifier.loadMoreEmployees(
+        request.copyWith(page: nextPage, limit: _limit),
+      );
+      _currentPage = nextPage;
+    } catch (e) {
+      // Handle error
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoadingMore = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _onRefresh() async {
+    final employeesStateNotifier = ref.read(
+      employeesStateNotifierProvider.notifier,
+    );
+    employeesStateNotifier.clearEmployees();
+    _currentPage = 1;
+    await _loadEmployees();
+  }
+
+  void _onFiltersChanged() {
+    final employeesStateNotifier = ref.read(
+      employeesStateNotifierProvider.notifier,
+    );
+    employeesStateNotifier.clearEmployees();
+    _currentPage = 1;
+    _loadEmployees();
+  }
+
+  // Mostrar info dialog
+  void _showInfoDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Row(
+            spacing: DoubleSizes.size8,
+            children: [
+              const Icon(Icons.info_outline, color: Palette.info),
+              const Text('Información'),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.people_outline, color: Colors.blue),
+                  title: const Text(
+                    'Aquí puedes ver la información de los empleados.',
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.search, color: Colors.green),
+                  title: const Text(
+                    'Puedes filtrar y buscar empleados utilizando la barra de búsqueda.',
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.add_circle_outline,
+                    color: Colors.purple,
+                  ),
+                  title: const Text(
+                    'Para agregar un nuevo empleado, utiliza el botón de acción flotante.',
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.edit, color: Colors.orange),
+                  title: const Text(
+                    'Para editar un empleado, toca sobre su tarjeta.',
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.upload_file, color: Colors.teal),
+                  title: const Text(
+                    'Para importar empleados, utiliza la opción de importación en el botón de acción flotante.',
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.refresh, color: Colors.red),
+                  title: const Text(
+                    'Para recargar la lista de empleados, utiliza el gesto de deslizamiento hacia abajo.',
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cerrar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final employeesState = ref.watch(employeesStateNotifierProvider);
+
     return Scaffold(
       appBar: AttendanceAppBar(
         title: 'Empleados',
         leading: true,
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            onPressed: _showInfoDialog,
+            tooltip: 'Información',
+          ),
+        ],
       ),
       floatingActionButton: SpeedDial(
         backgroundColor: context.appColorScheme.secondary,
@@ -44,179 +208,177 @@ class EmployeesScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: RefreshIndicator(
-        onRefresh: () async {
-          ref.invalidate(employeesProvider);
-          // Add a small delay to ensure the refresh indicator is visible
-          await Future.delayed(const Duration(milliseconds: 500));
-        },
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.all(DoubleSizes.size16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: DoubleSizes.size16,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      Icons.refresh,
-                      size: 20,
-                      color: context.appColorScheme.onSurfaceVariant,
+      body: Padding(
+        padding: const EdgeInsets.all(DoubleSizes.size16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _SearchAndFilters(onFiltersChanged: _onFiltersChanged),
+            SizedBox(height: DoubleSizes.size16),
+            Expanded(
+              child: employeesState.when(
+                data: (employeesResponse) {
+                  if (employeesResponse == null ||
+                      employeesResponse.data == null) {
+                    return const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.people_outline,
+                            size: 64,
+                            color: Colors.grey,
+                          ),
+                          SizedBox(height: 16),
+                          Text(
+                            'No hay empleados disponibles',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  return _EmployeesList(
+                    employees: employeesResponse.data!.employees,
+                    onPageChanged: _onPageChanged,
+                    isLoadingMore: _isLoadingMore,
+                    onRefresh: _onRefresh,
+                  );
+                },
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stackTrace) => RefreshIndicator(
+                  onRefresh: _onRefresh,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.error_outline,
+                              size: 64,
+                              color: Colors.red,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Error al cargar empleados',
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              error.toString(),
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              onPressed: _loadEmployees,
+                              child: const Text('Reintentar'),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    SizedBox(width: 4),
-                    SectionTitle(title: 'Pull para actualizar'),
-                  ],
+                  ),
                 ),
-                _SearchAndFilters(),
-                _EmployeesList(),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 }
 
-class _EmployeesList extends ConsumerWidget {
-  const _EmployeesList();
+class _EmployeesList extends ConsumerStatefulWidget {
+  const _EmployeesList({
+    required this.employees,
+    required this.onPageChanged,
+    required this.isLoadingMore,
+    required this.onRefresh,
+  });
+
+  final List<Employee> employees;
+  final VoidCallback onPageChanged;
+  final bool isLoadingMore;
+  final Future<void> Function() onRefresh;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final getEmployeesUseCase = ref.watch(getEmployeesUseCaseProvider);
+  ConsumerState<_EmployeesList> createState() => _EmployeesListState();
+}
 
-    return FutureBuilder<void>(
-      future: _loadEmployees(ref, getEmployeesUseCase),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
+class _EmployeesListState extends ConsumerState<_EmployeesList> {
+  final ScrollController _scrollController = ScrollController();
 
-        return Consumer(
-          builder: (context, ref, child) {
-            final employeesAsyncValue = ref.watch(employeesProvider);
-
-            return employeesAsyncValue.when(
-              data: (employeesResponse) {
-                final employees = employeesResponse.data?.employees ?? [];
-                if (employees.isEmpty) {
-                  return RefreshIndicator(
-                    onRefresh: () async {
-                      ref.invalidate(employeesProvider);
-                      await Future.delayed(const Duration(milliseconds: 500));
-                    },
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.4,
-                        child: const Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'No hay empleados registrados',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Desliza hacia abajo para actualizar',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }
-
-                return Column(
-                  children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: employees.length,
-                      itemBuilder: (context, index) {
-                        final employee = employees[index];
-                        return _EmployeeCard(employee: employee);
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    _PaginationInfo(
-                      pagination:
-                          employeesResponse.data?.pagination ??
-                          PaginationResponse(
-                            page: 1,
-                            limit: 10,
-                            total: 0,
-                            totalPages: 1,
-                          ),
-                    ),
-                  ],
-                );
-              },
-              loading: () => const Center(child: CircularProgressIndicator()),
-              error: (error, stackTrace) => RefreshIndicator(
-                onRefresh: () async {
-                  ref.invalidate(employeesProvider);
-                  await Future.delayed(const Duration(milliseconds: 500));
-                },
-                child: SingleChildScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.6,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.error_outline,
-                            size: 48,
-                            color: Colors.red,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            'Error al cargar empleados: $error',
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 16),
-                          ),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Desliza hacia abajo para actualizar',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 14, color: Colors.grey),
-                          ),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () => ref.refresh(employeesProvider),
-                            child: const Text('Reintentar'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
   }
 
-  Future<void> _loadEmployees(WidgetRef ref, getEmployeesUseCase) async {
-    // Trigger the provider to load data
-    ref.read(employeesProvider);
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      widget.onPageChanged();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final employees = widget.employees;
+
+    if (employees.isEmpty) {
+      return const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.people_outline, size: 64, color: Colors.grey),
+            SizedBox(height: 16),
+            Text(
+              'No hay empleados disponibles',
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: widget.onRefresh,
+      child: ListView.builder(
+        controller: _scrollController,
+        physics: const AlwaysScrollableScrollPhysics(),
+        itemCount: employees.length + (widget.isLoadingMore ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index == employees.length) {
+            // Mostrar indicador de carga al final
+            return const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          final employee = employees[index];
+          return _EmployeeCard(employee: employee);
+        },
+      ),
+    );
   }
 }
 
 class _SearchAndFilters extends ConsumerStatefulWidget {
-  const _SearchAndFilters();
+  const _SearchAndFilters({required this.onFiltersChanged});
+
+  final VoidCallback onFiltersChanged;
 
   @override
   ConsumerState<_SearchAndFilters> createState() => _SearchAndFiltersState();
@@ -267,28 +429,15 @@ class _SearchAndFiltersState extends ConsumerState<_SearchAndFilters> {
               decoration: InputDecoration(
                 hintText: 'Buscar empleados...',
                 prefixIcon: const Icon(Icons.search),
-                suffixIcon: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (_searchController.text.isNotEmpty)
-                      IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _searchController.clear();
-                          _applyFilters();
-                        },
-                      ),
-                    IconButton(
-                      icon: Icon(
-                        _isExpanded ? Icons.expand_less : Icons.expand_more,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _isExpanded = !_isExpanded;
-                        });
-                      },
-                    ),
-                  ],
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _isExpanded ? Icons.expand_less : Icons.expand_more,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isExpanded = !_isExpanded;
+                    });
+                  },
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -311,7 +460,13 @@ class _SearchAndFiltersState extends ConsumerState<_SearchAndFilters> {
                         ),
                       ),
                       items: _departments.map((dept) {
-                        return DropdownMenuItem(value: dept, child: Text(dept));
+                        return DropdownMenuItem(
+                          value: dept,
+                          child: Text(
+                            dept,
+                            style: context.appTextTheme.bodyMedium,
+                          ),
+                        );
                       }).toList(),
                       onChanged: (value) {
                         setState(() {
@@ -332,7 +487,13 @@ class _SearchAndFiltersState extends ConsumerState<_SearchAndFilters> {
                         ),
                       ),
                       items: _positions.map((pos) {
-                        return DropdownMenuItem(value: pos, child: Text(pos));
+                        return DropdownMenuItem(
+                          value: pos,
+                          child: Text(
+                            pos,
+                            style: context.appTextTheme.bodyMedium,
+                          ),
+                        );
                       }).toList(),
                       onChanged: (value) {
                         setState(() {
@@ -372,6 +533,7 @@ class _SearchAndFiltersState extends ConsumerState<_SearchAndFilters> {
       department: _selectedDepartment,
       position: _selectedPosition,
     );
+    widget.onFiltersChanged();
   }
 
   void _clearFilters() {
@@ -384,6 +546,7 @@ class _SearchAndFiltersState extends ConsumerState<_SearchAndFilters> {
         .read(employeesRequestNotifierProvider.notifier)
         .updateFilters(department: null, position: null);
     ref.read(employeesRequestNotifierProvider.notifier).updateSearch(null);
+    widget.onFiltersChanged();
   }
 }
 
@@ -494,78 +657,6 @@ class _InfoRow extends StatelessWidget {
         ),
       ],
     );
-  }
-}
-
-class _PaginationInfo extends ConsumerWidget {
-  final PaginationResponse pagination;
-
-  const _PaginationInfo({required this.pagination});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.grey[100],
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Página ${pagination.page} de ${pagination.totalPages}',
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              Text(
-                'Total: ${pagination.total} empleados',
-                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-              ),
-            ],
-          ),
-          if (pagination.totalPages > 1) ...[
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: pagination.page > 1
-                      ? () => _changePage(ref, pagination.page - 1)
-                      : null,
-                  icon: const Icon(Icons.chevron_left),
-                  tooltip: 'Página anterior',
-                ),
-                const SizedBox(width: 16),
-                Text(
-                  '${pagination.page}',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                IconButton(
-                  onPressed: pagination.page < pagination.totalPages
-                      ? () => _changePage(ref, pagination.page + 1)
-                      : null,
-                  icon: const Icon(Icons.chevron_right),
-                  tooltip: 'Página siguiente',
-                ),
-              ],
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  void _changePage(WidgetRef ref, int newPage) {
-    ref.read(employeesRequestNotifierProvider.notifier).updatePage(newPage);
   }
 }
 

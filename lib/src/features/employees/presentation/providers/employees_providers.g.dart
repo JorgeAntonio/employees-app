@@ -271,7 +271,7 @@ final class EmployeesRequestNotifierProvider
 }
 
 String _$employeesRequestNotifierHash() =>
-    r'ccce521f7246ea10c63cf32d7825eed42685530f';
+    r'34b6d72006693038dd5441a95877cd48a0c79b27';
 
 abstract class _$EmployeesRequestNotifier extends $Notifier<EmployeesRequest> {
   EmployeesRequest build();
@@ -331,7 +331,129 @@ final class EmployeesProvider
   }
 }
 
-String _$employeesHash() => r'bb1de4145101fd6843cfdeefe83fdde40c5ad6ef';
+String _$employeesHash() => r'e638784d63e68c6a9c1caeb27e1fead6ec6a63c2';
+
+@ProviderFor(EmployeesNotifier)
+const employeesNotifierProvider = EmployeesNotifierProvider._();
+
+final class EmployeesNotifierProvider
+    extends $NotifierProvider<EmployeesNotifier, List<Employee>> {
+  const EmployeesNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'employeesNotifierProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$employeesNotifierHash();
+
+  @$internal
+  @override
+  EmployeesNotifier create() => EmployeesNotifier();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(List<Employee> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<Employee>>(value),
+    );
+  }
+}
+
+String _$employeesNotifierHash() => r'5c0600fb24a44f79b973de1e7b43493fb942d29e';
+
+abstract class _$EmployeesNotifier extends $Notifier<List<Employee>> {
+  List<Employee> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<List<Employee>, List<Employee>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<List<Employee>, List<Employee>>,
+              List<Employee>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+@ProviderFor(EmployeesStateNotifier)
+const employeesStateNotifierProvider = EmployeesStateNotifierProvider._();
+
+final class EmployeesStateNotifierProvider
+    extends
+        $NotifierProvider<
+          EmployeesStateNotifier,
+          AsyncValue<EmployeesResponse?>
+        > {
+  const EmployeesStateNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'employeesStateNotifierProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$employeesStateNotifierHash();
+
+  @$internal
+  @override
+  EmployeesStateNotifier create() => EmployeesStateNotifier();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<EmployeesResponse?> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AsyncValue<EmployeesResponse?>>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$employeesStateNotifierHash() =>
+    r'7e7659b7b559192e6e65b2a8907404a7351b171f';
+
+abstract class _$EmployeesStateNotifier
+    extends $Notifier<AsyncValue<EmployeesResponse?>> {
+  AsyncValue<EmployeesResponse?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref
+            as $Ref<
+              AsyncValue<EmployeesResponse?>,
+              AsyncValue<EmployeesResponse?>
+            >;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<EmployeesResponse?>,
+                AsyncValue<EmployeesResponse?>
+              >,
+              AsyncValue<EmployeesResponse?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
 
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
