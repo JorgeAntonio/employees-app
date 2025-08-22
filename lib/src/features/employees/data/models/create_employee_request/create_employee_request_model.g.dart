@@ -29,9 +29,9 @@ Map<String, dynamic> _$CreateEmployeeRequestModelToJson(
   'firstName': instance.firstName,
   'lastName': instance.lastName,
   'dni': instance.dni,
-  'phone': instance.phone,
-  'photoUrl': instance.photoUrl,
+  'phone': ?instance.phone,
+  'photoUrl': ?instance.photoUrl,
   'position': instance.position,
   'department': instance.department,
-  'shiftId': instance.shiftId,
+  'shiftId': ?instance.shiftId,
 };

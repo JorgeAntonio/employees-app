@@ -12,11 +12,11 @@ abstract class CreateEmployeeRequestModel with _$CreateEmployeeRequestModel {
     required String firstName,
     required String lastName,
     required String dni,
-    String? phone,
-    String? photoUrl,
+    @JsonKey(includeIfNull: false) String? phone,
+    @JsonKey(includeIfNull: false) String? photoUrl,
     required String position,
     required String department,
-    String? shiftId,
+    @JsonKey(includeIfNull: false) String? shiftId,
   }) = _CreateEmployeeRequestModel;
 
   factory CreateEmployeeRequestModel.fromJson(Map<String, dynamic> json) =>

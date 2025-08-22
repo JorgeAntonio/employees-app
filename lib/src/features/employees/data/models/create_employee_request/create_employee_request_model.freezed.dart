@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CreateEmployeeRequestModel {
 
- String get email; String get password; String get firstName; String get lastName; String get dni; String? get phone; String? get photoUrl; String get position; String get department; String? get shiftId;
+ String get email; String get password; String get firstName; String get lastName; String get dni;@JsonKey(includeIfNull: false) String? get phone;@JsonKey(includeIfNull: false) String? get photoUrl; String get position; String get department;@JsonKey(includeIfNull: false) String? get shiftId;
 /// Create a copy of CreateEmployeeRequestModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $CreateEmployeeRequestModelCopyWith<$Res>  {
   factory $CreateEmployeeRequestModelCopyWith(CreateEmployeeRequestModel value, $Res Function(CreateEmployeeRequestModel) _then) = _$CreateEmployeeRequestModelCopyWithImpl;
 @useResult
 $Res call({
- String email, String password, String firstName, String lastName, String dni, String? phone, String? photoUrl, String position, String department, String? shiftId
+ String email, String password, String firstName, String lastName, String dni,@JsonKey(includeIfNull: false) String? phone,@JsonKey(includeIfNull: false) String? photoUrl, String position, String department,@JsonKey(includeIfNull: false) String? shiftId
 });
 
 
@@ -162,7 +162,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String email,  String password,  String firstName,  String lastName,  String dni,  String? phone,  String? photoUrl,  String position,  String department,  String? shiftId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String email,  String password,  String firstName,  String lastName,  String dni, @JsonKey(includeIfNull: false)  String? phone, @JsonKey(includeIfNull: false)  String? photoUrl,  String position,  String department, @JsonKey(includeIfNull: false)  String? shiftId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CreateEmployeeRequestModel() when $default != null:
 return $default(_that.email,_that.password,_that.firstName,_that.lastName,_that.dni,_that.phone,_that.photoUrl,_that.position,_that.department,_that.shiftId);case _:
@@ -183,7 +183,7 @@ return $default(_that.email,_that.password,_that.firstName,_that.lastName,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String email,  String password,  String firstName,  String lastName,  String dni,  String? phone,  String? photoUrl,  String position,  String department,  String? shiftId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String email,  String password,  String firstName,  String lastName,  String dni, @JsonKey(includeIfNull: false)  String? phone, @JsonKey(includeIfNull: false)  String? photoUrl,  String position,  String department, @JsonKey(includeIfNull: false)  String? shiftId)  $default,) {final _that = this;
 switch (_that) {
 case _CreateEmployeeRequestModel():
 return $default(_that.email,_that.password,_that.firstName,_that.lastName,_that.dni,_that.phone,_that.photoUrl,_that.position,_that.department,_that.shiftId);case _:
@@ -203,7 +203,7 @@ return $default(_that.email,_that.password,_that.firstName,_that.lastName,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String email,  String password,  String firstName,  String lastName,  String dni,  String? phone,  String? photoUrl,  String position,  String department,  String? shiftId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String email,  String password,  String firstName,  String lastName,  String dni, @JsonKey(includeIfNull: false)  String? phone, @JsonKey(includeIfNull: false)  String? photoUrl,  String position,  String department, @JsonKey(includeIfNull: false)  String? shiftId)?  $default,) {final _that = this;
 switch (_that) {
 case _CreateEmployeeRequestModel() when $default != null:
 return $default(_that.email,_that.password,_that.firstName,_that.lastName,_that.dni,_that.phone,_that.photoUrl,_that.position,_that.department,_that.shiftId);case _:
@@ -218,7 +218,7 @@ return $default(_that.email,_that.password,_that.firstName,_that.lastName,_that.
 @JsonSerializable()
 
 class _CreateEmployeeRequestModel implements CreateEmployeeRequestModel {
-  const _CreateEmployeeRequestModel({required this.email, required this.password, required this.firstName, required this.lastName, required this.dni, this.phone, this.photoUrl, required this.position, required this.department, this.shiftId});
+  const _CreateEmployeeRequestModel({required this.email, required this.password, required this.firstName, required this.lastName, required this.dni, @JsonKey(includeIfNull: false) this.phone, @JsonKey(includeIfNull: false) this.photoUrl, required this.position, required this.department, @JsonKey(includeIfNull: false) this.shiftId});
   factory _CreateEmployeeRequestModel.fromJson(Map<String, dynamic> json) => _$CreateEmployeeRequestModelFromJson(json);
 
 @override final  String email;
@@ -226,11 +226,11 @@ class _CreateEmployeeRequestModel implements CreateEmployeeRequestModel {
 @override final  String firstName;
 @override final  String lastName;
 @override final  String dni;
-@override final  String? phone;
-@override final  String? photoUrl;
+@override@JsonKey(includeIfNull: false) final  String? phone;
+@override@JsonKey(includeIfNull: false) final  String? photoUrl;
 @override final  String position;
 @override final  String department;
-@override final  String? shiftId;
+@override@JsonKey(includeIfNull: false) final  String? shiftId;
 
 /// Create a copy of CreateEmployeeRequestModel
 /// with the given fields replaced by the non-null parameter values.
@@ -265,7 +265,7 @@ abstract mixin class _$CreateEmployeeRequestModelCopyWith<$Res> implements $Crea
   factory _$CreateEmployeeRequestModelCopyWith(_CreateEmployeeRequestModel value, $Res Function(_CreateEmployeeRequestModel) _then) = __$CreateEmployeeRequestModelCopyWithImpl;
 @override @useResult
 $Res call({
- String email, String password, String firstName, String lastName, String dni, String? phone, String? photoUrl, String position, String department, String? shiftId
+ String email, String password, String firstName, String lastName, String dni,@JsonKey(includeIfNull: false) String? phone,@JsonKey(includeIfNull: false) String? photoUrl, String position, String department,@JsonKey(includeIfNull: false) String? shiftId
 });
 
 

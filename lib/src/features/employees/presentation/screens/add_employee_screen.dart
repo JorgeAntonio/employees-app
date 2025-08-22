@@ -1,5 +1,7 @@
+import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/create_employee_request.dart';
 import 'package:attendance_app/src/features/employees/presentation/providers/employees_providers.dart';
+import 'package:attendance_app/src/features/shift/presentation/providers/shift_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,7 +23,7 @@ class _AddEmployeeScreenState extends ConsumerState<AddEmployeeScreen> {
   final _photoUrlController = TextEditingController();
   final _positionController = TextEditingController();
   final _departmentController = TextEditingController();
-  final _shiftIdController = TextEditingController();
+  String? _selectedShiftId;
 
   bool _isLoading = false;
   bool _obscurePassword = true;
@@ -37,7 +39,7 @@ class _AddEmployeeScreenState extends ConsumerState<AddEmployeeScreen> {
     _photoUrlController.dispose();
     _positionController.dispose();
     _departmentController.dispose();
-    _shiftIdController.dispose();
+    // _shiftIdController removed
     super.dispose();
   }
 
@@ -54,15 +56,15 @@ class _AddEmployeeScreenState extends ConsumerState<AddEmployeeScreen> {
       firstName: _firstNameController.text.trim(),
       lastName: _lastNameController.text.trim(),
       dni: _dniController.text.trim(),
-      phone: _phoneController.text.trim(),
+      phone: _phoneController.text.trim().isEmpty
+          ? null
+          : _phoneController.text.trim(),
       photoUrl: _photoUrlController.text.trim().isEmpty
           ? null
           : _photoUrlController.text.trim(),
       position: _positionController.text.trim(),
       department: _departmentController.text.trim(),
-      shiftId: (_shiftIdController.text.trim().isEmpty
-          ? '1'
-          : _shiftIdController.text.trim()),
+      shiftId: _selectedShiftId,
     );
 
     final addEmployeeUseCase = ref.read(addEmployeeUseCaseProvider);
@@ -217,7 +219,7 @@ class _AddEmployeeScreenState extends ConsumerState<AddEmployeeScreen> {
                             return 'El email es requerido';
                           }
                           if (!RegExp(
-                            r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}\$',
+                            r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
                           ).hasMatch(value)) {
                             return 'Ingrese un email válido';
                           }
@@ -301,23 +303,73 @@ class _AddEmployeeScreenState extends ConsumerState<AddEmployeeScreen> {
                         },
                       ),
                       const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _shiftIdController,
-                        decoration: const InputDecoration(
-                          labelText: 'ID de Turno *',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.schedule),
-                          helperText: 'Ingrese el ID numérico del turno',
-                        ),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return 'El ID de turno es requerido';
-                          }
-                          if (int.tryParse(value) == null) {
-                            return 'Ingrese un número válido';
-                          }
-                          return null;
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final shiftsAsync = ref.watch(
+                            shiftsForDropdownProvider,
+                          );
+
+                          return shiftsAsync.when(
+                            data: (shifts) {
+                              return DropdownButtonFormField<String>(
+                                initialValue: _selectedShiftId,
+                                decoration: const InputDecoration(
+                                  labelText: 'Turno *',
+                                  border: OutlineInputBorder(),
+                                  prefixIcon: Icon(Icons.schedule),
+                                  helperText: 'Seleccione el turno de trabajo',
+                                ),
+                                items: shifts.map((shift) {
+                                  return DropdownMenuItem<String>(
+                                    value: shift.id.toString(),
+                                    child: Text(
+                                      '${shift.name} (${shift.startTime} - ${shift.endTime})',
+                                      style: context.appTextTheme.bodySmall,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  );
+                                }).toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedShiftId = value;
+                                  });
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Debe seleccionar un turno';
+                                  }
+                                  return null;
+                                },
+                              );
+                            },
+                            loading: () => DropdownButtonFormField<String>(
+                              decoration: InputDecoration(
+                                labelText: 'Turno *',
+                                border: OutlineInputBorder(),
+                                prefixIcon: Icon(Icons.schedule),
+                                helperText: 'Cargando turnos...',
+                              ),
+                              items: [],
+                              onChanged: null,
+                            ),
+                            error: (error, stack) =>
+                                DropdownButtonFormField<String>(
+                                  decoration: InputDecoration(
+                                    labelText: 'Turno *',
+                                    border: const OutlineInputBorder(),
+                                    prefixIcon: const Icon(Icons.schedule),
+                                    helperText:
+                                        'Error al cargar turnos: ${error.toString()}',
+                                    helperStyle: const TextStyle(
+                                      color: Colors.red,
+                                    ),
+                                  ),
+                                  items: const [],
+                                  onChanged: null,
+                                  validator: (value) =>
+                                      'Error al cargar los turnos',
+                                ),
+                          );
                         },
                       ),
                     ],

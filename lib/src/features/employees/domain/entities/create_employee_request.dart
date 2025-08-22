@@ -10,7 +10,7 @@ class CreateEmployeeRequest {
   final String department;
   final String? shiftId;
 
-  CreateEmployeeRequest({
+  const CreateEmployeeRequest({
     required this.email,
     required this.password,
     required this.firstName,
