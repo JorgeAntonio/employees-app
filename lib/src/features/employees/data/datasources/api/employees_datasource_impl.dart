@@ -4,6 +4,7 @@ import 'package:attendance_app/src/features/employees/data/models/create_employe
 import 'package:attendance_app/src/features/employees/data/models/create_employee_response/create_employee_response_model.dart';
 import 'package:attendance_app/src/features/employees/domain/datasources/api/employees_datasource.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/employee_entity.dart';
+import 'package:attendance_app/src/features/employees/domain/entities/employees_request.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/create_employee_request.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/create_employee_response.dart';
 import 'package:attendance_app/src/features/auth/data/datasources/local/auth_local_datasource.dart';
@@ -17,7 +18,7 @@ class EmployeesDataSourceImpl implements EmployeesDataSource {
   EmployeesDataSourceImpl(this._dio, this._authLocalDataSource);
 
   @override
-  FutureEither<EmployeesResponse> getEmployees() async {
+  FutureEither<EmployeesResponse> getEmployees(EmployeesRequest request) async {
     try {
       // Obtener token de autenticación
       final tokenResult = await _authLocalDataSource.getToken();
@@ -30,6 +31,7 @@ class EmployeesDataSourceImpl implements EmployeesDataSource {
 
         final response = await _dio.get(
           '/employees',
+          queryParameters: request.toQueryParameters(),
           options: Options(headers: {'Authorization': 'Bearer $token'}),
         );
 

@@ -238,5 +238,100 @@ final class AddEmployeeUseCaseProvider
 String _$addEmployeeUseCaseHash() =>
     r'2711fd97529c757406a0059650a2b4d250cc77c0';
 
+@ProviderFor(EmployeesRequestNotifier)
+const employeesRequestNotifierProvider = EmployeesRequestNotifierProvider._();
+
+final class EmployeesRequestNotifierProvider
+    extends $NotifierProvider<EmployeesRequestNotifier, EmployeesRequest> {
+  const EmployeesRequestNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'employeesRequestNotifierProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$employeesRequestNotifierHash();
+
+  @$internal
+  @override
+  EmployeesRequestNotifier create() => EmployeesRequestNotifier();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(EmployeesRequest value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<EmployeesRequest>(value),
+    );
+  }
+}
+
+String _$employeesRequestNotifierHash() =>
+    r'ccce521f7246ea10c63cf32d7825eed42685530f';
+
+abstract class _$EmployeesRequestNotifier extends $Notifier<EmployeesRequest> {
+  EmployeesRequest build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<EmployeesRequest, EmployeesRequest>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<EmployeesRequest, EmployeesRequest>,
+              EmployeesRequest,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+@ProviderFor(employees)
+const employeesProvider = EmployeesProvider._();
+
+final class EmployeesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<EmployeesResponse>,
+          EmployeesResponse,
+          FutureOr<EmployeesResponse>
+        >
+    with
+        $FutureModifier<EmployeesResponse>,
+        $FutureProvider<EmployeesResponse> {
+  const EmployeesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'employeesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$employeesHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<EmployeesResponse> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<EmployeesResponse> create(Ref ref) {
+    return employees(ref);
+  }
+}
+
+String _$employeesHash() => r'bb1de4145101fd6843cfdeefe83fdde40c5ad6ef';
+
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

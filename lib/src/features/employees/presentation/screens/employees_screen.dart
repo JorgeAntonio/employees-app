@@ -1,9 +1,9 @@
+import 'package:attendance_app/src/core/entities/pagination_response.dart';
 import 'package:attendance_app/src/core/router/router.dart';
 import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/core/shared/widgets/section_title.dart';
-import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_response.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/employee_entity.dart';
 import 'package:attendance_app/src/features/employees/presentation/providers/employees_providers.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +46,7 @@ class EmployeesScreen extends ConsumerWidget {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          ref.invalidate(_employeesProvider);
+          ref.invalidate(employeesProvider);
           // Add a small delay to ensure the refresh indicator is visible
           await Future.delayed(const Duration(milliseconds: 500));
         },
@@ -69,6 +69,7 @@ class EmployeesScreen extends ConsumerWidget {
                     SectionTitle(title: 'Pull para actualizar'),
                   ],
                 ),
+                _SearchAndFilters(),
                 _EmployeesList(),
               ],
             ),
@@ -95,7 +96,7 @@ class _EmployeesList extends ConsumerWidget {
 
         return Consumer(
           builder: (context, ref, child) {
-            final employeesAsyncValue = ref.watch(_employeesProvider);
+            final employeesAsyncValue = ref.watch(employeesProvider);
 
             return employeesAsyncValue.when(
               data: (employeesResponse) {
@@ -103,7 +104,7 @@ class _EmployeesList extends ConsumerWidget {
                 if (employees.isEmpty) {
                   return RefreshIndicator(
                     onRefresh: () async {
-                      ref.invalidate(_employeesProvider);
+                      ref.invalidate(employeesProvider);
                       await Future.delayed(const Duration(milliseconds: 500));
                     },
                     child: SingleChildScrollView(
@@ -149,7 +150,7 @@ class _EmployeesList extends ConsumerWidget {
                     _PaginationInfo(
                       pagination:
                           employeesResponse.data?.pagination ??
-                          PaginationInfo(
+                          PaginationResponse(
                             page: 1,
                             limit: 10,
                             total: 0,
@@ -162,7 +163,7 @@ class _EmployeesList extends ConsumerWidget {
               loading: () => const Center(child: CircularProgressIndicator()),
               error: (error, stackTrace) => RefreshIndicator(
                 onRefresh: () async {
-                  ref.invalidate(_employeesProvider);
+                  ref.invalidate(employeesProvider);
                   await Future.delayed(const Duration(milliseconds: 500));
                 },
                 child: SingleChildScrollView(
@@ -192,7 +193,7 @@ class _EmployeesList extends ConsumerWidget {
                           ),
                           const SizedBox(height: 16),
                           ElevatedButton(
-                            onPressed: () => ref.refresh(_employeesProvider),
+                            onPressed: () => ref.refresh(employeesProvider),
                             child: const Text('Reintentar'),
                           ),
                         ],
@@ -210,19 +211,181 @@ class _EmployeesList extends ConsumerWidget {
 
   Future<void> _loadEmployees(WidgetRef ref, getEmployeesUseCase) async {
     // Trigger the provider to load data
-    ref.read(_employeesProvider);
+    ref.read(employeesProvider);
   }
 }
 
-final _employeesProvider = FutureProvider<EmployeesResponse>((ref) async {
-  final getEmployeesUseCase = ref.watch(getEmployeesUseCaseProvider);
-  final result = await getEmployeesUseCase();
+class _SearchAndFilters extends ConsumerStatefulWidget {
+  const _SearchAndFilters();
 
-  return result.fold(
-    (failure) => throw Exception(failure.message),
-    (success) => success,
-  );
-});
+  @override
+  ConsumerState<_SearchAndFilters> createState() => _SearchAndFiltersState();
+}
+
+class _SearchAndFiltersState extends ConsumerState<_SearchAndFilters> {
+  final _searchController = TextEditingController();
+  String? _selectedDepartment;
+  String? _selectedPosition;
+  bool _isExpanded = false;
+
+  final List<String> _departments = [
+    'Recursos Humanos',
+    'Tecnología',
+    'Ventas',
+    'Marketing',
+    'Finanzas',
+    'Operaciones',
+  ];
+
+  final List<String> _positions = [
+    'Gerente',
+    'Supervisor',
+    'Analista',
+    'Asistente',
+    'Coordinador',
+    'Especialista',
+  ];
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      color: context.appColorScheme.surfaceContainerLow,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            // Barra de búsqueda
+            TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Buscar empleados...',
+                prefixIcon: const Icon(Icons.search),
+                suffixIcon: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (_searchController.text.isNotEmpty)
+                      IconButton(
+                        icon: const Icon(Icons.clear),
+                        onPressed: () {
+                          _searchController.clear();
+                          _applyFilters();
+                        },
+                      ),
+                    IconButton(
+                      icon: Icon(
+                        _isExpanded ? Icons.expand_less : Icons.expand_more,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isExpanded = !_isExpanded;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onChanged: (value) => _applyFilters(),
+            ),
+            // Filtros expandibles
+            if (_isExpanded) ...[
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Expanded(
+                    child: DropdownButtonFormField<String>(
+                      initialValue: _selectedDepartment,
+                      decoration: InputDecoration(
+                        labelText: 'Departamento',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      items: _departments.map((dept) {
+                        return DropdownMenuItem(value: dept, child: Text(dept));
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedDepartment = value;
+                        });
+                        _applyFilters();
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: DropdownButtonFormField<String>(
+                      initialValue: _selectedPosition,
+                      decoration: InputDecoration(
+                        labelText: 'Posición',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      items: _positions.map((pos) {
+                        return DropdownMenuItem(value: pos, child: Text(pos));
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          _selectedPosition = value;
+                        });
+                        _applyFilters();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: _clearFilters,
+                    child: const Text('Limpiar filtros'),
+                  ),
+                ],
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _applyFilters() {
+    final notifier = ref.read(employeesRequestNotifierProvider.notifier);
+    if (_searchController.text.isNotEmpty) {
+      notifier.updateSearch(_searchController.text);
+    } else {
+      notifier.updateSearch(null);
+    }
+    notifier.updateFilters(
+      department: _selectedDepartment,
+      position: _selectedPosition,
+    );
+  }
+
+  void _clearFilters() {
+    setState(() {
+      _searchController.clear();
+      _selectedDepartment = null;
+      _selectedPosition = null;
+    });
+    ref
+        .read(employeesRequestNotifierProvider.notifier)
+        .updateFilters(department: null, position: null);
+    ref.read(employeesRequestNotifierProvider.notifier).updateSearch(null);
+  }
+}
 
 class _EmployeeCard extends StatelessWidget {
   final Employee employee;
@@ -334,33 +497,75 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
-class _PaginationInfo extends StatelessWidget {
-  final PaginationInfo pagination;
+class _PaginationInfo extends ConsumerWidget {
+  final PaginationResponse pagination;
 
   const _PaginationInfo({required this.pagination});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.grey[100],
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
         children: [
-          Text(
-            'Página ${pagination.page} de ${pagination.totalPages}',
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Página ${pagination.page} de ${pagination.totalPages}',
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                'Total: ${pagination.total} empleados',
+                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+              ),
+            ],
           ),
-          Text(
-            'Total: ${pagination.total} empleados',
-            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-          ),
+          if (pagination.totalPages > 1) ...[
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: pagination.page > 1
+                      ? () => _changePage(ref, pagination.page - 1)
+                      : null,
+                  icon: const Icon(Icons.chevron_left),
+                  tooltip: 'Página anterior',
+                ),
+                const SizedBox(width: 16),
+                Text(
+                  '${pagination.page}',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                IconButton(
+                  onPressed: pagination.page < pagination.totalPages
+                      ? () => _changePage(ref, pagination.page + 1)
+                      : null,
+                  icon: const Icon(Icons.chevron_right),
+                  tooltip: 'Página siguiente',
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );
+  }
+
+  void _changePage(WidgetRef ref, int newPage) {
+    ref.read(employeesRequestNotifierProvider.notifier).updatePage(newPage);
   }
 }
 
