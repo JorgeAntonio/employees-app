@@ -30,14 +30,10 @@ class AttendanceHistoryFilters extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16.0),
-      child: Row(
-        children: [
-          ElevatedButton.icon(
-            onPressed: () => _showFiltersBottomSheet(context),
-            icon: const Icon(Icons.filter_list),
-            label: const Text('Filtros'),
-          ),
-        ],
+      child: ElevatedButton.icon(
+        onPressed: () => _showFiltersBottomSheet(context),
+        icon: const Icon(Icons.filter_list),
+        label: const Text('Filtros'),
       ),
     );
   }
