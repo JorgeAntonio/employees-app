@@ -42,10 +42,15 @@ class Routes {
   static Routes get employees =>
       const Routes._(name: 'employees', path: '/employees');
 
-  static Routes get importEmployees =>
-      const Routes._(name: 'import-employees', path: '/employees/import');
-
   static Routes get addEmployee => const Routes._(name: 'add', path: '/add');
 
   static Routes get editEmployee => const Routes._(name: 'edit', path: '/edit');
+
+  static Routes get importEmployees =>
+      const Routes._(name: 'import-employees', path: '/employees/import');
+
+  static Routes get employeesAttendance => const Routes._(
+    name: 'employees-attendance',
+    path: '/employees/attendance',
+  );
 }

@@ -7,9 +7,9 @@ class AttendanceAppBar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
     this.title,
     this.actions,
-    this.leading,
+    this.leading = true,
     this.backgroundColor,
-    this.centerTitle,
+    this.centerTitle = true,
   });
 
   final String? title;

@@ -114,6 +114,8 @@ class _AttendanceHistoryScreenState
     return Scaffold(
       appBar: AttendanceAppBar(
         title: formattedDate,
+        leading: false,
+        centerTitle: false,
         actions: [
           AttendanceHistoryFilters(
             startDate: _startDate,

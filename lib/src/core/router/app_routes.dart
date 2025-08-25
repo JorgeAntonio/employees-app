@@ -5,6 +5,7 @@ import 'package:attendance_app/src/features/base/screens/main_screen.dart';
 import 'package:attendance_app/src/features/dashboard/screens/dashboard_screen.dart';
 import 'package:attendance_app/src/features/employees/presentation/screens/add_employee_screen.dart';
 import 'package:attendance_app/src/features/employees/presentation/screens/edit_employee_screen.dart';
+import 'package:attendance_app/src/features/employees/presentation/screens/employees_attendance_screen.dart';
 import 'package:attendance_app/src/features/employees/presentation/screens/employees_screen.dart';
 import 'package:attendance_app/src/features/employees/presentation/screens/import_employees_screen.dart';
 import 'package:attendance_app/src/features/history/screens/attendance_history_screen.dart';
@@ -111,6 +112,11 @@ final routerProvider = Provider<GoRouter>((ref) {
             },
           ),
         ],
+      ),
+      GoRoute(
+        path: Routes.employeesAttendance.path,
+        name: Routes.employeesAttendance.name,
+        builder: (context, state) => const EmployeesAttendanceScreen(),
       ),
 
       GoRoute(

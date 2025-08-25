@@ -25,6 +25,13 @@ class AppDrawer extends HookConsumerWidget {
         'onTap': () => context.pushNamed(Routes.dashboard.name),
       },
       {
+        'icon': Icons.people,
+        'title': 'Estado de Empleados',
+        'subtitle': 'Ver el estado de los empleados',
+        'requiresAdmin': true,
+        'onTap': () => context.pushNamed(Routes.employeesAttendance.name),
+      },
+      {
         'icon': Icons.qr_code_2_rounded,
         'title': 'Leer Código QR',
         'subtitle': 'Escanear código QR con la cámara',

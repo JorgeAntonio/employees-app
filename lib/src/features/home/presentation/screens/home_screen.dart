@@ -22,6 +22,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AttendanceAppBar(
         title: formattedDate,
+        centerTitle: false,
+        leading: false,
       ),
       body: SingleChildScrollView(
         child: Column(
