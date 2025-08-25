@@ -1,5 +1,6 @@
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
+import 'package:attendance_app/src/core/utils/current_date.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_request.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/attendance_history_provider.dart';
 import 'package:attendance_app/src/features/history/widgets/attendance_history_filters.dart';
@@ -112,7 +113,7 @@ class _AttendanceHistoryScreenState
 
     return Scaffold(
       appBar: AttendanceAppBar(
-        title: 'Historial',
+        title: formattedDate,
         actions: [
           AttendanceHistoryFilters(
             startDate: _startDate,
