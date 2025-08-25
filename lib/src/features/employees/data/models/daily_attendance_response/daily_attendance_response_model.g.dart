@@ -104,8 +104,8 @@ _AttendanceRecordModel _$AttendanceRecordModelFromJson(
   Map<String, dynamic> json,
 ) => _AttendanceRecordModel(
   id: json['id'] as String,
-  employeeId: json['employeeId'] as String,
-  date: DateTime.parse(json['date'] as String),
+  employeeId: json['employeeId'] as String?,
+  date: json['date'] == null ? null : DateTime.parse(json['date'] as String),
   checkInTime: json['checkInTime'] == null
       ? null
       : DateTime.parse(json['checkInTime'] as String),
@@ -117,8 +117,12 @@ _AttendanceRecordModel _$AttendanceRecordModelFromJson(
   checkInLocationId: json['checkInLocationId'] as String?,
   checkOutLocationId: json['checkOutLocationId'] as String?,
   deviceId: json['deviceId'] as String?,
-  createdAt: DateTime.parse(json['createdAt'] as String),
-  updatedAt: DateTime.parse(json['updatedAt'] as String),
+  createdAt: json['createdAt'] == null
+      ? null
+      : DateTime.parse(json['createdAt'] as String),
+  updatedAt: json['updatedAt'] == null
+      ? null
+      : DateTime.parse(json['updatedAt'] as String),
 );
 
 Map<String, dynamic> _$AttendanceRecordModelToJson(
@@ -126,7 +130,7 @@ Map<String, dynamic> _$AttendanceRecordModelToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'employeeId': instance.employeeId,
-  'date': instance.date.toIso8601String(),
+  'date': instance.date?.toIso8601String(),
   'checkInTime': instance.checkInTime?.toIso8601String(),
   'checkOutTime': instance.checkOutTime?.toIso8601String(),
   'durationMins': instance.durationMins,
@@ -134,8 +138,8 @@ Map<String, dynamic> _$AttendanceRecordModelToJson(
   'checkInLocationId': instance.checkInLocationId,
   'checkOutLocationId': instance.checkOutLocationId,
   'deviceId': instance.deviceId,
-  'createdAt': instance.createdAt.toIso8601String(),
-  'updatedAt': instance.updatedAt.toIso8601String(),
+  'createdAt': instance.createdAt?.toIso8601String(),
+  'updatedAt': instance.updatedAt?.toIso8601String(),
 };
 
 _AttendanceStatsModel _$AttendanceStatsModelFromJson(
