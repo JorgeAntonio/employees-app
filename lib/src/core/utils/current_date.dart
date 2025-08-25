@@ -33,7 +33,12 @@ class CurrentDate {
   late final now = DateTime.now();
   late final dayName = getDayName(now).substring(0, 3);
   late final monthName = getMonthName(now.month).substring(0, 3);
+  late final year = now.year;
   late final formattedDate = '$dayName, ${now.day} de $monthName';
 }
 
 final formattedDate = CurrentDate().formattedDate;
+
+// Función para comparar fechas sin hora
+bool isSameDate(DateTime a, DateTime b) =>
+    a.year == b.year && a.month == b.month && a.day == b.day;

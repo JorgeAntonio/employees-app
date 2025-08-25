@@ -53,4 +53,6 @@ class Routes {
     name: 'employees-attendance',
     path: '/employees/attendance',
   );
+
+  static Routes get info => const Routes._(name: 'info', path: '/info');
 }
