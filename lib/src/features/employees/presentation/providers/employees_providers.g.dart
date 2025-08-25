@@ -238,6 +238,54 @@ final class AddEmployeeUseCaseProvider
 String _$addEmployeeUseCaseHash() =>
     r'2711fd97529c757406a0059650a2b4d250cc77c0';
 
+@ProviderFor(getDailyAttendanceUseCase)
+const getDailyAttendanceUseCaseProvider = GetDailyAttendanceUseCaseProvider._();
+
+final class GetDailyAttendanceUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GetDailyAttendanceUseCase,
+          GetDailyAttendanceUseCase,
+          GetDailyAttendanceUseCase
+        >
+    with $Provider<GetDailyAttendanceUseCase> {
+  const GetDailyAttendanceUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getDailyAttendanceUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getDailyAttendanceUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetDailyAttendanceUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetDailyAttendanceUseCase create(Ref ref) {
+    return getDailyAttendanceUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetDailyAttendanceUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetDailyAttendanceUseCase>(value),
+    );
+  }
+}
+
+String _$getDailyAttendanceUseCaseHash() =>
+    r'd1d48a13cd1843d5f943efab9083f89786f9f15c';
+
 @ProviderFor(EmployeesRequestNotifier)
 const employeesRequestNotifierProvider = EmployeesRequestNotifierProvider._();
 
@@ -448,6 +496,176 @@ abstract class _$EmployeesStateNotifier
                 AsyncValue<EmployeesResponse?>
               >,
               AsyncValue<EmployeesResponse?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+@ProviderFor(DailyAttendanceRequestNotifier)
+const dailyAttendanceRequestNotifierProvider =
+    DailyAttendanceRequestNotifierProvider._();
+
+final class DailyAttendanceRequestNotifierProvider
+    extends
+        $NotifierProvider<
+          DailyAttendanceRequestNotifier,
+          DailyAttendanceRequest
+        > {
+  const DailyAttendanceRequestNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'dailyAttendanceRequestNotifierProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$dailyAttendanceRequestNotifierHash();
+
+  @$internal
+  @override
+  DailyAttendanceRequestNotifier create() => DailyAttendanceRequestNotifier();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DailyAttendanceRequest value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DailyAttendanceRequest>(value),
+    );
+  }
+}
+
+String _$dailyAttendanceRequestNotifierHash() =>
+    r'0169aa3c669d936c33d4a3d341f0a48d65fe16d9';
+
+abstract class _$DailyAttendanceRequestNotifier
+    extends $Notifier<DailyAttendanceRequest> {
+  DailyAttendanceRequest build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref as $Ref<DailyAttendanceRequest, DailyAttendanceRequest>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<DailyAttendanceRequest, DailyAttendanceRequest>,
+              DailyAttendanceRequest,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+@ProviderFor(dailyAttendance)
+const dailyAttendanceProvider = DailyAttendanceProvider._();
+
+final class DailyAttendanceProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<DailyAttendanceResponse>,
+          DailyAttendanceResponse,
+          FutureOr<DailyAttendanceResponse>
+        >
+    with
+        $FutureModifier<DailyAttendanceResponse>,
+        $FutureProvider<DailyAttendanceResponse> {
+  const DailyAttendanceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'dailyAttendanceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$dailyAttendanceHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<DailyAttendanceResponse> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<DailyAttendanceResponse> create(Ref ref) {
+    return dailyAttendance(ref);
+  }
+}
+
+String _$dailyAttendanceHash() => r'82f0280a82ab044f1fe78a4a9385182f74d6b831';
+
+@ProviderFor(DailyAttendanceNotifier)
+const dailyAttendanceNotifierProvider = DailyAttendanceNotifierProvider._();
+
+final class DailyAttendanceNotifierProvider
+    extends
+        $NotifierProvider<
+          DailyAttendanceNotifier,
+          AsyncValue<DailyAttendanceResponse?>
+        > {
+  const DailyAttendanceNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'dailyAttendanceNotifierProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$dailyAttendanceNotifierHash();
+
+  @$internal
+  @override
+  DailyAttendanceNotifier create() => DailyAttendanceNotifier();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<DailyAttendanceResponse?> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride:
+          $SyncValueProvider<AsyncValue<DailyAttendanceResponse?>>(value),
+    );
+  }
+}
+
+String _$dailyAttendanceNotifierHash() =>
+    r'68214118fdb8718bb67a7ab6bc67e5ffe2c1fad2';
+
+abstract class _$DailyAttendanceNotifier
+    extends $Notifier<AsyncValue<DailyAttendanceResponse?>> {
+  AsyncValue<DailyAttendanceResponse?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref
+            as $Ref<
+              AsyncValue<DailyAttendanceResponse?>,
+              AsyncValue<DailyAttendanceResponse?>
+            >;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<DailyAttendanceResponse?>,
+                AsyncValue<DailyAttendanceResponse?>
+              >,
+              AsyncValue<DailyAttendanceResponse?>,
               Object?,
               Object?
             >;
