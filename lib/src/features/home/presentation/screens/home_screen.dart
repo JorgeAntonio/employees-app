@@ -2,19 +2,20 @@ import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/core/utils/current_date.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../widgets/widgets.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  final bool _isCheckedIn = false;
-  DateTime? _checkInTime;
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  // final bool _isCheckedIn = false;
+  // DateTime? _checkInTime;
   // DateTime? _checkOutTime;
 
   @override
@@ -26,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: false,
       ),
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: [
             // Main Content
@@ -38,13 +40,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   const QuickStats(),
 
                   // Today's Status Banner
-                  StatusBanner(
-                    isCheckedIn: _isCheckedIn,
-                    checkInTime: _checkInTime,
-                  ),
+                  // StatusBanner(
+                  //   isCheckedIn: _isCheckedIn,
+                  //   checkInTime: _checkInTime,
+                  // ),
 
-                  const SizedBox(height: DoubleSizes.size40),
-                  const SizedBox(height: DoubleSizes.size40),
+                  // Recent Attendance List
+                  const RecentAttendanceList(),
+
+                  const SizedBox(height: DoubleSizes.size64),
                 ],
               ),
             ),
