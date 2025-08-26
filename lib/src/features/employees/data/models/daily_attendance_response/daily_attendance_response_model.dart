@@ -45,7 +45,7 @@ abstract class EmployeeAttendanceModel with _$EmployeeAttendanceModel {
     String? photoUrl,
     String? shift,
     required AttendanceUserModel user,
-    AttendanceRecordModel? attendance,
+    List<AttendanceRecordModel>? attendances,
     required String attendanceStatus,
     required String statusLabel,
   }) = _EmployeeAttendanceModel;
@@ -69,17 +69,13 @@ abstract class AttendanceUserModel with _$AttendanceUserModel {
 abstract class AttendanceRecordModel with _$AttendanceRecordModel {
   const factory AttendanceRecordModel({
     required String id,
-    String? employeeId,
-    DateTime? date,
     DateTime? checkInTime,
     DateTime? checkOutTime,
     int? durationMins,
     required String status,
-    String? checkInLocationId,
-    String? checkOutLocationId,
-    String? deviceId,
-    DateTime? createdAt,
-    DateTime? updatedAt,
+    dynamic checkInLocation,
+    dynamic checkOutLocation,
+    dynamic device,
   }) = _AttendanceRecordModel;
 
   factory AttendanceRecordModel.fromJson(Map<String, dynamic> json) =>
@@ -146,7 +142,7 @@ extension EmployeeAttendanceModelX on EmployeeAttendanceModel {
       photoUrl: photoUrl,
       shift: shift,
       user: user.toDomain(),
-      attendance: attendance != null ? [attendance!.toDomain()] : null,
+      attendances: attendances?.map((a) => a.toDomain()).toList(),
       attendanceStatus: attendanceStatus,
       statusLabel: statusLabel,
     );
@@ -163,17 +159,13 @@ extension AttendanceRecordModelX on AttendanceRecordModel {
   AttendanceRecord toDomain() {
     return AttendanceRecord(
       id: id,
-      employeeId: employeeId ?? '',
-      date: date ?? DateTime.now(),
       checkInTime: checkInTime,
       checkOutTime: checkOutTime,
       durationMins: durationMins,
       status: status,
-      checkInLocationId: checkInLocationId,
-      checkOutLocationId: checkOutLocationId,
-      deviceId: deviceId,
-      createdAt: createdAt ?? DateTime.now(),
-      updatedAt: updatedAt ?? DateTime.now(),
+      checkInLocation: checkInLocation,
+      checkOutLocation: checkOutLocation,
+      device: device,
     );
   }
 }

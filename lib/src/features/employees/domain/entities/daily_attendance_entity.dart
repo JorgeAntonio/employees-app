@@ -35,7 +35,7 @@ class EmployeeAttendance {
   final String? photoUrl;
   final String? shift;
   final AttendanceUser user;
-  final List<AttendanceRecord>? attendance;
+  final List<AttendanceRecord>? attendances;
   final String attendanceStatus;
   final String statusLabel;
 
@@ -50,7 +50,7 @@ class EmployeeAttendance {
     this.photoUrl,
     this.shift,
     required this.user,
-    this.attendance,
+    this.attendances,
     required this.attendanceStatus,
     required this.statusLabel,
   });
@@ -65,31 +65,23 @@ class AttendanceUser {
 
 class AttendanceRecord {
   final String id;
-  final String employeeId;
-  final DateTime date;
   final DateTime? checkInTime;
   final DateTime? checkOutTime;
   final int? durationMins;
   final String status;
-  final String? checkInLocationId;
-  final String? checkOutLocationId;
-  final String? deviceId;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final dynamic checkInLocation;
+  final dynamic checkOutLocation;
+  final dynamic device;
 
   AttendanceRecord({
     required this.id,
-    required this.employeeId,
-    required this.date,
     this.checkInTime,
     this.checkOutTime,
     this.durationMins,
     required this.status,
-    this.checkInLocationId,
-    this.checkOutLocationId,
-    this.deviceId,
-    required this.createdAt,
-    required this.updatedAt,
+    this.checkInLocation,
+    this.checkOutLocation,
+    this.device,
   });
 }
 

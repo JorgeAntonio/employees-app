@@ -62,14 +62,14 @@ class AttendanceCard extends StatelessWidget {
             const SizedBox(height: DoubleSizes.size16),
 
             // Attendance records
-            if (attendance.attendance != null &&
-                attendance.attendance!.isNotEmpty) ...[
+            if (attendance.attendances != null &&
+                attendance.attendances!.isNotEmpty) ...[
               const Text(
                 'Registros de Asistencia',
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: DoubleSizes.size8),
-              ...attendance.attendance!.map(
+              ...attendance.attendances!.map(
                 (record) => _buildAttendanceRecord(context, record),
               ),
             ] else ...[
@@ -151,31 +151,90 @@ class AttendanceCard extends StatelessWidget {
   }
 
   Widget _buildAttendanceRecord(BuildContext context, AttendanceRecord record) {
-    final isCheckIn = record.checkInTime != null;
-    final icon = isCheckIn ? Icons.login : Icons.logout;
-    final color = isCheckIn ? Colors.green : Colors.orange;
+    final hasCheckIn = record.checkInTime != null;
+    final hasCheckOut = record.checkOutTime != null;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: DoubleSizes.size8),
-      child: Row(
-        children: [
-          Icon(icon, size: 20, color: color),
-          const SizedBox(width: DoubleSizes.size8),
-          Expanded(
-            child: Text(
-              '${isCheckIn ? 'Entrada' : 'Salida'} - ${record.checkInTime ?? record.checkOutTime}',
-              style: const TextStyle(fontSize: 14),
+      child: Container(
+        padding: const EdgeInsets.all(DoubleSizes.size12),
+        decoration: BoxDecoration(
+          color: Colors.grey[50],
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.grey[200]!),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Estado del registro
+            Row(
+              children: [
+                Icon(
+                  record.status == 'PRESENT' ? Icons.check_circle : Icons.info,
+                  size: 20,
+                  color: record.status == 'PRESENT'
+                      ? Colors.green
+                      : Colors.orange,
+                ),
+                const SizedBox(width: DoubleSizes.size8),
+                Text(
+                  'Estado: ${record.status}',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
             ),
-          ),
-          if (record.checkInLocationId != null) ...[
-            Icon(Icons.location_on, size: 16, color: Colors.grey[600]),
-            const SizedBox(width: DoubleSizes.size4),
-            Text(
-              record.checkInLocationId ?? ' ',
-              style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-            ),
+
+            if (hasCheckIn || hasCheckOut) ...[
+              const SizedBox(height: DoubleSizes.size8),
+
+              // Entrada
+              if (hasCheckIn)
+                Row(
+                  children: [
+                    const Icon(Icons.login, size: 16, color: Colors.green),
+                    const SizedBox(width: DoubleSizes.size8),
+                    Text(
+                      'Entrada: ${record.checkInTime.toString().split(' ')[1].substring(0, 5)}',
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ],
+                ),
+
+              // Salida
+              if (hasCheckOut) ...[
+                const SizedBox(height: DoubleSizes.size4),
+                Row(
+                  children: [
+                    const Icon(Icons.logout, size: 16, color: Colors.orange),
+                    const SizedBox(width: DoubleSizes.size8),
+                    Text(
+                      'Salida: ${record.checkOutTime.toString().split(' ')[1].substring(0, 5)}',
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ],
+                ),
+              ],
+
+              // Duración
+              if (record.durationMins != null) ...[
+                const SizedBox(height: DoubleSizes.size4),
+                Row(
+                  children: [
+                    const Icon(Icons.timer, size: 16, color: Colors.blue),
+                    const SizedBox(width: DoubleSizes.size8),
+                    Text(
+                      'Duración: ${record.durationMins} min',
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ],
+                ),
+              ],
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

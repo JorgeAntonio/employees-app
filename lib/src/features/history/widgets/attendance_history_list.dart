@@ -90,16 +90,14 @@ class _AttendanceHistoryListState extends State<AttendanceHistoryList> {
     final hasMorePages =
         pagination != null && widget.currentPage < pagination.totalPages;
 
-    return Column(
-      children: [
-        // List of attendance records with infinite scroll
-        Expanded(
-          child: ListView.builder(
-            controller: _scrollController,
-            physics: const BouncingScrollPhysics(),
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            itemCount: attendances.length + (hasMorePages ? 1 : 0),
-            itemBuilder: (context, index) {
+    return CustomScrollView(
+      controller: _scrollController,
+      physics: const AlwaysScrollableScrollPhysics(),
+      slivers: [
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate((context, index) {
               if (index == attendances.length) {
                 // Loading indicator at the bottom
                 return Container(
@@ -117,8 +115,13 @@ class _AttendanceHistoryListState extends State<AttendanceHistoryList> {
                 attendance: attendance,
                 isLast: index == attendances.length - 1 && !hasMorePages,
               );
-            },
+            }, childCount: attendances.length + (hasMorePages ? 1 : 0)),
           ),
+        ),
+        // Add a flexible space to ensure the scroll view is always scrollable
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Container(height: MediaQuery.of(context).size.height * 0.1),
         ),
       ],
     );

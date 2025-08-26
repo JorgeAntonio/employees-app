@@ -643,7 +643,7 @@ $AttendanceFiltersModelCopyWith<$Res> get filters {
 /// @nodoc
 mixin _$EmployeeAttendanceModel {
 
- String get id; String get firstName; String get lastName; String get dni; String get position; String get department; String? get phone; String? get photoUrl; String? get shift; AttendanceUserModel get user; AttendanceRecordModel? get attendance; String get attendanceStatus; String get statusLabel;
+ String get id; String get firstName; String get lastName; String get dni; String get position; String get department; String? get phone; String? get photoUrl; String? get shift; AttendanceUserModel get user; List<AttendanceRecordModel>? get attendances; String get attendanceStatus; String get statusLabel;
 /// Create a copy of EmployeeAttendanceModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -656,16 +656,16 @@ $EmployeeAttendanceModelCopyWith<EmployeeAttendanceModel> get copyWith => _$Empl
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is EmployeeAttendanceModel&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.dni, dni) || other.dni == dni)&&(identical(other.position, position) || other.position == position)&&(identical(other.department, department) || other.department == department)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.photoUrl, photoUrl) || other.photoUrl == photoUrl)&&(identical(other.shift, shift) || other.shift == shift)&&(identical(other.user, user) || other.user == user)&&(identical(other.attendance, attendance) || other.attendance == attendance)&&(identical(other.attendanceStatus, attendanceStatus) || other.attendanceStatus == attendanceStatus)&&(identical(other.statusLabel, statusLabel) || other.statusLabel == statusLabel));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is EmployeeAttendanceModel&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.dni, dni) || other.dni == dni)&&(identical(other.position, position) || other.position == position)&&(identical(other.department, department) || other.department == department)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.photoUrl, photoUrl) || other.photoUrl == photoUrl)&&(identical(other.shift, shift) || other.shift == shift)&&(identical(other.user, user) || other.user == user)&&const DeepCollectionEquality().equals(other.attendances, attendances)&&(identical(other.attendanceStatus, attendanceStatus) || other.attendanceStatus == attendanceStatus)&&(identical(other.statusLabel, statusLabel) || other.statusLabel == statusLabel));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,firstName,lastName,dni,position,department,phone,photoUrl,shift,user,attendance,attendanceStatus,statusLabel);
+int get hashCode => Object.hash(runtimeType,id,firstName,lastName,dni,position,department,phone,photoUrl,shift,user,const DeepCollectionEquality().hash(attendances),attendanceStatus,statusLabel);
 
 @override
 String toString() {
-  return 'EmployeeAttendanceModel(id: $id, firstName: $firstName, lastName: $lastName, dni: $dni, position: $position, department: $department, phone: $phone, photoUrl: $photoUrl, shift: $shift, user: $user, attendance: $attendance, attendanceStatus: $attendanceStatus, statusLabel: $statusLabel)';
+  return 'EmployeeAttendanceModel(id: $id, firstName: $firstName, lastName: $lastName, dni: $dni, position: $position, department: $department, phone: $phone, photoUrl: $photoUrl, shift: $shift, user: $user, attendances: $attendances, attendanceStatus: $attendanceStatus, statusLabel: $statusLabel)';
 }
 
 
@@ -676,11 +676,11 @@ abstract mixin class $EmployeeAttendanceModelCopyWith<$Res>  {
   factory $EmployeeAttendanceModelCopyWith(EmployeeAttendanceModel value, $Res Function(EmployeeAttendanceModel) _then) = _$EmployeeAttendanceModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String firstName, String lastName, String dni, String position, String department, String? phone, String? photoUrl, String? shift, AttendanceUserModel user, AttendanceRecordModel? attendance, String attendanceStatus, String statusLabel
+ String id, String firstName, String lastName, String dni, String position, String department, String? phone, String? photoUrl, String? shift, AttendanceUserModel user, List<AttendanceRecordModel>? attendances, String attendanceStatus, String statusLabel
 });
 
 
-$AttendanceUserModelCopyWith<$Res> get user;$AttendanceRecordModelCopyWith<$Res>? get attendance;
+$AttendanceUserModelCopyWith<$Res> get user;
 
 }
 /// @nodoc
@@ -693,7 +693,7 @@ class _$EmployeeAttendanceModelCopyWithImpl<$Res>
 
 /// Create a copy of EmployeeAttendanceModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? firstName = null,Object? lastName = null,Object? dni = null,Object? position = null,Object? department = null,Object? phone = freezed,Object? photoUrl = freezed,Object? shift = freezed,Object? user = null,Object? attendance = freezed,Object? attendanceStatus = null,Object? statusLabel = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? firstName = null,Object? lastName = null,Object? dni = null,Object? position = null,Object? department = null,Object? phone = freezed,Object? photoUrl = freezed,Object? shift = freezed,Object? user = null,Object? attendances = freezed,Object? attendanceStatus = null,Object? statusLabel = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,firstName: null == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
@@ -705,8 +705,8 @@ as String,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable
 as String?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
 as String?,shift: freezed == shift ? _self.shift : shift // ignore: cast_nullable_to_non_nullable
 as String?,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
-as AttendanceUserModel,attendance: freezed == attendance ? _self.attendance : attendance // ignore: cast_nullable_to_non_nullable
-as AttendanceRecordModel?,attendanceStatus: null == attendanceStatus ? _self.attendanceStatus : attendanceStatus // ignore: cast_nullable_to_non_nullable
+as AttendanceUserModel,attendances: freezed == attendances ? _self.attendances : attendances // ignore: cast_nullable_to_non_nullable
+as List<AttendanceRecordModel>?,attendanceStatus: null == attendanceStatus ? _self.attendanceStatus : attendanceStatus // ignore: cast_nullable_to_non_nullable
 as String,statusLabel: null == statusLabel ? _self.statusLabel : statusLabel // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -719,18 +719,6 @@ $AttendanceUserModelCopyWith<$Res> get user {
   
   return $AttendanceUserModelCopyWith<$Res>(_self.user, (value) {
     return _then(_self.copyWith(user: value));
-  });
-}/// Create a copy of EmployeeAttendanceModel
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$AttendanceRecordModelCopyWith<$Res>? get attendance {
-    if (_self.attendance == null) {
-    return null;
-  }
-
-  return $AttendanceRecordModelCopyWith<$Res>(_self.attendance!, (value) {
-    return _then(_self.copyWith(attendance: value));
   });
 }
 }
@@ -814,10 +802,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String dni,  String position,  String department,  String? phone,  String? photoUrl,  String? shift,  AttendanceUserModel user,  AttendanceRecordModel? attendance,  String attendanceStatus,  String statusLabel)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String dni,  String position,  String department,  String? phone,  String? photoUrl,  String? shift,  AttendanceUserModel user,  List<AttendanceRecordModel>? attendances,  String attendanceStatus,  String statusLabel)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EmployeeAttendanceModel() when $default != null:
-return $default(_that.id,_that.firstName,_that.lastName,_that.dni,_that.position,_that.department,_that.phone,_that.photoUrl,_that.shift,_that.user,_that.attendance,_that.attendanceStatus,_that.statusLabel);case _:
+return $default(_that.id,_that.firstName,_that.lastName,_that.dni,_that.position,_that.department,_that.phone,_that.photoUrl,_that.shift,_that.user,_that.attendances,_that.attendanceStatus,_that.statusLabel);case _:
   return orElse();
 
 }
@@ -835,10 +823,10 @@ return $default(_that.id,_that.firstName,_that.lastName,_that.dni,_that.position
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String dni,  String position,  String department,  String? phone,  String? photoUrl,  String? shift,  AttendanceUserModel user,  AttendanceRecordModel? attendance,  String attendanceStatus,  String statusLabel)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String dni,  String position,  String department,  String? phone,  String? photoUrl,  String? shift,  AttendanceUserModel user,  List<AttendanceRecordModel>? attendances,  String attendanceStatus,  String statusLabel)  $default,) {final _that = this;
 switch (_that) {
 case _EmployeeAttendanceModel():
-return $default(_that.id,_that.firstName,_that.lastName,_that.dni,_that.position,_that.department,_that.phone,_that.photoUrl,_that.shift,_that.user,_that.attendance,_that.attendanceStatus,_that.statusLabel);case _:
+return $default(_that.id,_that.firstName,_that.lastName,_that.dni,_that.position,_that.department,_that.phone,_that.photoUrl,_that.shift,_that.user,_that.attendances,_that.attendanceStatus,_that.statusLabel);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -855,10 +843,10 @@ return $default(_that.id,_that.firstName,_that.lastName,_that.dni,_that.position
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String firstName,  String lastName,  String dni,  String position,  String department,  String? phone,  String? photoUrl,  String? shift,  AttendanceUserModel user,  AttendanceRecordModel? attendance,  String attendanceStatus,  String statusLabel)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String firstName,  String lastName,  String dni,  String position,  String department,  String? phone,  String? photoUrl,  String? shift,  AttendanceUserModel user,  List<AttendanceRecordModel>? attendances,  String attendanceStatus,  String statusLabel)?  $default,) {final _that = this;
 switch (_that) {
 case _EmployeeAttendanceModel() when $default != null:
-return $default(_that.id,_that.firstName,_that.lastName,_that.dni,_that.position,_that.department,_that.phone,_that.photoUrl,_that.shift,_that.user,_that.attendance,_that.attendanceStatus,_that.statusLabel);case _:
+return $default(_that.id,_that.firstName,_that.lastName,_that.dni,_that.position,_that.department,_that.phone,_that.photoUrl,_that.shift,_that.user,_that.attendances,_that.attendanceStatus,_that.statusLabel);case _:
   return null;
 
 }
@@ -870,7 +858,7 @@ return $default(_that.id,_that.firstName,_that.lastName,_that.dni,_that.position
 @JsonSerializable()
 
 class _EmployeeAttendanceModel implements EmployeeAttendanceModel {
-  const _EmployeeAttendanceModel({required this.id, required this.firstName, required this.lastName, required this.dni, required this.position, required this.department, this.phone, this.photoUrl, this.shift, required this.user, this.attendance, required this.attendanceStatus, required this.statusLabel});
+  const _EmployeeAttendanceModel({required this.id, required this.firstName, required this.lastName, required this.dni, required this.position, required this.department, this.phone, this.photoUrl, this.shift, required this.user, final  List<AttendanceRecordModel>? attendances, required this.attendanceStatus, required this.statusLabel}): _attendances = attendances;
   factory _EmployeeAttendanceModel.fromJson(Map<String, dynamic> json) => _$EmployeeAttendanceModelFromJson(json);
 
 @override final  String id;
@@ -883,7 +871,15 @@ class _EmployeeAttendanceModel implements EmployeeAttendanceModel {
 @override final  String? photoUrl;
 @override final  String? shift;
 @override final  AttendanceUserModel user;
-@override final  AttendanceRecordModel? attendance;
+ final  List<AttendanceRecordModel>? _attendances;
+@override List<AttendanceRecordModel>? get attendances {
+  final value = _attendances;
+  if (value == null) return null;
+  if (_attendances is EqualUnmodifiableListView) return _attendances;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 @override final  String attendanceStatus;
 @override final  String statusLabel;
 
@@ -900,16 +896,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EmployeeAttendanceModel&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.dni, dni) || other.dni == dni)&&(identical(other.position, position) || other.position == position)&&(identical(other.department, department) || other.department == department)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.photoUrl, photoUrl) || other.photoUrl == photoUrl)&&(identical(other.shift, shift) || other.shift == shift)&&(identical(other.user, user) || other.user == user)&&(identical(other.attendance, attendance) || other.attendance == attendance)&&(identical(other.attendanceStatus, attendanceStatus) || other.attendanceStatus == attendanceStatus)&&(identical(other.statusLabel, statusLabel) || other.statusLabel == statusLabel));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _EmployeeAttendanceModel&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.dni, dni) || other.dni == dni)&&(identical(other.position, position) || other.position == position)&&(identical(other.department, department) || other.department == department)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.photoUrl, photoUrl) || other.photoUrl == photoUrl)&&(identical(other.shift, shift) || other.shift == shift)&&(identical(other.user, user) || other.user == user)&&const DeepCollectionEquality().equals(other._attendances, _attendances)&&(identical(other.attendanceStatus, attendanceStatus) || other.attendanceStatus == attendanceStatus)&&(identical(other.statusLabel, statusLabel) || other.statusLabel == statusLabel));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,firstName,lastName,dni,position,department,phone,photoUrl,shift,user,attendance,attendanceStatus,statusLabel);
+int get hashCode => Object.hash(runtimeType,id,firstName,lastName,dni,position,department,phone,photoUrl,shift,user,const DeepCollectionEquality().hash(_attendances),attendanceStatus,statusLabel);
 
 @override
 String toString() {
-  return 'EmployeeAttendanceModel(id: $id, firstName: $firstName, lastName: $lastName, dni: $dni, position: $position, department: $department, phone: $phone, photoUrl: $photoUrl, shift: $shift, user: $user, attendance: $attendance, attendanceStatus: $attendanceStatus, statusLabel: $statusLabel)';
+  return 'EmployeeAttendanceModel(id: $id, firstName: $firstName, lastName: $lastName, dni: $dni, position: $position, department: $department, phone: $phone, photoUrl: $photoUrl, shift: $shift, user: $user, attendances: $attendances, attendanceStatus: $attendanceStatus, statusLabel: $statusLabel)';
 }
 
 
@@ -920,11 +916,11 @@ abstract mixin class _$EmployeeAttendanceModelCopyWith<$Res> implements $Employe
   factory _$EmployeeAttendanceModelCopyWith(_EmployeeAttendanceModel value, $Res Function(_EmployeeAttendanceModel) _then) = __$EmployeeAttendanceModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String firstName, String lastName, String dni, String position, String department, String? phone, String? photoUrl, String? shift, AttendanceUserModel user, AttendanceRecordModel? attendance, String attendanceStatus, String statusLabel
+ String id, String firstName, String lastName, String dni, String position, String department, String? phone, String? photoUrl, String? shift, AttendanceUserModel user, List<AttendanceRecordModel>? attendances, String attendanceStatus, String statusLabel
 });
 
 
-@override $AttendanceUserModelCopyWith<$Res> get user;@override $AttendanceRecordModelCopyWith<$Res>? get attendance;
+@override $AttendanceUserModelCopyWith<$Res> get user;
 
 }
 /// @nodoc
@@ -937,7 +933,7 @@ class __$EmployeeAttendanceModelCopyWithImpl<$Res>
 
 /// Create a copy of EmployeeAttendanceModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? firstName = null,Object? lastName = null,Object? dni = null,Object? position = null,Object? department = null,Object? phone = freezed,Object? photoUrl = freezed,Object? shift = freezed,Object? user = null,Object? attendance = freezed,Object? attendanceStatus = null,Object? statusLabel = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? firstName = null,Object? lastName = null,Object? dni = null,Object? position = null,Object? department = null,Object? phone = freezed,Object? photoUrl = freezed,Object? shift = freezed,Object? user = null,Object? attendances = freezed,Object? attendanceStatus = null,Object? statusLabel = null,}) {
   return _then(_EmployeeAttendanceModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,firstName: null == firstName ? _self.firstName : firstName // ignore: cast_nullable_to_non_nullable
@@ -949,8 +945,8 @@ as String,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable
 as String?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
 as String?,shift: freezed == shift ? _self.shift : shift // ignore: cast_nullable_to_non_nullable
 as String?,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
-as AttendanceUserModel,attendance: freezed == attendance ? _self.attendance : attendance // ignore: cast_nullable_to_non_nullable
-as AttendanceRecordModel?,attendanceStatus: null == attendanceStatus ? _self.attendanceStatus : attendanceStatus // ignore: cast_nullable_to_non_nullable
+as AttendanceUserModel,attendances: freezed == attendances ? _self._attendances : attendances // ignore: cast_nullable_to_non_nullable
+as List<AttendanceRecordModel>?,attendanceStatus: null == attendanceStatus ? _self.attendanceStatus : attendanceStatus // ignore: cast_nullable_to_non_nullable
 as String,statusLabel: null == statusLabel ? _self.statusLabel : statusLabel // ignore: cast_nullable_to_non_nullable
 as String,
   ));
@@ -964,18 +960,6 @@ $AttendanceUserModelCopyWith<$Res> get user {
   
   return $AttendanceUserModelCopyWith<$Res>(_self.user, (value) {
     return _then(_self.copyWith(user: value));
-  });
-}/// Create a copy of EmployeeAttendanceModel
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$AttendanceRecordModelCopyWith<$Res>? get attendance {
-    if (_self.attendance == null) {
-    return null;
-  }
-
-  return $AttendanceRecordModelCopyWith<$Res>(_self.attendance!, (value) {
-    return _then(_self.copyWith(attendance: value));
   });
 }
 }
@@ -1250,7 +1234,7 @@ as String,
 /// @nodoc
 mixin _$AttendanceRecordModel {
 
- String get id; String? get employeeId; DateTime? get date; DateTime? get checkInTime; DateTime? get checkOutTime; int? get durationMins; String get status; String? get checkInLocationId; String? get checkOutLocationId; String? get deviceId; DateTime? get createdAt; DateTime? get updatedAt;
+ String get id; DateTime? get checkInTime; DateTime? get checkOutTime; int? get durationMins; String get status; dynamic get checkInLocation; dynamic get checkOutLocation; dynamic get device;
 /// Create a copy of AttendanceRecordModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1263,16 +1247,16 @@ $AttendanceRecordModelCopyWith<AttendanceRecordModel> get copyWith => _$Attendan
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AttendanceRecordModel&&(identical(other.id, id) || other.id == id)&&(identical(other.employeeId, employeeId) || other.employeeId == employeeId)&&(identical(other.date, date) || other.date == date)&&(identical(other.checkInTime, checkInTime) || other.checkInTime == checkInTime)&&(identical(other.checkOutTime, checkOutTime) || other.checkOutTime == checkOutTime)&&(identical(other.durationMins, durationMins) || other.durationMins == durationMins)&&(identical(other.status, status) || other.status == status)&&(identical(other.checkInLocationId, checkInLocationId) || other.checkInLocationId == checkInLocationId)&&(identical(other.checkOutLocationId, checkOutLocationId) || other.checkOutLocationId == checkOutLocationId)&&(identical(other.deviceId, deviceId) || other.deviceId == deviceId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AttendanceRecordModel&&(identical(other.id, id) || other.id == id)&&(identical(other.checkInTime, checkInTime) || other.checkInTime == checkInTime)&&(identical(other.checkOutTime, checkOutTime) || other.checkOutTime == checkOutTime)&&(identical(other.durationMins, durationMins) || other.durationMins == durationMins)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.checkInLocation, checkInLocation)&&const DeepCollectionEquality().equals(other.checkOutLocation, checkOutLocation)&&const DeepCollectionEquality().equals(other.device, device));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,employeeId,date,checkInTime,checkOutTime,durationMins,status,checkInLocationId,checkOutLocationId,deviceId,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,checkInTime,checkOutTime,durationMins,status,const DeepCollectionEquality().hash(checkInLocation),const DeepCollectionEquality().hash(checkOutLocation),const DeepCollectionEquality().hash(device));
 
 @override
 String toString() {
-  return 'AttendanceRecordModel(id: $id, employeeId: $employeeId, date: $date, checkInTime: $checkInTime, checkOutTime: $checkOutTime, durationMins: $durationMins, status: $status, checkInLocationId: $checkInLocationId, checkOutLocationId: $checkOutLocationId, deviceId: $deviceId, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'AttendanceRecordModel(id: $id, checkInTime: $checkInTime, checkOutTime: $checkOutTime, durationMins: $durationMins, status: $status, checkInLocation: $checkInLocation, checkOutLocation: $checkOutLocation, device: $device)';
 }
 
 
@@ -1283,7 +1267,7 @@ abstract mixin class $AttendanceRecordModelCopyWith<$Res>  {
   factory $AttendanceRecordModelCopyWith(AttendanceRecordModel value, $Res Function(AttendanceRecordModel) _then) = _$AttendanceRecordModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String? employeeId, DateTime? date, DateTime? checkInTime, DateTime? checkOutTime, int? durationMins, String status, String? checkInLocationId, String? checkOutLocationId, String? deviceId, DateTime? createdAt, DateTime? updatedAt
+ String id, DateTime? checkInTime, DateTime? checkOutTime, int? durationMins, String status, dynamic checkInLocation, dynamic checkOutLocation, dynamic device
 });
 
 
@@ -1300,21 +1284,17 @@ class _$AttendanceRecordModelCopyWithImpl<$Res>
 
 /// Create a copy of AttendanceRecordModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? employeeId = freezed,Object? date = freezed,Object? checkInTime = freezed,Object? checkOutTime = freezed,Object? durationMins = freezed,Object? status = null,Object? checkInLocationId = freezed,Object? checkOutLocationId = freezed,Object? deviceId = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? checkInTime = freezed,Object? checkOutTime = freezed,Object? durationMins = freezed,Object? status = null,Object? checkInLocation = freezed,Object? checkOutLocation = freezed,Object? device = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,employeeId: freezed == employeeId ? _self.employeeId : employeeId // ignore: cast_nullable_to_non_nullable
-as String?,date: freezed == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
-as DateTime?,checkInTime: freezed == checkInTime ? _self.checkInTime : checkInTime // ignore: cast_nullable_to_non_nullable
+as String,checkInTime: freezed == checkInTime ? _self.checkInTime : checkInTime // ignore: cast_nullable_to_non_nullable
 as DateTime?,checkOutTime: freezed == checkOutTime ? _self.checkOutTime : checkOutTime // ignore: cast_nullable_to_non_nullable
 as DateTime?,durationMins: freezed == durationMins ? _self.durationMins : durationMins // ignore: cast_nullable_to_non_nullable
 as int?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,checkInLocationId: freezed == checkInLocationId ? _self.checkInLocationId : checkInLocationId // ignore: cast_nullable_to_non_nullable
-as String?,checkOutLocationId: freezed == checkOutLocationId ? _self.checkOutLocationId : checkOutLocationId // ignore: cast_nullable_to_non_nullable
-as String?,deviceId: freezed == deviceId ? _self.deviceId : deviceId // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as String,checkInLocation: freezed == checkInLocation ? _self.checkInLocation : checkInLocation // ignore: cast_nullable_to_non_nullable
+as dynamic,checkOutLocation: freezed == checkOutLocation ? _self.checkOutLocation : checkOutLocation // ignore: cast_nullable_to_non_nullable
+as dynamic,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
+as dynamic,
   ));
 }
 
@@ -1399,10 +1379,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String? employeeId,  DateTime? date,  DateTime? checkInTime,  DateTime? checkOutTime,  int? durationMins,  String status,  String? checkInLocationId,  String? checkOutLocationId,  String? deviceId,  DateTime? createdAt,  DateTime? updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  DateTime? checkInTime,  DateTime? checkOutTime,  int? durationMins,  String status,  dynamic checkInLocation,  dynamic checkOutLocation,  dynamic device)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AttendanceRecordModel() when $default != null:
-return $default(_that.id,_that.employeeId,_that.date,_that.checkInTime,_that.checkOutTime,_that.durationMins,_that.status,_that.checkInLocationId,_that.checkOutLocationId,_that.deviceId,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.checkInTime,_that.checkOutTime,_that.durationMins,_that.status,_that.checkInLocation,_that.checkOutLocation,_that.device);case _:
   return orElse();
 
 }
@@ -1420,10 +1400,10 @@ return $default(_that.id,_that.employeeId,_that.date,_that.checkInTime,_that.che
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String? employeeId,  DateTime? date,  DateTime? checkInTime,  DateTime? checkOutTime,  int? durationMins,  String status,  String? checkInLocationId,  String? checkOutLocationId,  String? deviceId,  DateTime? createdAt,  DateTime? updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  DateTime? checkInTime,  DateTime? checkOutTime,  int? durationMins,  String status,  dynamic checkInLocation,  dynamic checkOutLocation,  dynamic device)  $default,) {final _that = this;
 switch (_that) {
 case _AttendanceRecordModel():
-return $default(_that.id,_that.employeeId,_that.date,_that.checkInTime,_that.checkOutTime,_that.durationMins,_that.status,_that.checkInLocationId,_that.checkOutLocationId,_that.deviceId,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.checkInTime,_that.checkOutTime,_that.durationMins,_that.status,_that.checkInLocation,_that.checkOutLocation,_that.device);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1440,10 +1420,10 @@ return $default(_that.id,_that.employeeId,_that.date,_that.checkInTime,_that.che
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String? employeeId,  DateTime? date,  DateTime? checkInTime,  DateTime? checkOutTime,  int? durationMins,  String status,  String? checkInLocationId,  String? checkOutLocationId,  String? deviceId,  DateTime? createdAt,  DateTime? updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  DateTime? checkInTime,  DateTime? checkOutTime,  int? durationMins,  String status,  dynamic checkInLocation,  dynamic checkOutLocation,  dynamic device)?  $default,) {final _that = this;
 switch (_that) {
 case _AttendanceRecordModel() when $default != null:
-return $default(_that.id,_that.employeeId,_that.date,_that.checkInTime,_that.checkOutTime,_that.durationMins,_that.status,_that.checkInLocationId,_that.checkOutLocationId,_that.deviceId,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.checkInTime,_that.checkOutTime,_that.durationMins,_that.status,_that.checkInLocation,_that.checkOutLocation,_that.device);case _:
   return null;
 
 }
@@ -1455,21 +1435,17 @@ return $default(_that.id,_that.employeeId,_that.date,_that.checkInTime,_that.che
 @JsonSerializable()
 
 class _AttendanceRecordModel implements AttendanceRecordModel {
-  const _AttendanceRecordModel({required this.id, this.employeeId, this.date, this.checkInTime, this.checkOutTime, this.durationMins, required this.status, this.checkInLocationId, this.checkOutLocationId, this.deviceId, this.createdAt, this.updatedAt});
+  const _AttendanceRecordModel({required this.id, this.checkInTime, this.checkOutTime, this.durationMins, required this.status, this.checkInLocation, this.checkOutLocation, this.device});
   factory _AttendanceRecordModel.fromJson(Map<String, dynamic> json) => _$AttendanceRecordModelFromJson(json);
 
 @override final  String id;
-@override final  String? employeeId;
-@override final  DateTime? date;
 @override final  DateTime? checkInTime;
 @override final  DateTime? checkOutTime;
 @override final  int? durationMins;
 @override final  String status;
-@override final  String? checkInLocationId;
-@override final  String? checkOutLocationId;
-@override final  String? deviceId;
-@override final  DateTime? createdAt;
-@override final  DateTime? updatedAt;
+@override final  dynamic checkInLocation;
+@override final  dynamic checkOutLocation;
+@override final  dynamic device;
 
 /// Create a copy of AttendanceRecordModel
 /// with the given fields replaced by the non-null parameter values.
@@ -1484,16 +1460,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AttendanceRecordModel&&(identical(other.id, id) || other.id == id)&&(identical(other.employeeId, employeeId) || other.employeeId == employeeId)&&(identical(other.date, date) || other.date == date)&&(identical(other.checkInTime, checkInTime) || other.checkInTime == checkInTime)&&(identical(other.checkOutTime, checkOutTime) || other.checkOutTime == checkOutTime)&&(identical(other.durationMins, durationMins) || other.durationMins == durationMins)&&(identical(other.status, status) || other.status == status)&&(identical(other.checkInLocationId, checkInLocationId) || other.checkInLocationId == checkInLocationId)&&(identical(other.checkOutLocationId, checkOutLocationId) || other.checkOutLocationId == checkOutLocationId)&&(identical(other.deviceId, deviceId) || other.deviceId == deviceId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AttendanceRecordModel&&(identical(other.id, id) || other.id == id)&&(identical(other.checkInTime, checkInTime) || other.checkInTime == checkInTime)&&(identical(other.checkOutTime, checkOutTime) || other.checkOutTime == checkOutTime)&&(identical(other.durationMins, durationMins) || other.durationMins == durationMins)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.checkInLocation, checkInLocation)&&const DeepCollectionEquality().equals(other.checkOutLocation, checkOutLocation)&&const DeepCollectionEquality().equals(other.device, device));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,employeeId,date,checkInTime,checkOutTime,durationMins,status,checkInLocationId,checkOutLocationId,deviceId,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,checkInTime,checkOutTime,durationMins,status,const DeepCollectionEquality().hash(checkInLocation),const DeepCollectionEquality().hash(checkOutLocation),const DeepCollectionEquality().hash(device));
 
 @override
 String toString() {
-  return 'AttendanceRecordModel(id: $id, employeeId: $employeeId, date: $date, checkInTime: $checkInTime, checkOutTime: $checkOutTime, durationMins: $durationMins, status: $status, checkInLocationId: $checkInLocationId, checkOutLocationId: $checkOutLocationId, deviceId: $deviceId, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'AttendanceRecordModel(id: $id, checkInTime: $checkInTime, checkOutTime: $checkOutTime, durationMins: $durationMins, status: $status, checkInLocation: $checkInLocation, checkOutLocation: $checkOutLocation, device: $device)';
 }
 
 
@@ -1504,7 +1480,7 @@ abstract mixin class _$AttendanceRecordModelCopyWith<$Res> implements $Attendanc
   factory _$AttendanceRecordModelCopyWith(_AttendanceRecordModel value, $Res Function(_AttendanceRecordModel) _then) = __$AttendanceRecordModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String? employeeId, DateTime? date, DateTime? checkInTime, DateTime? checkOutTime, int? durationMins, String status, String? checkInLocationId, String? checkOutLocationId, String? deviceId, DateTime? createdAt, DateTime? updatedAt
+ String id, DateTime? checkInTime, DateTime? checkOutTime, int? durationMins, String status, dynamic checkInLocation, dynamic checkOutLocation, dynamic device
 });
 
 
@@ -1521,21 +1497,17 @@ class __$AttendanceRecordModelCopyWithImpl<$Res>
 
 /// Create a copy of AttendanceRecordModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? employeeId = freezed,Object? date = freezed,Object? checkInTime = freezed,Object? checkOutTime = freezed,Object? durationMins = freezed,Object? status = null,Object? checkInLocationId = freezed,Object? checkOutLocationId = freezed,Object? deviceId = freezed,Object? createdAt = freezed,Object? updatedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? checkInTime = freezed,Object? checkOutTime = freezed,Object? durationMins = freezed,Object? status = null,Object? checkInLocation = freezed,Object? checkOutLocation = freezed,Object? device = freezed,}) {
   return _then(_AttendanceRecordModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,employeeId: freezed == employeeId ? _self.employeeId : employeeId // ignore: cast_nullable_to_non_nullable
-as String?,date: freezed == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
-as DateTime?,checkInTime: freezed == checkInTime ? _self.checkInTime : checkInTime // ignore: cast_nullable_to_non_nullable
+as String,checkInTime: freezed == checkInTime ? _self.checkInTime : checkInTime // ignore: cast_nullable_to_non_nullable
 as DateTime?,checkOutTime: freezed == checkOutTime ? _self.checkOutTime : checkOutTime // ignore: cast_nullable_to_non_nullable
 as DateTime?,durationMins: freezed == durationMins ? _self.durationMins : durationMins // ignore: cast_nullable_to_non_nullable
 as int?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,checkInLocationId: freezed == checkInLocationId ? _self.checkInLocationId : checkInLocationId // ignore: cast_nullable_to_non_nullable
-as String?,checkOutLocationId: freezed == checkOutLocationId ? _self.checkOutLocationId : checkOutLocationId // ignore: cast_nullable_to_non_nullable
-as String?,deviceId: freezed == deviceId ? _self.deviceId : deviceId // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as String,checkInLocation: freezed == checkInLocation ? _self.checkInLocation : checkInLocation // ignore: cast_nullable_to_non_nullable
+as dynamic,checkOutLocation: freezed == checkOutLocation ? _self.checkOutLocation : checkOutLocation // ignore: cast_nullable_to_non_nullable
+as dynamic,device: freezed == device ? _self.device : device // ignore: cast_nullable_to_non_nullable
+as dynamic,
   ));
 }
 

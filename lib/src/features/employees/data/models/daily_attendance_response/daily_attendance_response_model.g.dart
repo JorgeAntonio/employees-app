@@ -63,11 +63,9 @@ _EmployeeAttendanceModel _$EmployeeAttendanceModelFromJson(
   photoUrl: json['photoUrl'] as String?,
   shift: json['shift'] as String?,
   user: AttendanceUserModel.fromJson(json['user'] as Map<String, dynamic>),
-  attendance: json['attendance'] == null
-      ? null
-      : AttendanceRecordModel.fromJson(
-          json['attendance'] as Map<String, dynamic>,
-        ),
+  attendances: (json['attendances'] as List<dynamic>?)
+      ?.map((e) => AttendanceRecordModel.fromJson(e as Map<String, dynamic>))
+      .toList(),
   attendanceStatus: json['attendanceStatus'] as String,
   statusLabel: json['statusLabel'] as String,
 );
@@ -85,7 +83,7 @@ Map<String, dynamic> _$EmployeeAttendanceModelToJson(
   'photoUrl': instance.photoUrl,
   'shift': instance.shift,
   'user': instance.user,
-  'attendance': instance.attendance,
+  'attendances': instance.attendances,
   'attendanceStatus': instance.attendanceStatus,
   'statusLabel': instance.statusLabel,
 };
@@ -104,8 +102,6 @@ _AttendanceRecordModel _$AttendanceRecordModelFromJson(
   Map<String, dynamic> json,
 ) => _AttendanceRecordModel(
   id: json['id'] as String,
-  employeeId: json['employeeId'] as String?,
-  date: json['date'] == null ? null : DateTime.parse(json['date'] as String),
   checkInTime: json['checkInTime'] == null
       ? null
       : DateTime.parse(json['checkInTime'] as String),
@@ -114,32 +110,22 @@ _AttendanceRecordModel _$AttendanceRecordModelFromJson(
       : DateTime.parse(json['checkOutTime'] as String),
   durationMins: (json['durationMins'] as num?)?.toInt(),
   status: json['status'] as String,
-  checkInLocationId: json['checkInLocationId'] as String?,
-  checkOutLocationId: json['checkOutLocationId'] as String?,
-  deviceId: json['deviceId'] as String?,
-  createdAt: json['createdAt'] == null
-      ? null
-      : DateTime.parse(json['createdAt'] as String),
-  updatedAt: json['updatedAt'] == null
-      ? null
-      : DateTime.parse(json['updatedAt'] as String),
+  checkInLocation: json['checkInLocation'],
+  checkOutLocation: json['checkOutLocation'],
+  device: json['device'],
 );
 
 Map<String, dynamic> _$AttendanceRecordModelToJson(
   _AttendanceRecordModel instance,
 ) => <String, dynamic>{
   'id': instance.id,
-  'employeeId': instance.employeeId,
-  'date': instance.date?.toIso8601String(),
   'checkInTime': instance.checkInTime?.toIso8601String(),
   'checkOutTime': instance.checkOutTime?.toIso8601String(),
   'durationMins': instance.durationMins,
   'status': instance.status,
-  'checkInLocationId': instance.checkInLocationId,
-  'checkOutLocationId': instance.checkOutLocationId,
-  'deviceId': instance.deviceId,
-  'createdAt': instance.createdAt?.toIso8601String(),
-  'updatedAt': instance.updatedAt?.toIso8601String(),
+  'checkInLocation': instance.checkInLocation,
+  'checkOutLocation': instance.checkOutLocation,
+  'device': instance.device,
 };
 
 _AttendanceStatsModel _$AttendanceStatsModelFromJson(
