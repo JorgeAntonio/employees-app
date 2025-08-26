@@ -1,5 +1,4 @@
 import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
-import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:attendance_app/src/core/utils/current_date.dart';
 import 'package:attendance_app/src/features/employees/presentation/providers/calendar_provider.dart';
 import 'package:flutter/material.dart';
@@ -34,28 +33,18 @@ class CalendarHeader extends ConsumerWidget {
             ),
           ],
         ),
-        Row(
-          children: [
-            ElevatedButton(
-              onPressed: notifier.goToToday,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: context.appColorScheme.surfaceContainer,
-                foregroundColor: context.appColorScheme.onSurface,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(DoubleSizes.size24),
-                ),
-                elevation: DoubleSizes.size0,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: DoubleSizes.size16,
-                  vertical: DoubleSizes.size8,
-                ),
-                textStyle: context.appTextTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              child: const Text('Hoy'),
-            ),
-          ],
+        ElevatedButton(
+          onPressed: notifier.goToToday,
+          style: ElevatedButton.styleFrom(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 8,
+            ), // reduce espacio interno
+            minimumSize: const Size(0, 0), // evita tamaños mínimos grandes
+            tapTargetSize:
+                MaterialTapTargetSize.shrinkWrap, // reduce área táctil extra
+          ),
+          child: const Text('Hoy'),
         ),
       ],
     );
