@@ -19,9 +19,6 @@ class DailyAttendanceList extends ConsumerWidget {
     });
 
     final attendanceAsync = ref.watch(dailyAttendanceProvider);
-    final attendanceNotifier = ref.read(
-      dailyAttendanceNotifierProvider.notifier,
-    );
 
     return attendanceAsync.when(
       data: (attendanceList) {
@@ -44,8 +41,16 @@ class DailyAttendanceList extends ConsumerWidget {
 
         return RefreshIndicator(
           onRefresh: () async {
-            attendanceNotifier.clearAttendance();
-            ref.invalidate(dailyAttendanceProvider);
+            try {
+              // Simplemente invalidar el provider es más seguro que llamar a clearAttendance
+              ref.invalidate(dailyAttendanceProvider);
+
+              // Esperar un poco para que la UI se actualice
+              await Future.delayed(const Duration(milliseconds: 100));
+            } catch (e) {
+              // Manejar el error silenciosamente si el provider ya fue dispuesto
+              debugPrint('Error during refresh: $e');
+            }
           },
           child: ListView.separated(
             padding: const EdgeInsets.all(DoubleSizes.size16),
@@ -74,8 +79,11 @@ class DailyAttendanceList extends ConsumerWidget {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                attendanceNotifier.clearAttendance();
-                ref.invalidate(dailyAttendanceProvider);
+                try {
+                  ref.invalidate(dailyAttendanceProvider);
+                } catch (e) {
+                  debugPrint('Error during retry: $e');
+                }
               },
               child: const Text('Reintentar'),
             ),

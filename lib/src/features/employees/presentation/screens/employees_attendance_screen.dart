@@ -18,7 +18,7 @@ class EmployeesAttendanceScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AttendanceAppBar(
-        title: 'Calendario',
+        title: 'Asistencia diaria',
         actions: [
           IconButton(
             icon: const Icon(Icons.more_vert),
@@ -33,18 +33,13 @@ class EmployeesAttendanceScreen extends ConsumerWidget {
             padding: const EdgeInsets.all(DoubleSizes.size16),
             child: Column(
               spacing: DoubleSizes.size16,
-              children: [
-                const CalendarHeader(),
-                const CalendarView(),
-              ],
+              children: [const CalendarHeader(), const CalendarView()],
             ),
           ),
           // Divider
           const Divider(height: 1),
           // Attendance list section
-          Expanded(
-            child: DailyAttendanceList(selectedDate: selectedDate),
-          ),
+          Expanded(child: DailyAttendanceList(selectedDate: selectedDate)),
         ],
       ),
     );
