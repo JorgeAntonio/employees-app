@@ -54,6 +54,7 @@ class DailyAttendanceList extends ConsumerWidget {
           },
           child: ListView.separated(
             padding: const EdgeInsets.all(DoubleSizes.size16),
+            physics: const BouncingScrollPhysics(),
             itemCount: attendanceList.data!.employees.length,
             separatorBuilder: (context, index) =>
                 const SizedBox(height: DoubleSizes.size12),

@@ -116,6 +116,7 @@ class _CalendarViewState extends ConsumerState<CalendarView> {
     return SizedBox(
       height: screenHeight * 0.08,
       child: ListView.separated(
+        physics: const BouncingScrollPhysics(),
         controller: _scrollController,
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: DoubleSizes.size16),
