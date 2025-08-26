@@ -78,9 +78,9 @@ abstract class RecentAttendanceModel with _$RecentAttendanceModel {
   const factory RecentAttendanceModel({
     required String date,
     required String checkInTime,
-    required String checkOutTime,
+    String? checkOutTime,
     required String status,
-    required int durationMins,
+    int? durationMins,
   }) = _RecentAttendanceModel;
 
   factory RecentAttendanceModel.fromJson(Map<String, dynamic> json) =>

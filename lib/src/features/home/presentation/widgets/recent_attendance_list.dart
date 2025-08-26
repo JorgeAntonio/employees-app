@@ -98,7 +98,9 @@ class _RecentAttendanceCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final date = DateTime.parse(attendance.date);
     final checkIn = DateTime.parse(attendance.checkInTime);
-    final checkOut = DateTime.parse(attendance.checkOutTime);
+    final checkOut = attendance.checkOutTime != null
+        ? DateTime.parse(attendance.checkOutTime!)
+        : null;
 
     final timeFormat = DateFormat('HH:mm');
 
@@ -211,7 +213,9 @@ class _RecentAttendanceCard extends StatelessWidget {
                         ),
                         const SizedBox(width: DoubleSizes.size4),
                         Text(
-                          'Salida: ${timeFormat.format(checkOut)}',
+                          checkOut != null
+                              ? 'Salida: ${timeFormat.format(checkOut)}'
+                              : 'Salida: Pendiente',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                       ],
@@ -227,7 +231,9 @@ class _RecentAttendanceCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                _formatDuration(attendance.durationMins),
+                attendance.durationMins != null
+                    ? _formatDuration(attendance.durationMins!)
+                    : '--',
                 style: Theme.of(
                   context,
                 ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),

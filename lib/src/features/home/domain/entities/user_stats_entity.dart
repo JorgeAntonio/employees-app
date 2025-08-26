@@ -70,16 +70,16 @@ class Statistics {
 class RecentAttendance {
   final String date;
   final String checkInTime;
-  final String checkOutTime;
+  final String? checkOutTime;
   final String status;
-  final int durationMins;
+  final int? durationMins;
 
   RecentAttendance({
     required this.date,
     required this.checkInTime,
-    required this.checkOutTime,
+    this.checkOutTime,
     required this.status,
-    required this.durationMins,
+    this.durationMins,
   });
 }
 

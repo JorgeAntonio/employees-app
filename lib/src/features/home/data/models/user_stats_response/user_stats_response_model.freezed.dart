@@ -1471,7 +1471,7 @@ as double,
 /// @nodoc
 mixin _$RecentAttendanceModel {
 
- String get date; String get checkInTime; String get checkOutTime; String get status; int get durationMins;
+ String get date; String get checkInTime; String? get checkOutTime; String get status; int? get durationMins;
 /// Create a copy of RecentAttendanceModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1504,7 +1504,7 @@ abstract mixin class $RecentAttendanceModelCopyWith<$Res>  {
   factory $RecentAttendanceModelCopyWith(RecentAttendanceModel value, $Res Function(RecentAttendanceModel) _then) = _$RecentAttendanceModelCopyWithImpl;
 @useResult
 $Res call({
- String date, String checkInTime, String checkOutTime, String status, int durationMins
+ String date, String checkInTime, String? checkOutTime, String status, int? durationMins
 });
 
 
@@ -1521,14 +1521,14 @@ class _$RecentAttendanceModelCopyWithImpl<$Res>
 
 /// Create a copy of RecentAttendanceModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? date = null,Object? checkInTime = null,Object? checkOutTime = null,Object? status = null,Object? durationMins = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? date = null,Object? checkInTime = null,Object? checkOutTime = freezed,Object? status = null,Object? durationMins = freezed,}) {
   return _then(_self.copyWith(
 date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
 as String,checkInTime: null == checkInTime ? _self.checkInTime : checkInTime // ignore: cast_nullable_to_non_nullable
-as String,checkOutTime: null == checkOutTime ? _self.checkOutTime : checkOutTime // ignore: cast_nullable_to_non_nullable
-as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,durationMins: null == durationMins ? _self.durationMins : durationMins // ignore: cast_nullable_to_non_nullable
-as int,
+as String,checkOutTime: freezed == checkOutTime ? _self.checkOutTime : checkOutTime // ignore: cast_nullable_to_non_nullable
+as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,durationMins: freezed == durationMins ? _self.durationMins : durationMins // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -1613,7 +1613,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String date,  String checkInTime,  String checkOutTime,  String status,  int durationMins)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String date,  String checkInTime,  String? checkOutTime,  String status,  int? durationMins)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RecentAttendanceModel() when $default != null:
 return $default(_that.date,_that.checkInTime,_that.checkOutTime,_that.status,_that.durationMins);case _:
@@ -1634,7 +1634,7 @@ return $default(_that.date,_that.checkInTime,_that.checkOutTime,_that.status,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String date,  String checkInTime,  String checkOutTime,  String status,  int durationMins)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String date,  String checkInTime,  String? checkOutTime,  String status,  int? durationMins)  $default,) {final _that = this;
 switch (_that) {
 case _RecentAttendanceModel():
 return $default(_that.date,_that.checkInTime,_that.checkOutTime,_that.status,_that.durationMins);case _:
@@ -1654,7 +1654,7 @@ return $default(_that.date,_that.checkInTime,_that.checkOutTime,_that.status,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String date,  String checkInTime,  String checkOutTime,  String status,  int durationMins)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String date,  String checkInTime,  String? checkOutTime,  String status,  int? durationMins)?  $default,) {final _that = this;
 switch (_that) {
 case _RecentAttendanceModel() when $default != null:
 return $default(_that.date,_that.checkInTime,_that.checkOutTime,_that.status,_that.durationMins);case _:
@@ -1669,14 +1669,14 @@ return $default(_that.date,_that.checkInTime,_that.checkOutTime,_that.status,_th
 @JsonSerializable()
 
 class _RecentAttendanceModel implements RecentAttendanceModel {
-  const _RecentAttendanceModel({required this.date, required this.checkInTime, required this.checkOutTime, required this.status, required this.durationMins});
+  const _RecentAttendanceModel({required this.date, required this.checkInTime, this.checkOutTime, required this.status, this.durationMins});
   factory _RecentAttendanceModel.fromJson(Map<String, dynamic> json) => _$RecentAttendanceModelFromJson(json);
 
 @override final  String date;
 @override final  String checkInTime;
-@override final  String checkOutTime;
+@override final  String? checkOutTime;
 @override final  String status;
-@override final  int durationMins;
+@override final  int? durationMins;
 
 /// Create a copy of RecentAttendanceModel
 /// with the given fields replaced by the non-null parameter values.
@@ -1711,7 +1711,7 @@ abstract mixin class _$RecentAttendanceModelCopyWith<$Res> implements $RecentAtt
   factory _$RecentAttendanceModelCopyWith(_RecentAttendanceModel value, $Res Function(_RecentAttendanceModel) _then) = __$RecentAttendanceModelCopyWithImpl;
 @override @useResult
 $Res call({
- String date, String checkInTime, String checkOutTime, String status, int durationMins
+ String date, String checkInTime, String? checkOutTime, String status, int? durationMins
 });
 
 
@@ -1728,14 +1728,14 @@ class __$RecentAttendanceModelCopyWithImpl<$Res>
 
 /// Create a copy of RecentAttendanceModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? date = null,Object? checkInTime = null,Object? checkOutTime = null,Object? status = null,Object? durationMins = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? date = null,Object? checkInTime = null,Object? checkOutTime = freezed,Object? status = null,Object? durationMins = freezed,}) {
   return _then(_RecentAttendanceModel(
 date: null == date ? _self.date : date // ignore: cast_nullable_to_non_nullable
 as String,checkInTime: null == checkInTime ? _self.checkInTime : checkInTime // ignore: cast_nullable_to_non_nullable
-as String,checkOutTime: null == checkOutTime ? _self.checkOutTime : checkOutTime // ignore: cast_nullable_to_non_nullable
-as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,durationMins: null == durationMins ? _self.durationMins : durationMins // ignore: cast_nullable_to_non_nullable
-as int,
+as String,checkOutTime: freezed == checkOutTime ? _self.checkOutTime : checkOutTime // ignore: cast_nullable_to_non_nullable
+as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
+as String,durationMins: freezed == durationMins ? _self.durationMins : durationMins // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 

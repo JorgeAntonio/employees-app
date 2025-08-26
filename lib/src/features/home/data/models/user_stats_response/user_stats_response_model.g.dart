@@ -108,9 +108,9 @@ _RecentAttendanceModel _$RecentAttendanceModelFromJson(
 ) => _RecentAttendanceModel(
   date: json['date'] as String,
   checkInTime: json['checkInTime'] as String,
-  checkOutTime: json['checkOutTime'] as String,
+  checkOutTime: json['checkOutTime'] as String?,
   status: json['status'] as String,
-  durationMins: (json['durationMins'] as num).toInt(),
+  durationMins: (json['durationMins'] as num?)?.toInt(),
 );
 
 Map<String, dynamic> _$RecentAttendanceModelToJson(
