@@ -166,23 +166,6 @@ class SignInScreen extends HookConsumerWidget {
                           return 'Por favor ingresa tu contraseña';
                         }
 
-                        if (value.length < 6) {
-                          return 'La contraseña debe tener al menos 6 caracteres';
-                        }
-
-                        // // Validaciones adicionales de contraseña
-                        // if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                        //   return 'La contraseña debe contener al menos una mayúscula';
-                        // }
-
-                        if (!RegExp(r'[a-z]').hasMatch(value)) {
-                          return 'La contraseña debe contener al menos una minúscula';
-                        }
-
-                        if (!RegExp(r'[0-9]').hasMatch(value)) {
-                          return 'La contraseña debe contener al menos un número';
-                        }
-
                         return null;
                       },
                     ),

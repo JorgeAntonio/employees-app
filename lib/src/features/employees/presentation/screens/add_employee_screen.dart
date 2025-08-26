@@ -259,6 +259,12 @@ class _AddEmployeeScreenState extends ConsumerState<AddEmployeeScreen> {
                         if (value.length < 6) {
                           return 'La contraseña debe tener al menos 6 caracteres';
                         }
+                        if (!RegExp(r'[a-z]').hasMatch(value)) {
+                          return 'La contraseña debe contener al menos una minúscula';
+                        }
+                        if (!RegExp(r'[0-9]').hasMatch(value)) {
+                          return 'La contraseña debe contener al menos un número';
+                        }
                         return null;
                       },
                     ),
