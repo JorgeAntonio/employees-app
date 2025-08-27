@@ -43,7 +43,7 @@ abstract class EmployeeAttendanceModel with _$EmployeeAttendanceModel {
     required String department,
     String? phone,
     String? photoUrl,
-    String? shift,
+    ShiftModel? shift,
     required AttendanceUserModel user,
     List<AttendanceRecordModel>? attendances,
     required String attendanceStatus,
@@ -52,6 +52,19 @@ abstract class EmployeeAttendanceModel with _$EmployeeAttendanceModel {
 
   factory EmployeeAttendanceModel.fromJson(Map<String, dynamic> json) =>
       _$EmployeeAttendanceModelFromJson(json);
+}
+
+@freezed
+abstract class ShiftModel with _$ShiftModel {
+  const factory ShiftModel({
+    required String id,
+    required String name,
+    required String startTime,
+    required String endTime,
+  }) = _ShiftModel;
+
+  factory ShiftModel.fromJson(Map<String, dynamic> json) =>
+      _$ShiftModelFromJson(json);
 }
 
 @freezed
@@ -140,12 +153,18 @@ extension EmployeeAttendanceModelX on EmployeeAttendanceModel {
       department: department,
       phone: phone,
       photoUrl: photoUrl,
-      shift: shift,
+      shift: shift?.toDomain(),
       user: user.toDomain(),
       attendances: attendances?.map((a) => a.toDomain()).toList(),
       attendanceStatus: attendanceStatus,
       statusLabel: statusLabel,
     );
+  }
+}
+
+extension ShiftModelX on ShiftModel {
+  Shift toDomain() {
+    return Shift(id: id, name: name, startTime: startTime, endTime: endTime);
   }
 }
 

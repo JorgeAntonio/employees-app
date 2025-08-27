@@ -643,7 +643,7 @@ $AttendanceFiltersModelCopyWith<$Res> get filters {
 /// @nodoc
 mixin _$EmployeeAttendanceModel {
 
- String get id; String get firstName; String get lastName; String get dni; String get position; String get department; String? get phone; String? get photoUrl; String? get shift; AttendanceUserModel get user; List<AttendanceRecordModel>? get attendances; String get attendanceStatus; String get statusLabel;
+ String get id; String get firstName; String get lastName; String get dni; String get position; String get department; String? get phone; String? get photoUrl; ShiftModel? get shift; AttendanceUserModel get user; List<AttendanceRecordModel>? get attendances; String get attendanceStatus; String get statusLabel;
 /// Create a copy of EmployeeAttendanceModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -676,11 +676,11 @@ abstract mixin class $EmployeeAttendanceModelCopyWith<$Res>  {
   factory $EmployeeAttendanceModelCopyWith(EmployeeAttendanceModel value, $Res Function(EmployeeAttendanceModel) _then) = _$EmployeeAttendanceModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String firstName, String lastName, String dni, String position, String department, String? phone, String? photoUrl, String? shift, AttendanceUserModel user, List<AttendanceRecordModel>? attendances, String attendanceStatus, String statusLabel
+ String id, String firstName, String lastName, String dni, String position, String department, String? phone, String? photoUrl, ShiftModel? shift, AttendanceUserModel user, List<AttendanceRecordModel>? attendances, String attendanceStatus, String statusLabel
 });
 
 
-$AttendanceUserModelCopyWith<$Res> get user;
+$ShiftModelCopyWith<$Res>? get shift;$AttendanceUserModelCopyWith<$Res> get user;
 
 }
 /// @nodoc
@@ -704,7 +704,7 @@ as String,department: null == department ? _self.department : department // igno
 as String,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
 as String?,shift: freezed == shift ? _self.shift : shift // ignore: cast_nullable_to_non_nullable
-as String?,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as ShiftModel?,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as AttendanceUserModel,attendances: freezed == attendances ? _self.attendances : attendances // ignore: cast_nullable_to_non_nullable
 as List<AttendanceRecordModel>?,attendanceStatus: null == attendanceStatus ? _self.attendanceStatus : attendanceStatus // ignore: cast_nullable_to_non_nullable
 as String,statusLabel: null == statusLabel ? _self.statusLabel : statusLabel // ignore: cast_nullable_to_non_nullable
@@ -712,6 +712,18 @@ as String,
   ));
 }
 /// Create a copy of EmployeeAttendanceModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ShiftModelCopyWith<$Res>? get shift {
+    if (_self.shift == null) {
+    return null;
+  }
+
+  return $ShiftModelCopyWith<$Res>(_self.shift!, (value) {
+    return _then(_self.copyWith(shift: value));
+  });
+}/// Create a copy of EmployeeAttendanceModel
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
@@ -802,7 +814,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String dni,  String position,  String department,  String? phone,  String? photoUrl,  String? shift,  AttendanceUserModel user,  List<AttendanceRecordModel>? attendances,  String attendanceStatus,  String statusLabel)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String dni,  String position,  String department,  String? phone,  String? photoUrl,  ShiftModel? shift,  AttendanceUserModel user,  List<AttendanceRecordModel>? attendances,  String attendanceStatus,  String statusLabel)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EmployeeAttendanceModel() when $default != null:
 return $default(_that.id,_that.firstName,_that.lastName,_that.dni,_that.position,_that.department,_that.phone,_that.photoUrl,_that.shift,_that.user,_that.attendances,_that.attendanceStatus,_that.statusLabel);case _:
@@ -823,7 +835,7 @@ return $default(_that.id,_that.firstName,_that.lastName,_that.dni,_that.position
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String dni,  String position,  String department,  String? phone,  String? photoUrl,  String? shift,  AttendanceUserModel user,  List<AttendanceRecordModel>? attendances,  String attendanceStatus,  String statusLabel)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String dni,  String position,  String department,  String? phone,  String? photoUrl,  ShiftModel? shift,  AttendanceUserModel user,  List<AttendanceRecordModel>? attendances,  String attendanceStatus,  String statusLabel)  $default,) {final _that = this;
 switch (_that) {
 case _EmployeeAttendanceModel():
 return $default(_that.id,_that.firstName,_that.lastName,_that.dni,_that.position,_that.department,_that.phone,_that.photoUrl,_that.shift,_that.user,_that.attendances,_that.attendanceStatus,_that.statusLabel);case _:
@@ -843,7 +855,7 @@ return $default(_that.id,_that.firstName,_that.lastName,_that.dni,_that.position
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String firstName,  String lastName,  String dni,  String position,  String department,  String? phone,  String? photoUrl,  String? shift,  AttendanceUserModel user,  List<AttendanceRecordModel>? attendances,  String attendanceStatus,  String statusLabel)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String firstName,  String lastName,  String dni,  String position,  String department,  String? phone,  String? photoUrl,  ShiftModel? shift,  AttendanceUserModel user,  List<AttendanceRecordModel>? attendances,  String attendanceStatus,  String statusLabel)?  $default,) {final _that = this;
 switch (_that) {
 case _EmployeeAttendanceModel() when $default != null:
 return $default(_that.id,_that.firstName,_that.lastName,_that.dni,_that.position,_that.department,_that.phone,_that.photoUrl,_that.shift,_that.user,_that.attendances,_that.attendanceStatus,_that.statusLabel);case _:
@@ -869,7 +881,7 @@ class _EmployeeAttendanceModel implements EmployeeAttendanceModel {
 @override final  String department;
 @override final  String? phone;
 @override final  String? photoUrl;
-@override final  String? shift;
+@override final  ShiftModel? shift;
 @override final  AttendanceUserModel user;
  final  List<AttendanceRecordModel>? _attendances;
 @override List<AttendanceRecordModel>? get attendances {
@@ -916,11 +928,11 @@ abstract mixin class _$EmployeeAttendanceModelCopyWith<$Res> implements $Employe
   factory _$EmployeeAttendanceModelCopyWith(_EmployeeAttendanceModel value, $Res Function(_EmployeeAttendanceModel) _then) = __$EmployeeAttendanceModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String firstName, String lastName, String dni, String position, String department, String? phone, String? photoUrl, String? shift, AttendanceUserModel user, List<AttendanceRecordModel>? attendances, String attendanceStatus, String statusLabel
+ String id, String firstName, String lastName, String dni, String position, String department, String? phone, String? photoUrl, ShiftModel? shift, AttendanceUserModel user, List<AttendanceRecordModel>? attendances, String attendanceStatus, String statusLabel
 });
 
 
-@override $AttendanceUserModelCopyWith<$Res> get user;
+@override $ShiftModelCopyWith<$Res>? get shift;@override $AttendanceUserModelCopyWith<$Res> get user;
 
 }
 /// @nodoc
@@ -944,7 +956,7 @@ as String,department: null == department ? _self.department : department // igno
 as String,phone: freezed == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
 as String?,photoUrl: freezed == photoUrl ? _self.photoUrl : photoUrl // ignore: cast_nullable_to_non_nullable
 as String?,shift: freezed == shift ? _self.shift : shift // ignore: cast_nullable_to_non_nullable
-as String?,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as ShiftModel?,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as AttendanceUserModel,attendances: freezed == attendances ? _self._attendances : attendances // ignore: cast_nullable_to_non_nullable
 as List<AttendanceRecordModel>?,attendanceStatus: null == attendanceStatus ? _self.attendanceStatus : attendanceStatus // ignore: cast_nullable_to_non_nullable
 as String,statusLabel: null == statusLabel ? _self.statusLabel : statusLabel // ignore: cast_nullable_to_non_nullable
@@ -956,12 +968,296 @@ as String,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
+$ShiftModelCopyWith<$Res>? get shift {
+    if (_self.shift == null) {
+    return null;
+  }
+
+  return $ShiftModelCopyWith<$Res>(_self.shift!, (value) {
+    return _then(_self.copyWith(shift: value));
+  });
+}/// Create a copy of EmployeeAttendanceModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
 $AttendanceUserModelCopyWith<$Res> get user {
   
   return $AttendanceUserModelCopyWith<$Res>(_self.user, (value) {
     return _then(_self.copyWith(user: value));
   });
 }
+}
+
+
+/// @nodoc
+mixin _$ShiftModel {
+
+ String get id; String get name; String get startTime; String get endTime;
+/// Create a copy of ShiftModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ShiftModelCopyWith<ShiftModel> get copyWith => _$ShiftModelCopyWithImpl<ShiftModel>(this as ShiftModel, _$identity);
+
+  /// Serializes this ShiftModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShiftModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,name,startTime,endTime);
+
+@override
+String toString() {
+  return 'ShiftModel(id: $id, name: $name, startTime: $startTime, endTime: $endTime)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ShiftModelCopyWith<$Res>  {
+  factory $ShiftModelCopyWith(ShiftModel value, $Res Function(ShiftModel) _then) = _$ShiftModelCopyWithImpl;
+@useResult
+$Res call({
+ String id, String name, String startTime, String endTime
+});
+
+
+
+
+}
+/// @nodoc
+class _$ShiftModelCopyWithImpl<$Res>
+    implements $ShiftModelCopyWith<$Res> {
+  _$ShiftModelCopyWithImpl(this._self, this._then);
+
+  final ShiftModel _self;
+  final $Res Function(ShiftModel) _then;
+
+/// Create a copy of ShiftModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? startTime = null,Object? endTime = null,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,startTime: null == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
+as String,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ShiftModel].
+extension ShiftModelPatterns on ShiftModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ShiftModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ShiftModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ShiftModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _ShiftModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ShiftModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ShiftModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String startTime,  String endTime)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ShiftModel() when $default != null:
+return $default(_that.id,_that.name,_that.startTime,_that.endTime);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String startTime,  String endTime)  $default,) {final _that = this;
+switch (_that) {
+case _ShiftModel():
+return $default(_that.id,_that.name,_that.startTime,_that.endTime);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String startTime,  String endTime)?  $default,) {final _that = this;
+switch (_that) {
+case _ShiftModel() when $default != null:
+return $default(_that.id,_that.name,_that.startTime,_that.endTime);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _ShiftModel implements ShiftModel {
+  const _ShiftModel({required this.id, required this.name, required this.startTime, required this.endTime});
+  factory _ShiftModel.fromJson(Map<String, dynamic> json) => _$ShiftModelFromJson(json);
+
+@override final  String id;
+@override final  String name;
+@override final  String startTime;
+@override final  String endTime;
+
+/// Create a copy of ShiftModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ShiftModelCopyWith<_ShiftModel> get copyWith => __$ShiftModelCopyWithImpl<_ShiftModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ShiftModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShiftModel&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,name,startTime,endTime);
+
+@override
+String toString() {
+  return 'ShiftModel(id: $id, name: $name, startTime: $startTime, endTime: $endTime)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ShiftModelCopyWith<$Res> implements $ShiftModelCopyWith<$Res> {
+  factory _$ShiftModelCopyWith(_ShiftModel value, $Res Function(_ShiftModel) _then) = __$ShiftModelCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String name, String startTime, String endTime
+});
+
+
+
+
+}
+/// @nodoc
+class __$ShiftModelCopyWithImpl<$Res>
+    implements _$ShiftModelCopyWith<$Res> {
+  __$ShiftModelCopyWithImpl(this._self, this._then);
+
+  final _ShiftModel _self;
+  final $Res Function(_ShiftModel) _then;
+
+/// Create a copy of ShiftModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? startTime = null,Object? endTime = null,}) {
+  return _then(_ShiftModel(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,startTime: null == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
+as String,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
 }
 
 

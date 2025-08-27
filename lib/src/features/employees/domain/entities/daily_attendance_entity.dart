@@ -33,7 +33,7 @@ class EmployeeAttendance {
   final String department;
   final String? phone;
   final String? photoUrl;
-  final String? shift;
+  final Shift? shift;
   final AttendanceUser user;
   final List<AttendanceRecord>? attendances;
   final String attendanceStatus;
@@ -108,4 +108,18 @@ class AttendanceFilters {
   final String? position;
 
   AttendanceFilters({this.department, this.position});
+}
+
+class Shift {
+  final String id;
+  final String name;
+  final String startTime;
+  final String endTime;
+
+  Shift({
+    required this.id,
+    required this.name,
+    required this.startTime,
+    required this.endTime,
+  });
 }

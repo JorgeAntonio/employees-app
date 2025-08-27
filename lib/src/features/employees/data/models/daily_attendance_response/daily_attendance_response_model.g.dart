@@ -61,7 +61,9 @@ _EmployeeAttendanceModel _$EmployeeAttendanceModelFromJson(
   department: json['department'] as String,
   phone: json['phone'] as String?,
   photoUrl: json['photoUrl'] as String?,
-  shift: json['shift'] as String?,
+  shift: json['shift'] == null
+      ? null
+      : ShiftModel.fromJson(json['shift'] as Map<String, dynamic>),
   user: AttendanceUserModel.fromJson(json['user'] as Map<String, dynamic>),
   attendances: (json['attendances'] as List<dynamic>?)
       ?.map((e) => AttendanceRecordModel.fromJson(e as Map<String, dynamic>))
@@ -87,6 +89,21 @@ Map<String, dynamic> _$EmployeeAttendanceModelToJson(
   'attendanceStatus': instance.attendanceStatus,
   'statusLabel': instance.statusLabel,
 };
+
+_ShiftModel _$ShiftModelFromJson(Map<String, dynamic> json) => _ShiftModel(
+  id: json['id'] as String,
+  name: json['name'] as String,
+  startTime: json['startTime'] as String,
+  endTime: json['endTime'] as String,
+);
+
+Map<String, dynamic> _$ShiftModelToJson(_ShiftModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'startTime': instance.startTime,
+      'endTime': instance.endTime,
+    };
 
 _AttendanceUserModel _$AttendanceUserModelFromJson(Map<String, dynamic> json) =>
     _AttendanceUserModel(
