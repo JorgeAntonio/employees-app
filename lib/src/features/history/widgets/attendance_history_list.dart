@@ -1,7 +1,6 @@
+import 'package:attendance_app/src/core/shared/widgets/attendance_card.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_response.dart';
 import 'package:flutter/material.dart';
-
-import 'attendance_history_item.dart';
 
 class AttendanceHistoryList extends StatefulWidget {
   final AttendanceHistoryResponse historyResponse;
@@ -47,6 +46,105 @@ class _AttendanceHistoryListState extends State<AttendanceHistoryList> {
         widget.onPageChanged(widget.currentPage + 1);
       }
     }
+  }
+
+  void _showAttendanceDetails(
+    BuildContext context,
+    AttendanceHistoryItem attendance,
+  ) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.6,
+        maxChildSize: 0.9,
+        minChildSize: 0.3,
+        builder: (context, scrollController) => Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Handle bar
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Title
+              Text(
+                'Detalles de Asistencia',
+                style: Theme.of(
+                  context,
+                ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+
+              Expanded(
+                child: SingleChildScrollView(
+                  controller: scrollController,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Información básica con el card
+                      AttendanceCard(
+                        date: attendance.date,
+                        checkInTime: attendance.checkInTime ?? DateTime.now(),
+                        checkOutTime: attendance.checkOutTime,
+                        status: attendance.status,
+                        durationMins: attendance.durationMins,
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      // Información adicional si está disponible
+                      if (attendance.checkInLocation != null ||
+                          attendance.checkOutLocation != null ||
+                          attendance.device != null) ...[
+                        Text(
+                          'Información Adicional',
+                          style: Theme.of(context).textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 12),
+
+                        if (attendance.checkInLocation != null)
+                          _DetailRow(
+                            icon: Icons.location_on,
+                            label: 'Ubicación Entrada',
+                            value: attendance.checkInLocation!.name,
+                          ),
+
+                        if (attendance.checkOutLocation != null)
+                          _DetailRow(
+                            icon: Icons.location_on,
+                            label: 'Ubicación Salida',
+                            value: attendance.checkOutLocation!.name,
+                          ),
+
+                        if (attendance.device != null)
+                          _DetailRow(
+                            icon: Icons.devices,
+                            label: 'Dispositivo',
+                            value:
+                                '${attendance.device!.name} (${attendance.device!.os})',
+                          ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -111,9 +209,16 @@ class _AttendanceHistoryListState extends State<AttendanceHistoryList> {
               }
 
               final attendance = attendances[index];
-              return AttendanceHistoryItemWidget(
-                attendance: attendance,
-                isLast: index == attendances.length - 1 && !hasMorePages,
+              return AttendanceCard(
+                date: attendance.date,
+                checkInTime: attendance.checkInTime ?? DateTime.now(),
+                checkOutTime: attendance.checkOutTime,
+                status: attendance.status,
+                durationMins: attendance.durationMins,
+                onTap: () {
+                  // Aquí podrías agregar lógica para mostrar más detalles
+                  _showAttendanceDetails(context, attendance);
+                },
               );
             }, childCount: attendances.length + (hasMorePages ? 1 : 0)),
           ),
@@ -124,6 +229,42 @@ class _AttendanceHistoryListState extends State<AttendanceHistoryList> {
           child: Container(height: MediaQuery.of(context).size.height * 0.1),
         ),
       ],
+    );
+  }
+}
+
+class _DetailRow extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+
+  const _DetailRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        children: [
+          Icon(icon, size: 20, color: Colors.grey[600]),
+          const SizedBox(width: 12),
+          Text(
+            '$label:',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: Colors.grey[700],
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(value, style: Theme.of(context).textTheme.bodyMedium),
+          ),
+        ],
+      ),
     );
   }
 }
