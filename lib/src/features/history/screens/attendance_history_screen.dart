@@ -1,5 +1,6 @@
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
+import 'package:attendance_app/src/core/shared/widgets/attendance_card_skeleton.dart';
 import 'package:attendance_app/src/core/utils/current_date.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_request.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/attendance_history_provider.dart';
@@ -178,11 +179,19 @@ class _AttendanceHistoryScreenState
                       isLoading: _isLoadingMore,
                     );
                   },
-                  loading: () => SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.7,
-                      child: const Center(child: CircularProgressIndicator()),
+                  loading: () => Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: DoubleSizes.size16,
+                    ),
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: const Center(
+                          child: AttendanceCardLoading(),
+                          // CircularProgressIndicator()
+                        ),
+                      ),
                     ),
                   ),
                   error: (error, stackTrace) => SingleChildScrollView(

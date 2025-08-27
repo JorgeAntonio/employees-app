@@ -1,5 +1,6 @@
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_card.dart';
+import 'package:attendance_app/src/core/shared/widgets/attendance_card_skeleton.dart';
 import 'package:attendance_app/src/core/shared/widgets/section_title.dart';
 import 'package:attendance_app/src/features/home/presentation/providers/home_providers.dart';
 import 'package:flutter/material.dart';
@@ -57,12 +58,7 @@ class RecentAttendanceList extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SectionTitle(title: 'Asistencias recientes'),
-          SizedBox(height: DoubleSizes.size16),
-          AttendanceCardSkeleton(),
-          SizedBox(height: DoubleSizes.size8),
-          AttendanceCardSkeleton(),
-          SizedBox(height: DoubleSizes.size8),
-          AttendanceCardSkeleton(),
+          AttendanceCardLoading(),
         ],
       ),
       error: (error, stackTrace) => Column(
