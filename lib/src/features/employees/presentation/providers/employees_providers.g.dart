@@ -541,7 +541,7 @@ final class DailyAttendanceRequestNotifierProvider
 }
 
 String _$dailyAttendanceRequestNotifierHash() =>
-    r'0169aa3c669d936c33d4a3d341f0a48d65fe16d9';
+    r'83e6fde9d9ef90d8c9f67ae7a8d5a7f1a840e19d';
 
 abstract class _$DailyAttendanceRequestNotifier
     extends $Notifier<DailyAttendanceRequest> {

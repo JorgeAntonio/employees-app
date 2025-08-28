@@ -1,5 +1,4 @@
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
-import 'package:attendance_app/src/features/employees/presentation/providers/calendar_provider.dart';
 import 'package:attendance_app/src/features/employees/presentation/providers/employees_providers.dart';
 import 'package:attendance_app/src/features/employees/presentation/widgets/calendar_header.dart';
 import 'package:attendance_app/src/features/employees/presentation/widgets/calendar_view.dart';
@@ -27,15 +26,20 @@ class _EmployeesAttendanceScreenState
       _selectedPosition = position;
     });
 
-    // Primero invalidar ambos providers para limpiar el cache
-    ref.invalidate(dailyAttendanceProvider);
-    ref.invalidate(dailyAttendanceRequestNotifierProvider);
+    // PRIMERO actualizar los filtros en el provider
+    ref
+        .read(dailyAttendanceRequestNotifierProvider.notifier)
+        .updateFilters(department: department, position: position);
 
-    // Luego actualizar los filtros en el provider
-    Future.microtask(() {
+    // DESPUÉS invalidar el notifier para limpiar el cache
+    ref.invalidate(dailyAttendanceNotifierProvider);
+
+    // Luego cargar los datos con los nuevos filtros
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final request = ref.read(dailyAttendanceRequestNotifierProvider);
       ref
-          .read(dailyAttendanceRequestNotifierProvider.notifier)
-          .updateFilters(department: department, position: position);
+          .read(dailyAttendanceNotifierProvider.notifier)
+          .loadDailyAttendance(request);
     });
   }
 
@@ -50,9 +54,6 @@ class _EmployeesAttendanceScreenState
 
   @override
   Widget build(BuildContext context) {
-    final calendarState = ref.watch(calendarNotifierProvider);
-    final selectedDate = calendarState.selectedDate;
-
     return Scaffold(
       appBar: AttendanceAppBar(
         title: 'Asistencia diaria',
@@ -138,7 +139,7 @@ class _EmployeesAttendanceScreenState
           // Divider
           const Divider(height: 1),
           // Attendance list section
-          Expanded(child: DailyAttendanceList(selectedDate: selectedDate)),
+          const Expanded(child: DailyAttendanceList()),
         ],
       ),
     );

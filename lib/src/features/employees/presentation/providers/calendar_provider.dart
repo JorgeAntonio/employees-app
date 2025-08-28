@@ -71,10 +71,10 @@ class CalendarNotifier extends _$CalendarNotifier {
   CalendarState build() {
     final now = DateTime.now();
     final focusedMonth = DateTime(now.year, now.month);
-    
+
     // Generate calendar days synchronously
     final calendarDays = _generateCalendarDaysForMonth(focusedMonth);
-    
+
     return CalendarState(
       selectedDate: now,
       focusedMonth: focusedMonth,

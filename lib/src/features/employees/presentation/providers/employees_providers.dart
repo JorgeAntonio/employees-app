@@ -2,14 +2,14 @@ import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/auth_providers.dart';
 import 'package:attendance_app/src/features/employees/data/datasources/api/employees_datasource_impl.dart';
 import 'package:attendance_app/src/features/employees/data/repositories/employees_repository_impl.dart';
-import 'package:attendance_app/src/features/employees/domain/entities/employee_entity.dart';
-import 'package:attendance_app/src/features/employees/domain/entities/employees_request.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/daily_attendance_entity.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/daily_attendance_request.dart';
+import 'package:attendance_app/src/features/employees/domain/entities/employee_entity.dart';
+import 'package:attendance_app/src/features/employees/domain/entities/employees_request.dart';
 import 'package:attendance_app/src/features/employees/domain/repositories/employees_repository.dart';
 import 'package:attendance_app/src/features/employees/domain/usecases/add_employee_usecase.dart';
-import 'package:attendance_app/src/features/employees/domain/usecases/get_employees_usecase.dart';
 import 'package:attendance_app/src/features/employees/domain/usecases/get_daily_attendance_usecase.dart';
+import 'package:attendance_app/src/features/employees/domain/usecases/get_employees_usecase.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -231,12 +231,9 @@ class DailyAttendanceRequestNotifier extends _$DailyAttendanceRequestNotifier {
   @override
   DailyAttendanceRequest build() {
     final today = DateTime.now();
-    final dateString = '${today.year.toString().padLeft(4, '0')}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
-    return DailyAttendanceRequest(
-      date: dateString,
-      page: 1,
-      limit: 10,
-    );
+    final dateString =
+        '${today.year.toString().padLeft(4, '0')}-${today.month.toString().padLeft(2, '0')}-${today.day.toString().padLeft(2, '0')}';
+    return DailyAttendanceRequest(date: dateString, page: 1, limit: 10);
   }
 
   void updateRequest(DailyAttendanceRequest newRequest) {
@@ -244,7 +241,8 @@ class DailyAttendanceRequestNotifier extends _$DailyAttendanceRequestNotifier {
   }
 
   void updateDate(DateTime date) {
-    final dateString = '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+    final dateString =
+        '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
     state = state.copyWith(date: dateString, page: 1);
   }
 
@@ -253,18 +251,16 @@ class DailyAttendanceRequestNotifier extends _$DailyAttendanceRequestNotifier {
   }
 
   void updateFilters({String? department, String? position}) {
-    state = state.copyWith(
-      page: 1,
-      department: department,
-      position: position,
-    );
+    state = state.copyWith(page: 1, department: department, position: position);
   }
 }
 
 // Provider para obtener la asistencia diaria
 @riverpod
 Future<DailyAttendanceResponse> dailyAttendance(Ref ref) async {
-  final getDailyAttendanceUseCase = ref.watch(getDailyAttendanceUseCaseProvider);
+  final getDailyAttendanceUseCase = ref.watch(
+    getDailyAttendanceUseCaseProvider,
+  );
   final request = ref.watch(dailyAttendanceRequestNotifierProvider);
   final result = await getDailyAttendanceUseCase(request);
 
@@ -285,7 +281,9 @@ class DailyAttendanceNotifier extends _$DailyAttendanceNotifier {
   Future<void> loadDailyAttendance(DailyAttendanceRequest request) async {
     try {
       state = const AsyncValue.loading();
-      final getDailyAttendanceUseCase = ref.read(getDailyAttendanceUseCaseProvider);
+      final getDailyAttendanceUseCase = ref.read(
+        getDailyAttendanceUseCaseProvider,
+      );
       final result = await getDailyAttendanceUseCase(request);
 
       result.fold(
@@ -303,7 +301,9 @@ class DailyAttendanceNotifier extends _$DailyAttendanceNotifier {
 
   Future<void> loadMoreAttendance(DailyAttendanceRequest request) async {
     try {
-      final getDailyAttendanceUseCase = ref.read(getDailyAttendanceUseCaseProvider);
+      final getDailyAttendanceUseCase = ref.read(
+        getDailyAttendanceUseCaseProvider,
+      );
       final result = await getDailyAttendanceUseCase(request);
 
       result.fold(
