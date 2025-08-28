@@ -37,6 +37,29 @@ class AuthRepositoryImpl implements AuthRepository {
     });
   }
 
+  @override
+  FutureEither<AuthSession> verifyToken() async {
+    // Call API to verify token
+    final apiResult = await _apiDataSource.verifyToken();
+
+    return apiResult.fold(
+      (failure) async {
+        // If verification fails, clear local session
+        await _localDataSource.clearAuthSession();
+        return left(failure);
+      },
+      (authSession) async {
+        // Update local session with verified data
+        final saveResult = await _localDataSource.saveAuthSession(authSession);
+
+        return saveResult.fold(
+          (failure) => left(failure),
+          (_) => right(authSession),
+        );
+      },
+    );
+  }
+
   /// Get stored authentication session
   FutureEither<AuthSession?> getStoredSession() async {
     return await _localDataSource.getAuthSession();

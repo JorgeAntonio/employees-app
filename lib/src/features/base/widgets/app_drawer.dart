@@ -87,8 +87,8 @@ class AppDrawer extends HookConsumerWidget {
         'title': 'Cerrar Sesión',
         'subtitle': 'Salir de la aplicación',
         'isDestructive': true,
-        'onTap': () {
-          ref.read(authStateProvider.notifier).signOut();
+        'onTap': () async {
+          await ref.read(authStateProvider.notifier).signOut();
         },
       },
     ];

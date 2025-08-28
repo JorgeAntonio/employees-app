@@ -1,49 +1,57 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'auth_state_provider.dart';
+part of 'session_monitor_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-@ProviderFor(AuthState)
-const authStateProvider = AuthStateProvider._();
+@ProviderFor(SessionMonitor)
+const sessionMonitorProvider = SessionMonitorProvider._();
 
-final class AuthStateProvider
-    extends $AsyncNotifierProvider<AuthState, AuthSession?> {
-  const AuthStateProvider._()
+final class SessionMonitorProvider
+    extends $NotifierProvider<SessionMonitor, bool> {
+  const SessionMonitorProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'authStateProvider',
+        name: r'sessionMonitorProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$authStateHash();
+  String debugGetCreateSourceHash() => _$sessionMonitorHash();
 
   @$internal
   @override
-  AuthState create() => AuthState();
+  SessionMonitor create() => SessionMonitor();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
 }
 
-String _$authStateHash() => r'b7eb53637101a404f2abeaf96bc5ff31764fe88b';
+String _$sessionMonitorHash() => r'f916ed881e6bf34aa6dbcb726b04fc6ff97cc4fb';
 
-abstract class _$AuthState extends $AsyncNotifier<AuthSession?> {
-  FutureOr<AuthSession?> build();
+abstract class _$SessionMonitor extends $Notifier<bool> {
+  bool build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<AsyncValue<AuthSession?>, AuthSession?>;
+    final ref = this.ref as $Ref<bool, bool>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<AuthSession?>, AuthSession?>,
-              AsyncValue<AuthSession?>,
+              AnyNotifier<bool, bool>,
+              bool,
               Object?,
               Object?
             >;
