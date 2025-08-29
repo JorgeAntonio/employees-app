@@ -323,7 +323,7 @@ class QrReaderScreen extends HookConsumerWidget {
                                     confirmAttendance(currentCode.value!, ref);
                                   }
                                 },
-                                child: const Text('Confirmar asistencia'),
+                                child: const Text('Confirmar'),
                               ),
                             ],
                           ),

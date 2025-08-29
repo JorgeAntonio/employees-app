@@ -106,9 +106,11 @@ Map<String, dynamic> _$StatisticsModelToJson(_StatisticsModel instance) =>
 _RecentAttendanceModel _$RecentAttendanceModelFromJson(
   Map<String, dynamic> json,
 ) => _RecentAttendanceModel(
-  date: json['date'] as String,
-  checkInTime: json['checkInTime'] as String,
-  checkOutTime: json['checkOutTime'] as String?,
+  date: DateTime.parse(json['date'] as String),
+  checkInTime: DateTime.parse(json['checkInTime'] as String),
+  checkOutTime: json['checkOutTime'] == null
+      ? null
+      : DateTime.parse(json['checkOutTime'] as String),
   status: json['status'] as String,
   durationMins: (json['durationMins'] as num?)?.toInt(),
 );
@@ -116,9 +118,9 @@ _RecentAttendanceModel _$RecentAttendanceModelFromJson(
 Map<String, dynamic> _$RecentAttendanceModelToJson(
   _RecentAttendanceModel instance,
 ) => <String, dynamic>{
-  'date': instance.date,
-  'checkInTime': instance.checkInTime,
-  'checkOutTime': instance.checkOutTime,
+  'date': instance.date.toIso8601String(),
+  'checkInTime': instance.checkInTime.toIso8601String(),
+  'checkOutTime': instance.checkOutTime?.toIso8601String(),
   'status': instance.status,
   'durationMins': instance.durationMins,
 };

@@ -27,6 +27,28 @@ class AttendanceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timeFormat = DateFormat('HH:mm');
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final cardDate = DateTime(date.year, date.month, date.day);
+    final difference = today.difference(cardDate).inDays;
+
+    // Determinar el texto de fecha más amigable
+    String dateText;
+    String monthText;
+
+    if (difference == 0) {
+      dateText = 'HOY';
+      monthText = DateFormat('dd').format(date);
+    } else if (difference == 1) {
+      dateText = 'AYER';
+      monthText = DateFormat('dd').format(date);
+    } else if (difference < 7) {
+      dateText = DateFormat('EEE', 'es').format(date).toUpperCase();
+      monthText = DateFormat('dd').format(date);
+    } else {
+      dateText = date.day.toString();
+      monthText = DateFormat('MMM', 'es').format(date).toLowerCase();
+    }
 
     Color statusColor;
     IconData statusIcon;
@@ -80,7 +102,7 @@ class AttendanceCard extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        date.day.toString(),
+                        difference < 7 ? monthText : dateText,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
                               fontWeight: FontWeight.bold,
@@ -88,7 +110,7 @@ class AttendanceCard extends StatelessWidget {
                             ),
                       ),
                       Text(
-                        DateFormat('MMM', 'es').format(date).toUpperCase(),
+                        difference < 7 ? dateText : monthText,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: statusColor,
                           fontWeight: FontWeight.w500,
@@ -118,40 +140,62 @@ class AttendanceCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: DoubleSizes.size4),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.login,
-                                size: 14,
-                                color: Colors.grey.shade600,
-                              ),
-                              const SizedBox(width: DoubleSizes.size4),
-                              Text(
-                                'Entrada: ${timeFormat.format(checkInTime)}',
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
+                      const SizedBox(height: DoubleSizes.size8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: DoubleSizes.size8,
+                          vertical: DoubleSizes.size4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade50,
+                          borderRadius: BorderRadius.circular(
+                            DoubleSizes.size4,
                           ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.logout,
-                                size: 14,
-                                color: Colors.grey.shade600,
-                              ),
-                              const SizedBox(width: DoubleSizes.size4),
-                              Text(
-                                checkOutTime != null
-                                    ? 'Salida: ${timeFormat.format(checkOutTime!)}'
-                                    : 'Salida: Pendiente',
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
-                          ),
-                        ],
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.login,
+                                  size: 14,
+                                  color: Colors.green.shade600,
+                                ),
+                                const SizedBox(width: DoubleSizes.size4),
+                                Text(
+                                  'Entrada: ${timeFormat.format(checkInTime)}',
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: DoubleSizes.size4),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.logout,
+                                  size: 14,
+                                  color: checkOutTime != null
+                                      ? Colors.red.shade600
+                                      : Colors.grey.shade600,
+                                ),
+                                const SizedBox(width: DoubleSizes.size4),
+                                Text(
+                                  checkOutTime != null
+                                      ? 'Salida: ${timeFormat.format(checkOutTime!)}'
+                                      : 'Salida: Pendiente',
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color: checkOutTime == null
+                                            ? Colors.orange.shade700
+                                            : null,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

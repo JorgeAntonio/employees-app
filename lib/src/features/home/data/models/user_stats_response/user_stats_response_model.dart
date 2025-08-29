@@ -76,9 +76,9 @@ abstract class StatisticsModel with _$StatisticsModel {
 @freezed
 abstract class RecentAttendanceModel with _$RecentAttendanceModel {
   const factory RecentAttendanceModel({
-    required String date,
-    required String checkInTime,
-    String? checkOutTime,
+    required DateTime date,
+    required DateTime checkInTime,
+    DateTime? checkOutTime,
     required String status,
     int? durationMins,
   }) = _RecentAttendanceModel;
