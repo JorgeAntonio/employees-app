@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:attendance_app/src/core/router/router.dart';
 import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
-import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/confirm_attendance_state_provider.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/validate_code_state_provider.dart';
 import 'package:flutter/material.dart';
@@ -68,6 +67,10 @@ class QrReaderScreen extends HookConsumerWidget {
     void resetScanner() {
       isScanning.value = true;
       currentCode.value = null;
+      // Reset the validate code state
+      ref.read(validateCodeNotifierProvider.notifier).reset();
+      // Reset the confirm attendance state
+      ref.read(confirmAttendanceNotifierProvider.notifier).reset();
     }
 
     void confirmAttendance(String code, WidgetRef ref) {
@@ -83,19 +86,27 @@ class QrReaderScreen extends HookConsumerWidget {
 
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AttendanceAppBar(
-        title: 'Escanear QR',
+      appBar: AppBar(
+        title: Text(
+          'Leer QR',
+          style: TextStyle(color: colorScheme.onSecondary),
+        ),
+        iconTheme: IconThemeData(color: colorScheme.onSecondary),
         backgroundColor: Colors.transparent,
-        leading: true,
         centerTitle: true,
         actions: [
           IconButton(
             icon: Icon(
               controller.torchEnabled ? Icons.flash_on : Icons.flash_off,
             ),
+            color: colorScheme.onSecondary,
             onPressed: () => controller.toggleTorch(),
           ),
         ],
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new, color: colorScheme.onSecondary),
+          onPressed: () => context.pop(),
+        ),
       ),
       body: Stack(
         children: [
@@ -221,20 +232,19 @@ class QrReaderScreen extends HookConsumerWidget {
                           ],
                         ),
                         success: (response) => Column(
+                          spacing: DoubleSizes.size16,
                           children: [
                             Icon(
                               Icons.check_circle,
-                              color: colorScheme.primary,
+                              color: Colors.green,
                               size: 64,
                             ),
-                            Gaps.gap16,
                             Text(
                               'Código válido',
                               style: textTheme.titleLarge?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Gaps.gap8,
                             Text(
                               response.message ??
                                   'Código validado correctamente',
@@ -242,77 +252,99 @@ class QrReaderScreen extends HookConsumerWidget {
                               textAlign: TextAlign.center,
                             ),
                             if (response.data?.employee.fullName != null) ...[
-                              Gaps.gap16,
                               Text(
-                                'Empleado: ${response.data?.employee.fullName}',
+                                '${response.data?.employee.fullName}',
                                 style: textTheme.bodyLarge?.copyWith(
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ],
                             if (response.data?.action != null) ...[
-                              Gaps.gap8,
+                              response.data?.action == 'CHECK_IN'
+                                  ? Icon(
+                                      Icons.login,
+                                      size: 64,
+                                      color: Colors.green.shade700,
+                                    )
+                                  : Icon(
+                                      Icons.logout,
+                                      color: colorScheme.error,
+                                      size: 64,
+                                    ),
                               Text(
-                                'Tipo: ${response.data?.action}',
+                                'Tipo: ${response.data?.action == 'CHECK_IN' ? 'INGRESO' : 'SALIDA'}',
                                 style: textTheme.bodyMedium,
                               ),
                             ],
                           ],
                         ),
-                        error: (error) => Column(
-                          children: [
-                            Icon(
-                              Icons.error,
-                              color: colorScheme.error,
-                              size: 64,
-                            ),
-                            Gaps.gap16,
-                            Text(
-                              'Error al validar',
-                              style: textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.bold,
+                        error: (error) {
+                          return Column(
+                            children: [
+                              Icon(
+                                Icons.error,
                                 color: colorScheme.error,
+                                size: 64,
                               ),
-                            ),
-                            Gaps.gap8,
-                            Text(
-                              error,
-                              style: textTheme.bodyMedium,
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
+                              Gaps.gap16,
+                              Text(
+                                'Error al validar',
+                                style: textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: colorScheme.error,
+                                ),
+                              ),
+                              Gaps.gap8,
+                              Text(
+                                error,
+                                style: textTheme.bodyMedium,
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          );
+                        },
                       ),
                       Gaps.gap24,
-                      // Confirm attendance
+                      // Confirm attendance - Solo mostrar si no está confirmada exitosamente
                       validateCodeState.when(
                         initial: () => const SizedBox.shrink(),
                         loading: () => const SizedBox.shrink(),
-                        success: (response) => Column(
-                          children: [
-                            ElevatedButton(
-                              onPressed: confirmAttendanceState.isLoading
-                                  ? null
-                                  : () {
-                                      if (currentCode.value != null) {
-                                        confirmAttendance(
-                                          currentCode.value!,
-                                          ref,
-                                        );
-                                      }
-                                    },
-                              child: confirmAttendanceState.isLoading
-                                  ? const SizedBox(
-                                      width: 20,
-                                      height: 20,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : const Text('Confirmar asistencia'),
-                            ),
-                            if (confirmAttendanceState.isLoading) ...[
+                        success: (response) => confirmAttendanceState.when(
+                          initial: () => Column(
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: colorScheme.primary,
+                                  foregroundColor: colorScheme.onPrimary,
+                                  minimumSize: const Size(double.infinity, 48),
+                                ),
+                                onPressed: () {
+                                  if (currentCode.value != null) {
+                                    confirmAttendance(currentCode.value!, ref);
+                                  }
+                                },
+                                child: const Text('Confirmar asistencia'),
+                              ),
+                            ],
+                          ),
+                          loading: () => Column(
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: colorScheme.primary,
+                                  foregroundColor: colorScheme.onPrimary,
+                                  minimumSize: const Size(double.infinity, 48),
+                                ),
+                                onPressed: null,
+                                child: const SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
                               Gaps.gap8,
                               Text(
                                 'Confirmando asistencia...',
@@ -322,7 +354,26 @@ class QrReaderScreen extends HookConsumerWidget {
                                 ),
                               ),
                             ],
-                          ],
+                          ),
+                          success: (confirmResponse) =>
+                              const SizedBox.shrink(), // Ocultar botón cuando ya está confirmada
+                          error: (errorMessage) => Column(
+                            children: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: colorScheme.primary,
+                                  foregroundColor: colorScheme.onPrimary,
+                                  minimumSize: const Size(double.infinity, 48),
+                                ),
+                                onPressed: () {
+                                  if (currentCode.value != null) {
+                                    confirmAttendance(currentCode.value!, ref);
+                                  }
+                                },
+                                child: const Text('Reintentar confirmación'),
+                              ),
+                            ],
+                          ),
                         ),
                         error: (message) => const SizedBox.shrink(),
                       ),
@@ -335,7 +386,7 @@ class QrReaderScreen extends HookConsumerWidget {
                           margin: const EdgeInsets.only(top: 16),
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            color: colorScheme.primaryContainer,
+                            color: colorScheme.secondaryContainer,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Column(
@@ -397,21 +448,30 @@ class QrReaderScreen extends HookConsumerWidget {
                         ),
                       ),
 
-                      Gaps.gap24,
+                      Gaps.gap48,
                       Row(
+                        spacing: DoubleSizes.size4,
                         children: [
-                          Expanded(
-                            child: OutlinedButton(
-                              onPressed: resetScanner,
-                              child: const Text('Escanear otro'),
+                          ElevatedButton.icon(
+                            onPressed: resetScanner,
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: colorScheme.onSecondary,
+                              backgroundColor: colorScheme.secondary,
                             ),
+                            icon: const Icon(Icons.refresh),
+                            label: const Text('Escanear otro'),
                           ),
-                          Gaps.gap16,
-                          Expanded(
-                            child: ElevatedButton(
-                              onPressed: () => context.pop(),
-                              child: const Text('Cerrar'),
+                          OutlinedButton.icon(
+                            onPressed: () => context.pop(),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: colorScheme.secondary,
+                              side: BorderSide(
+                                color: colorScheme.secondary,
+                                width: 0.5,
+                              ),
                             ),
+                            icon: const Icon(Icons.close),
+                            label: const Text('Cerrar'),
                           ),
                         ],
                       ),

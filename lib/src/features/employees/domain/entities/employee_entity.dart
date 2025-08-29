@@ -1,4 +1,4 @@
-import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_response.dart';
+import 'package:attendance_app/src/core/entities/pagination_response.dart';
 
 class EmployeesResponse {
   final bool success;
@@ -10,7 +10,7 @@ class EmployeesResponse {
 
 class EmployeesData {
   final List<Employee> employees;
-  final PaginationInfo pagination;
+  final PaginationResponse pagination;
 
   EmployeesData({required this.employees, required this.pagination});
 }

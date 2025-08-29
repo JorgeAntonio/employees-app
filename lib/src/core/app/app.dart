@@ -1,5 +1,6 @@
 import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/core/router/app_routes.dart';
+import 'package:attendance_app/src/features/auth/presentation/providers/session_monitor_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -9,10 +10,13 @@ class AttendanceApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Initialize session monitoring
+    ref.watch(sessionMonitorProvider);
+
     TextTheme textTheme = createTextTheme(
       context,
       "Roboto", // body font
-      "Playfair Display", // title font
+      "Poppins", // title font
     );
 
     MaterialTheme theme = MaterialTheme(textTheme);

@@ -90,6 +90,58 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
+  FutureEither<AuthSession> verifyToken() async {
+    try {
+      // Get token from local storage
+      final localDataSource = AuthLocalDataSourceImpl();
+      final tokenResult = await localDataSource.getToken();
+
+      return await tokenResult.fold((failure) => left(failure), (token) async {
+        if (token == null) {
+          return left(const AuthFailure('No hay token almacenado'));
+        }
+
+        final response = await _dio.get(
+          '/auth/verify',
+          options: Options(headers: {'Authorization': 'Bearer $token'}),
+        );
+
+        if (response.statusCode == 200) {
+          final authSessionModel = AuthSessionModel.fromJson({
+            'success': response.data['success'],
+            'data': {
+              ...response.data['data'],
+              'token': token, // Include the token in the response
+            },
+          });
+          return right(authSessionModel.toDomain());
+        } else {
+          return left(
+            const ServerFailure('Error en la respuesta del servidor'),
+          );
+        }
+      });
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        return left(const NetworkFailure('Error de conexión'));
+      } else if (e.response?.statusCode == 401) {
+        // Token inválido, limpiar la sesión local
+        await AuthLocalDataSourceImpl().clearAuthSession();
+        return left(const AuthFailure('Token inválido o expirado'));
+      } else if (e.response?.statusCode == 404) {
+        return left(const ServerFailure('Servicio no encontrado'));
+      } else {
+        final errorMessage = _extractErrorMessage(e.response?.data);
+        return left(ServerFailure(errorMessage));
+      }
+    } catch (e) {
+      return left(ServerFailure('Error inesperado: $e'));
+    }
+  }
+
+  @override
   FutureEither<void> signOut() async {
     try {
       // clear local storage

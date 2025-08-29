@@ -29,7 +29,7 @@ _EmployeesDataModel _$EmployeesDataModelFromJson(Map<String, dynamic> json) =>
       employees: (json['employees'] as List<dynamic>)
           .map((e) => EmployeeModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      pagination: PaginationInfoModel.fromJson(
+      pagination: PaginationResponseModel.fromJson(
         json['pagination'] as Map<String, dynamic>,
       ),
     );

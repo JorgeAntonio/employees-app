@@ -1,6 +1,8 @@
+import 'package:alert_info/alert_info.dart';
+import 'package:attendance_app/src/core/assets/image_assets.dart';
 import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
-import 'package:attendance_app/src/core/shared/layout/double_value.dart';
+import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/auth_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -29,18 +31,11 @@ class SignInScreen extends HookConsumerWidget {
       next.when(
         data: (authSession) {
           if (authSession != null) {
-            // Mostrar mensaje de éxito
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: const Text('¡Inicio de sesión exitoso!'),
-                backgroundColor: colorScheme.primary,
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(DoubleSizes.size12),
-                ),
-              ),
+            AlertInfo.show(
+              context: context,
+              text: '¡Inicio de sesión exitoso!',
+              typeInfo: TypeInfo.success,
             );
-            // La navegación se maneja automáticamente en el router
           }
         },
         loading: () {
@@ -53,17 +48,10 @@ class SignInScreen extends HookConsumerWidget {
           } else {
             errorMessage = error.toString();
           }
-
-          // Mostrar mensaje de error
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Error: $errorMessage'),
-              backgroundColor: colorScheme.error,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(DoubleSizes.size12),
-              ),
-            ),
+          AlertInfo.show(
+            context: context,
+            text: 'Error: $errorMessage',
+            typeInfo: TypeInfo.error,
           );
         },
       );
@@ -91,25 +79,39 @@ class SignInScreen extends HookConsumerWidget {
                       height: DoubleSizes.size80,
                       decoration: BoxDecoration(
                         color: colorScheme.primaryContainer,
-                        borderRadius: BorderRadius.circular(DoubleSizes.size20),
                       ),
-                      child: Icon(
-                        Icons.access_time_filled_rounded,
-                        size: DoubleSizes.size40,
-                        color: colorScheme.onPrimaryContainer,
-                      ),
+                      child: Image.asset(ImageAssets.logo, fit: BoxFit.cover),
                     ),
 
                     // Title
-                    Text(
-                      'Iniciar sesión',
-                      style: textTheme.headlineLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: colorScheme.onSurface,
-                      ),
+                    Column(
+                      children: [
+                        Text(
+                          'CONSORCIO',
+                          textAlign: TextAlign.center,
+                          style: textTheme.headlineLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                        Text(
+                          'EJECUTOR EL TIGRE',
+                          textAlign: TextAlign.center,
+                          style: textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                      ],
                     ),
 
-                    const SizedBox(height: DoubleSizes.size16),
+                    Gaps.gap16,
+
+                    Text(
+                      'Inicia sesión para continuar',
+                      textAlign: TextAlign.center,
+                      style: textTheme.bodyMedium,
+                    ),
 
                     // Email field
                     TextFormField(
@@ -164,28 +166,11 @@ class SignInScreen extends HookConsumerWidget {
                           return 'Por favor ingresa tu contraseña';
                         }
 
-                        if (value.length < 6) {
-                          return 'La contraseña debe tener al menos 6 caracteres';
-                        }
-
-                        // // Validaciones adicionales de contraseña
-                        // if (!RegExp(r'[A-Z]').hasMatch(value)) {
-                        //   return 'La contraseña debe contener al menos una mayúscula';
-                        // }
-
-                        if (!RegExp(r'[a-z]').hasMatch(value)) {
-                          return 'La contraseña debe contener al menos una minúscula';
-                        }
-
-                        if (!RegExp(r'[0-9]').hasMatch(value)) {
-                          return 'La contraseña debe contener al menos un número';
-                        }
-
                         return null;
                       },
                     ),
 
-                    const SizedBox(height: DoubleSizes.size16),
+                    Gaps.gap16,
 
                     // Sign in button
                     SizedBox(
@@ -221,6 +206,8 @@ class SignInScreen extends HookConsumerWidget {
                               ),
                       ),
                     ),
+
+                    Gaps.gap16,
 
                     // Terms and conditions
                     Row(

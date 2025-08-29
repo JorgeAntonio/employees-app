@@ -6,5 +6,6 @@ abstract class AuthDataSource {
     required String email,
     required String password,
   });
+  FutureEither<AuthSession> verifyToken();
   FutureEither<void> signOut();
 }

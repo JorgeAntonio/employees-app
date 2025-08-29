@@ -1,5 +1,6 @@
 import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
+import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/session_provider.dart';
 import 'package:attendance_app/src/features/profile/presentation/widgets/contact_information.dart';
 import 'package:attendance_app/src/features/profile/presentation/widgets/personal_information.dart';
@@ -28,28 +29,11 @@ class ProfileScreen extends ConsumerWidget {
 
         return Scaffold(
           backgroundColor: context.theme.colorScheme.surface,
-          appBar: AppBar(
+          appBar: AttendanceAppBar(
             backgroundColor: context.theme.colorScheme.surface,
-            elevation: 0,
             centerTitle: true,
-            title: Text(
-              'Mi Perfil',
-              style: context.theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: context.theme.colorScheme.onSurface,
-              ),
-            ),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  // TODO: Editar perfil
-                },
-                icon: Icon(
-                  Icons.edit_rounded,
-                  color: context.theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
-            ],
+            title: 'Mi Perfil',
+            leading: true,
           ),
           body: SafeArea(
             child: SingleChildScrollView(

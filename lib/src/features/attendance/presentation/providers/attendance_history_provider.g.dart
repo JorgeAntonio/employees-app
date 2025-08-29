@@ -44,7 +44,7 @@ final class AttendanceHistoryNotifierProvider
 }
 
 String _$attendanceHistoryNotifierHash() =>
-    r'8cc940ecaacde6b933997dd1cd93360dd19e3a3f';
+    r'8fbd966a5b3012819c5fe4b3d1e95acd4ffc2f3e';
 
 abstract class _$AttendanceHistoryNotifier
     extends $Notifier<AsyncValue<AttendanceHistoryResponse?>> {

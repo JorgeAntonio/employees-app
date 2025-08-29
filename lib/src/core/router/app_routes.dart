@@ -3,6 +3,9 @@ import 'package:attendance_app/src/features/auth/presentation/providers/session_
 import 'package:attendance_app/src/features/auth/presentation/screens/sign_in_screen.dart';
 import 'package:attendance_app/src/features/base/screens/main_screen.dart';
 import 'package:attendance_app/src/features/dashboard/screens/dashboard_screen.dart';
+import 'package:attendance_app/src/features/employees/presentation/screens/add_employee_screen.dart';
+import 'package:attendance_app/src/features/employees/presentation/screens/edit_employee_screen.dart';
+import 'package:attendance_app/src/features/employees/presentation/screens/employees_attendance_screen.dart';
 import 'package:attendance_app/src/features/employees/presentation/screens/employees_screen.dart';
 import 'package:attendance_app/src/features/employees/presentation/screens/import_employees_screen.dart';
 import 'package:attendance_app/src/features/history/screens/attendance_history_screen.dart';
@@ -92,6 +95,28 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.employees.path,
         name: Routes.employees.name,
         builder: (context, state) => const EmployeesScreen(),
+        routes: [
+          GoRoute(
+            path: Routes.addEmployee.path,
+            name: Routes.addEmployee.name,
+            builder: (context, state) {
+              return const AddEmployeeScreen();
+            },
+          ),
+          GoRoute(
+            path: 'edit/:id', // ruta relativa al padre
+            name: Routes.editEmployee.name,
+            builder: (context, state) {
+              final employeeId = state.pathParameters['id']!;
+              return EditEmployeeScreen(employeeId: employeeId);
+            },
+          ),
+        ],
+      ),
+      GoRoute(
+        path: Routes.employeesAttendance.path,
+        name: Routes.employeesAttendance.name,
+        builder: (context, state) => const EmployeesAttendanceScreen(),
       ),
 
       GoRoute(
