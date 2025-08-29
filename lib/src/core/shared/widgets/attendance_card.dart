@@ -1,6 +1,6 @@
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
+import 'package:attendance_app/src/core/utils/date_time_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 /// Widget reutilizable para mostrar información de asistencia
 /// Usado tanto en la lista de asistencias recientes como en el historial
@@ -26,29 +26,16 @@ class AttendanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat = DateFormat('HH:mm');
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final cardDate = DateTime(date.year, date.month, date.day);
-    final difference = today.difference(cardDate).inDays;
+    // Usar la utilidad para obtener fechas y horas locales
+    final friendlyDate = DateTimeUtils.getFriendlyDateText(date);
+    final localCheckInTime = DateTimeUtils.formatTimeLocal(checkInTime);
+    final localCheckOutTime = checkOutTime != null
+        ? DateTimeUtils.formatTimeLocal(checkOutTime!)
+        : null;
 
-    // Determinar el texto de fecha más amigable
-    String dateText;
-    String monthText;
-
-    if (difference == 0) {
-      dateText = 'HOY';
-      monthText = DateFormat('dd').format(date);
-    } else if (difference == 1) {
-      dateText = 'AYER';
-      monthText = DateFormat('dd').format(date);
-    } else if (difference < 7) {
-      dateText = DateFormat('EEE', 'es').format(date).toUpperCase();
-      monthText = DateFormat('dd').format(date);
-    } else {
-      dateText = date.day.toString();
-      monthText = DateFormat('MMM', 'es').format(date).toLowerCase();
-    }
+    final difference = int.parse(friendlyDate['difference']!);
+    final dateText = friendlyDate['dateText']!;
+    final monthText = friendlyDate['monthText']!;
 
     Color statusColor;
     IconData statusIcon;
@@ -163,7 +150,7 @@ class AttendanceCard extends StatelessWidget {
                                 ),
                                 const SizedBox(width: DoubleSizes.size4),
                                 Text(
-                                  'Entrada: ${timeFormat.format(checkInTime)}',
+                                  'Entrada: $localCheckInTime',
                                   style: Theme.of(context).textTheme.bodySmall
                                       ?.copyWith(fontWeight: FontWeight.w500),
                                 ),
@@ -175,19 +162,19 @@ class AttendanceCard extends StatelessWidget {
                                 Icon(
                                   Icons.logout,
                                   size: 14,
-                                  color: checkOutTime != null
+                                  color: localCheckOutTime != null
                                       ? Colors.red.shade600
                                       : Colors.grey.shade600,
                                 ),
                                 const SizedBox(width: DoubleSizes.size4),
                                 Text(
-                                  checkOutTime != null
-                                      ? 'Salida: ${timeFormat.format(checkOutTime!)}'
+                                  localCheckOutTime != null
+                                      ? 'Salida: $localCheckOutTime'
                                       : 'Salida: Pendiente',
                                   style: Theme.of(context).textTheme.bodySmall
                                       ?.copyWith(
                                         fontWeight: FontWeight.w500,
-                                        color: checkOutTime == null
+                                        color: localCheckOutTime == null
                                             ? Colors.orange.shade700
                                             : null,
                                       ),
@@ -207,7 +194,7 @@ class AttendanceCard extends StatelessWidget {
                   children: [
                     Text(
                       durationMins != null
-                          ? _formatDuration(durationMins!)
+                          ? DateTimeUtils.formatDuration(durationMins!)
                           : '--',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.bold,
@@ -240,16 +227,5 @@ class AttendanceCard extends StatelessWidget {
       default:
         return 'Desconocido';
     }
-  }
-
-  String _formatDuration(int minutes) {
-    if (minutes < 60) {
-      return '${minutes}m';
-    }
-    final hours = minutes ~/ 60;
-    final remainingMinutes = minutes % 60;
-    return remainingMinutes > 0
-        ? '${hours}h ${remainingMinutes}m'
-        : '${hours}h';
   }
 }

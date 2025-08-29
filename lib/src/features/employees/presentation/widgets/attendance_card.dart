@@ -1,5 +1,6 @@
 import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
+import 'package:attendance_app/src/core/utils/date_time_utils.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/daily_attendance_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -197,7 +198,7 @@ class AttendanceCard extends StatelessWidget {
                     const Icon(Icons.login, size: 16, color: Colors.green),
                     const SizedBox(width: DoubleSizes.size8),
                     Text(
-                      'Entrada: ${record.checkInTime.toString().split(' ')[1].substring(0, 5)}',
+                      'Entrada: ${DateTimeUtils.formatTimeLocal(record.checkInTime!)}',
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -211,7 +212,7 @@ class AttendanceCard extends StatelessWidget {
                     const Icon(Icons.logout, size: 16, color: Colors.orange),
                     const SizedBox(width: DoubleSizes.size8),
                     Text(
-                      'Salida: ${record.checkOutTime.toString().split(' ')[1].substring(0, 5)}',
+                      'Salida: ${DateTimeUtils.formatTimeLocal(record.checkOutTime!)}',
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -226,7 +227,7 @@ class AttendanceCard extends StatelessWidget {
                     const Icon(Icons.timer, size: 16, color: Colors.blue),
                     const SizedBox(width: DoubleSizes.size8),
                     Text(
-                      'Duración: ${record.durationMins} min',
+                      'Duración: ${DateTimeUtils.formatDuration(record.durationMins!)}',
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
