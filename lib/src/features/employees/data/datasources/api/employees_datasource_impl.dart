@@ -4,6 +4,7 @@ import 'package:attendance_app/src/features/employees/data/models/create_employe
 import 'package:attendance_app/src/features/employees/data/models/create_employee_response/create_employee_response_model.dart';
 import 'package:attendance_app/src/features/employees/data/models/daily_attendance_response/daily_attendance_response_model.dart';
 import 'package:attendance_app/src/features/employees/data/models/employees_response/employees_response_model.dart';
+import 'package:attendance_app/src/features/employees/data/models/update_employee_response/update_employee_response_model.dart';
 import 'package:attendance_app/src/features/employees/domain/datasources/api/employees_datasource.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/create_employee_request.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/create_employee_response.dart';
@@ -187,6 +188,58 @@ class EmployeesDataSourceImpl implements EmployeesDataSource {
             return right(dailyAttendanceResponseModel.toDomain());
           } else {
             return left(ServerFailure('Error al obtener asistencia diaria'));
+          }
+        } else {
+          return left(
+            ServerFailure('Error del servidor: ${response.statusCode}'),
+          );
+        }
+      });
+    } on DioException catch (e) {
+      return left(ServerFailure(e.message ?? 'Error de conexión'));
+    } catch (e) {
+      return left(ServerFailure('Error inesperado: $e'));
+    }
+  }
+
+  @override
+  FutureEither<UpdateUserEmployee> updateEmployee(
+    String id,
+    CreateEmployeeRequest request,
+  ) async {
+    try {
+      // Obtener token de autenticación
+      final tokenResult = await _authLocalDataSource.getToken();
+      return tokenResult.fold((failure) => left(failure), (token) async {
+        if (token == null) {
+          return left(
+            const AuthFailure('Token de autenticación no encontrado'),
+          );
+        }
+
+        // Convertir la request a modelo para serialización
+        final requestModel = request.toModel();
+
+        final response = await _dio.put(
+          '/employees/$id/complete',
+          data: requestModel.toJson(),
+          options: Options(headers: {'Authorization': 'Bearer $token'}),
+        );
+
+        if (response.statusCode == 200) {
+          final updateEmployeeResponseModel =
+              UpdateEmployeeResponseModel.fromJson(response.data);
+
+          // Verificar si la respuesta indica éxito
+          if (updateEmployeeResponseModel.success) {
+            return right(updateEmployeeResponseModel.toDomain());
+          } else {
+            return left(
+              ServerFailure(
+                updateEmployeeResponseModel.message ??
+                    'Error al actualizar empleado',
+              ),
+            );
           }
         } else {
           return left(

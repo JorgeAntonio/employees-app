@@ -42,3 +42,9 @@ final formattedDate = CurrentDate().formattedDate;
 // Función para comparar fechas sin hora
 bool isSameDate(DateTime a, DateTime b) =>
     a.year == b.year && a.month == b.month && a.day == b.day;
+
+// format date to local string
+String formatDateToLocal(DateTime date) {
+  final localDate = date.toLocal();
+  return localDate.toString();
+}

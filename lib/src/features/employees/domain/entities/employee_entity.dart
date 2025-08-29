@@ -72,3 +72,11 @@ class Shift {
     required this.endTime,
   });
 }
+
+class UpdateUserEmployee {
+  final bool success;
+  final Employee? employee;
+  final String? message;
+
+  UpdateUserEmployee({required this.success, this.employee, this.message});
+}
