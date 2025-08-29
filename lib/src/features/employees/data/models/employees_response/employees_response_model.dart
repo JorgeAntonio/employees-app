@@ -68,8 +68,8 @@ abstract class ShiftModel with _$ShiftModel {
   const factory ShiftModel({
     required String id,
     required String name,
-    required String startTime,
-    required String endTime,
+    required DateTime startTime,
+    required DateTime endTime,
   }) = _ShiftModel;
 
   factory ShiftModel.fromJson(Map<String, dynamic> json) =>

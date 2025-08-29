@@ -598,7 +598,7 @@ $PaginationInfoModelCopyWith<$Res> get pagination {
 /// @nodoc
 mixin _$ShiftModel {
 
- String get id; String get name; String get description; String get startTime; String get endTime; int get employeeCount;
+ String get id; String get name; String get description; DateTime get startTime; DateTime get endTime; int get employeeCount;
 /// Create a copy of ShiftModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -631,7 +631,7 @@ abstract mixin class $ShiftModelCopyWith<$Res>  {
   factory $ShiftModelCopyWith(ShiftModel value, $Res Function(ShiftModel) _then) = _$ShiftModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String description, String startTime, String endTime, int employeeCount
+ String id, String name, String description, DateTime startTime, DateTime endTime, int employeeCount
 });
 
 
@@ -654,8 +654,8 @@ id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,startTime: null == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
-as String,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
-as String,employeeCount: null == employeeCount ? _self.employeeCount : employeeCount // ignore: cast_nullable_to_non_nullable
+as DateTime,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
+as DateTime,employeeCount: null == employeeCount ? _self.employeeCount : employeeCount // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }
@@ -741,7 +741,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String description,  String startTime,  String endTime,  int employeeCount)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String description,  DateTime startTime,  DateTime endTime,  int employeeCount)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ShiftModel() when $default != null:
 return $default(_that.id,_that.name,_that.description,_that.startTime,_that.endTime,_that.employeeCount);case _:
@@ -762,7 +762,7 @@ return $default(_that.id,_that.name,_that.description,_that.startTime,_that.endT
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String description,  String startTime,  String endTime,  int employeeCount)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String description,  DateTime startTime,  DateTime endTime,  int employeeCount)  $default,) {final _that = this;
 switch (_that) {
 case _ShiftModel():
 return $default(_that.id,_that.name,_that.description,_that.startTime,_that.endTime,_that.employeeCount);case _:
@@ -782,7 +782,7 @@ return $default(_that.id,_that.name,_that.description,_that.startTime,_that.endT
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String description,  String startTime,  String endTime,  int employeeCount)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String description,  DateTime startTime,  DateTime endTime,  int employeeCount)?  $default,) {final _that = this;
 switch (_that) {
 case _ShiftModel() when $default != null:
 return $default(_that.id,_that.name,_that.description,_that.startTime,_that.endTime,_that.employeeCount);case _:
@@ -803,8 +803,8 @@ class _ShiftModel implements ShiftModel {
 @override final  String id;
 @override final  String name;
 @override final  String description;
-@override final  String startTime;
-@override final  String endTime;
+@override final  DateTime startTime;
+@override final  DateTime endTime;
 @override final  int employeeCount;
 
 /// Create a copy of ShiftModel
@@ -840,7 +840,7 @@ abstract mixin class _$ShiftModelCopyWith<$Res> implements $ShiftModelCopyWith<$
   factory _$ShiftModelCopyWith(_ShiftModel value, $Res Function(_ShiftModel) _then) = __$ShiftModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String description, String startTime, String endTime, int employeeCount
+ String id, String name, String description, DateTime startTime, DateTime endTime, int employeeCount
 });
 
 
@@ -863,8 +863,8 @@ id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,startTime: null == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
-as String,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
-as String,employeeCount: null == employeeCount ? _self.employeeCount : employeeCount // ignore: cast_nullable_to_non_nullable
+as DateTime,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
+as DateTime,employeeCount: null == employeeCount ? _self.employeeCount : employeeCount // ignore: cast_nullable_to_non_nullable
 as int,
   ));
 }

@@ -11,6 +11,7 @@ import 'package:attendance_app/src/features/shift/presentation/providers/shift_p
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class EditEmployeeScreen extends HookConsumerWidget {
   const EditEmployeeScreen({super.key, required this.employeeId});
@@ -394,10 +395,17 @@ class EditEmployeeScreen extends HookConsumerWidget {
                                 helperText: 'Seleccione el turno de trabajo',
                               ),
                               items: shifts.map((shift) {
+                                final timeFormat = DateFormat('HH:mm');
+                                final startTime = timeFormat.format(
+                                  shift.startTime,
+                                );
+                                final endTime = timeFormat.format(
+                                  shift.endTime,
+                                );
                                 return DropdownMenuItem<String>(
                                   value: shift.id.toString(),
                                   child: Text(
-                                    '${shift.name} (${shift.startTime} - ${shift.endTime})',
+                                    '${shift.name} ($startTime - $endTime)',
                                     style: context.appTextTheme.bodySmall,
                                     overflow: TextOverflow.ellipsis,
                                   ),
