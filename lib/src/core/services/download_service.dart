@@ -3,6 +3,7 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -20,7 +21,7 @@ class DownloadService {
       int progress = data[2];
 
       // Aquí puedes manejar las actualizaciones de progreso si es necesario
-      print('Download $id: $status, $progress%');
+      Logger().i('Download $id: $status, $progress%');
     });
 
     FlutterDownloader.registerCallback(downloadCallback);
@@ -131,7 +132,7 @@ class DownloadService {
 
       return taskId;
     } catch (e) {
-      print('Error en downloadFile: $e');
+      Logger().e('Error en downloadFile: $e');
       rethrow;
     }
   }
@@ -147,7 +148,7 @@ class DownloadService {
         return tasks.first;
       }
     } catch (e) {
-      print('Error al obtener tarea de descarga: $e');
+      Logger().e('Error al obtener tarea de descarga: $e');
     }
     return null;
   }

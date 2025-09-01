@@ -1,5 +1,6 @@
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:attendance_app/src/core/utils/date_time_utils.dart';
+import 'package:attendance_app/src/core/utils/status_text.dart';
 import 'package:flutter/material.dart';
 
 /// Widget reutilizable para mostrar información de asistencia
@@ -118,7 +119,7 @@ class AttendanceCard extends StatelessWidget {
                           Icon(statusIcon, color: statusColor, size: 16),
                           const SizedBox(width: DoubleSizes.size4),
                           Text(
-                            _getStatusText(status),
+                            StatusTextUtil.getStatusText(status),
                             style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(
                                   color: statusColor,
@@ -214,18 +215,5 @@ class AttendanceCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _getStatusText(String status) {
-    switch (status.toUpperCase()) {
-      case 'PRESENT':
-        return 'Presente';
-      case 'LATE':
-        return 'Tardanza';
-      case 'ABSENT':
-        return 'Ausente';
-      default:
-        return 'Desconocido';
-    }
   }
 }

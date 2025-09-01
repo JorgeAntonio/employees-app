@@ -5,6 +5,7 @@ import 'package:attendance_app/src/features/employees/presentation/widgets/atten
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:logger/logger.dart';
 
 class DailyAttendanceList extends HookConsumerWidget {
   const DailyAttendanceList({super.key});
@@ -47,7 +48,7 @@ class DailyAttendanceList extends HookConsumerWidget {
               isLoadingInitial.value = false;
             })
             .catchError((error) {
-              print('❌ Error loading data: $error');
+              Logger().e('❌ Error loading data: $error');
               isLoadingInitial.value = false;
             });
       });
