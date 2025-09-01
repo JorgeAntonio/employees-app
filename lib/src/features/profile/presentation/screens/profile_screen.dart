@@ -144,7 +144,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                       ),
                                       const SizedBox(width: 8),
                                       Text(
-                                        'Datos actualizados desde la API',
+                                        'Datos actualizados',
                                         style: TextStyle(
                                           color: Colors.green.shade700,
                                           fontSize: 12,
@@ -176,7 +176,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  'Actualizando desde la API...',
+                                  'Actualizando...',
                                   style: TextStyle(
                                     color: Colors.blue.shade700,
                                     fontSize: 12,
