@@ -12,6 +12,7 @@ import 'package:attendance_app/src/features/employees/domain/usecases/add_employ
 import 'package:attendance_app/src/features/employees/domain/usecases/get_daily_attendance_usecase.dart';
 import 'package:attendance_app/src/features/employees/domain/usecases/get_employees_usecase.dart';
 import 'package:attendance_app/src/features/employees/domain/usecases/update_employee_usecase.dart';
+import 'package:attendance_app/src/features/employees/domain/usecases/update_only_employee_usecase.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -62,6 +63,12 @@ GetDailyAttendanceUseCase getDailyAttendanceUseCase(Ref ref) {
 UpdateEmployeeUseCase updateEmployeeUseCase(Ref ref) {
   final employeesRepository = ref.watch(employeesRepositoryProvider);
   return UpdateEmployeeUseCase(employeesRepository);
+}
+
+@riverpod
+UpdateOnlyEmployeeUseCase updateOnlyEmployeeUseCase(Ref ref) {
+  final employeesRepository = ref.watch(employeesRepositoryProvider);
+  return UpdateOnlyEmployeeUseCase(employeesRepository);
 }
 
 // Estado para manejar la paginación

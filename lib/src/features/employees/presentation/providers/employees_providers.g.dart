@@ -334,6 +334,54 @@ final class UpdateEmployeeUseCaseProvider
 String _$updateEmployeeUseCaseHash() =>
     r'75fd8b1369ccb3f5786e278bdbf9ba1f367941ab';
 
+@ProviderFor(updateOnlyEmployeeUseCase)
+const updateOnlyEmployeeUseCaseProvider = UpdateOnlyEmployeeUseCaseProvider._();
+
+final class UpdateOnlyEmployeeUseCaseProvider
+    extends
+        $FunctionalProvider<
+          UpdateOnlyEmployeeUseCase,
+          UpdateOnlyEmployeeUseCase,
+          UpdateOnlyEmployeeUseCase
+        >
+    with $Provider<UpdateOnlyEmployeeUseCase> {
+  const UpdateOnlyEmployeeUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'updateOnlyEmployeeUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$updateOnlyEmployeeUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<UpdateOnlyEmployeeUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  UpdateOnlyEmployeeUseCase create(Ref ref) {
+    return updateOnlyEmployeeUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(UpdateOnlyEmployeeUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<UpdateOnlyEmployeeUseCase>(value),
+    );
+  }
+}
+
+String _$updateOnlyEmployeeUseCaseHash() =>
+    r'c605cb41ca1343e8128635657c3806c7d030a408';
+
 @ProviderFor(EmployeesRequestNotifier)
 const employeesRequestNotifierProvider = EmployeesRequestNotifierProvider._();
 

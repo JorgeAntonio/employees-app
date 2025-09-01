@@ -5,6 +5,8 @@ import 'package:attendance_app/src/features/employees/domain/entities/daily_atte
 import 'package:attendance_app/src/features/employees/domain/entities/daily_attendance_request.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/employee_entity.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/employees_request.dart';
+import 'package:attendance_app/src/features/employees/domain/entities/update_employee_request.dart';
+import 'package:attendance_app/src/features/employees/domain/entities/update_employee_response.dart';
 
 abstract class EmployeesRepository {
   FutureEither<EmployeesResponse> getEmployees(EmployeesRequest request);
@@ -18,5 +20,10 @@ abstract class EmployeesRepository {
   FutureEither<EmployeesResponse> updateUserEmployee(
     String id,
     CreateEmployeeRequest request,
+  );
+  // This is used when we want to update only the employee data without updating the user data or user profile
+  FutureEither<UpdateEmployeeResponse> updateOnlyEmployee(
+    String id,
+    UpdateEmployeeRequest request,
   );
 }

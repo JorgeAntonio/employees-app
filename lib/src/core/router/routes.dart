@@ -21,6 +21,9 @@ class Routes {
   static Routes get profile =>
       const Routes._(name: 'profile', path: '/profile');
 
+  static Routes get editProfile =>
+      const Routes._(name: 'edit-profile', path: '/edit-profile');
+
   static Routes get settings =>
       const Routes._(name: 'settings', path: '/settings');
 

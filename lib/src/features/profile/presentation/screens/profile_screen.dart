@@ -1,3 +1,4 @@
+import 'package:attendance_app/src/core/router/routes.dart';
 import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
@@ -6,6 +7,7 @@ import 'package:attendance_app/src/features/profile/presentation/widgets/contact
 import 'package:attendance_app/src/features/profile/presentation/widgets/personal_information.dart';
 import 'package:attendance_app/src/features/profile/presentation/widgets/profile_header.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -34,6 +36,15 @@ class ProfileScreen extends ConsumerWidget {
             centerTitle: true,
             title: 'Mi Perfil',
             leading: true,
+            actions: [
+              IconButton(
+                onPressed: () {
+                  context.pushNamed(Routes.editProfile.name);
+                },
+                icon: const Icon(Icons.edit_rounded),
+                tooltip: 'Editar Perfil',
+              ),
+            ],
           ),
           body: SafeArea(
             child: SingleChildScrollView(

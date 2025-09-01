@@ -7,6 +7,8 @@ import 'package:attendance_app/src/features/employees/domain/entities/daily_atte
 import 'package:attendance_app/src/features/employees/domain/entities/daily_attendance_request.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/employee_entity.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/employees_request.dart';
+import 'package:attendance_app/src/features/employees/domain/entities/update_employee_request.dart';
+import 'package:attendance_app/src/features/employees/domain/entities/update_employee_response.dart';
 import 'package:attendance_app/src/features/employees/domain/repositories/employees_repository.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -75,5 +77,13 @@ class EmployeesRepositoryImpl implements EmployeesRepository {
     } catch (e) {
       return left(ServerFailure('Error inesperado: $e'));
     }
+  }
+
+  @override
+  FutureEither<UpdateEmployeeResponse> updateOnlyEmployee(
+    String id,
+    UpdateEmployeeRequest request,
+  ) async {
+    return await _apiDataSource.updateOnlyEmployee(id, request);
   }
 }
