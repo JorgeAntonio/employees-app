@@ -4,6 +4,7 @@ import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/session_provider.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/update_employee_request.dart';
+import 'package:attendance_app/src/features/profile/presentation/providers/profile_api_providers.dart';
 import 'package:attendance_app/src/features/profile/presentation/providers/profile_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -307,6 +308,11 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       data: (response) {
                         if (response?.success == true) {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
+                            // Actualizar el perfil desde la API después del éxito
+                            ref
+                                .read(profileNotifierProvider.notifier)
+                                .refreshProfile();
+
                             AlertInfo.show(
                               context: context,
                               text: 'Perfil actualizado exitosamente',
