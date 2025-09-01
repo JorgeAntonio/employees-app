@@ -58,4 +58,6 @@ class Routes {
   );
 
   static Routes get info => const Routes._(name: 'info', path: '/info');
+
+  static Routes get about => const Routes._(name: 'about', path: '/about');
 }

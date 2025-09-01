@@ -1,3 +1,4 @@
+import 'package:attendance_app/src/features/about/presentation/about_screen.dart';
 import 'package:attendance_app/src/features/attendance/presentation/screens/screens.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/session_provider.dart';
 import 'package:attendance_app/src/features/auth/presentation/screens/sign_in_screen.dart';
@@ -51,6 +52,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         // parentNavigatorKey: _rootNavigatorkey,
         builder: (context, state) {
           return const WelcomeScreen();
+        },
+      ),
+      GoRoute(
+        path: Routes.about.path,
+        name: Routes.about.name,
+        // parentNavigatorKey: _rootNavigatorkey,
+        builder: (context, state) {
+          return const AboutScreen();
         },
       ),
       GoRoute(
