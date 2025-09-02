@@ -18,12 +18,12 @@ class AppDrawer extends HookConsumerWidget {
     final session = ref.watch(authStateProvider);
 
     final menuItems = [
-      {
-        'icon': Icons.dashboard_rounded,
-        'title': 'Dashboard',
-        'subtitle': 'Ver el dashboard de asistencia',
-        'onTap': () => context.pushNamed(Routes.dashboard.name),
-      },
+      // {
+      //   'icon': Icons.dashboard_rounded,
+      //   'title': 'Dashboard',
+      //   'subtitle': 'Ver el dashboard de asistencia',
+      //   'onTap': () => context.pushNamed(Routes.dashboard.name),
+      // },
       {
         'icon': Icons.people,
         'title': 'Estado de Empleados',
