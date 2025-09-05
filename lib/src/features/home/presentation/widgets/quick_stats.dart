@@ -14,12 +14,46 @@ class QuickStats extends ConsumerWidget {
     return userStatsAsync.when(
       data: (userStats) {
         final statistics = userStats.data.statistics;
+        final employee = userStats.data.employee;
+
         return Column(
           spacing: DoubleSizes.size16,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SectionTitle(title: 'Estadísticas rápidas'),
+            // Título con información del empleado si está disponible
+            if (employee != null)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SectionTitle(
+                    title:
+                        'Estadísticas de ${employee.firstName} ${employee.lastName}',
+                  ),
+                  if (employee.shift != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4.0),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.schedule,
+                            size: 16,
+                            color: Colors.grey[600],
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Turno: ${employee.shift!.name}',
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(color: Colors.grey[600]),
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              )
+            else
+              const SectionTitle(title: 'Estadísticas rápidas'),
+
             Row(
               spacing: DoubleSizes.size8,
               children: [
@@ -85,15 +119,28 @@ class QuickStats extends ConsumerWidget {
               borderRadius: BorderRadius.circular(DoubleSizes.size12),
               border: Border.all(color: Colors.red.shade200),
             ),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.error_outline, color: Colors.red.shade600),
-                const SizedBox(width: DoubleSizes.size8),
-                Expanded(
-                  child: Text(
-                    'Error al cargar estadísticas: ${error.toString()}',
-                    style: TextStyle(color: Colors.red.shade700),
-                  ),
+                Row(
+                  children: [
+                    Icon(Icons.error_outline, color: Colors.red.shade600),
+                    const SizedBox(width: DoubleSizes.size8),
+                    Expanded(
+                      child: Text(
+                        'No se pudieron cargar las estadísticas',
+                        style: TextStyle(
+                          color: Colors.red.shade700,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: DoubleSizes.size8),
+                Text(
+                  'Desliza hacia abajo para intentar de nuevo',
+                  style: TextStyle(color: Colors.red.shade600, fontSize: 12),
                 ),
               ],
             ),

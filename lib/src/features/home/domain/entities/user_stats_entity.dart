@@ -33,7 +33,7 @@ class EmployeeInfo {
   final String lastName;
   final String department;
   final String position;
-  final String? shift;
+  final Shift? shift;
 
   EmployeeInfo({
     required this.id,
@@ -43,6 +43,14 @@ class EmployeeInfo {
     required this.position,
     this.shift,
   });
+}
+
+class Shift {
+  final String name;
+  final DateTime startTime;
+  final DateTime endTime;
+
+  Shift({required this.name, required this.startTime, required this.endTime});
 }
 
 class Statistics {

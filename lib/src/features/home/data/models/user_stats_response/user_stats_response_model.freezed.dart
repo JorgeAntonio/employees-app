@@ -11,7 +11,6 @@ part of 'user_stats_response_model.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-
 /// @nodoc
 mixin _$UserStatsResponseModel {
 
@@ -22,8 +21,6 @@ mixin _$UserStatsResponseModel {
 @pragma('vm:prefer-inline')
 $UserStatsResponseModelCopyWith<UserStatsResponseModel> get copyWith => _$UserStatsResponseModelCopyWithImpl<UserStatsResponseModel>(this as UserStatsResponseModel, _$identity);
 
-  /// Serializes this UserStatsResponseModel to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -31,7 +28,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is UserStatsResponseModel&&(identical(other.success, success) || other.success == success)&&(identical(other.data, data) || other.data == data)&&(identical(other.message, message) || other.message == message));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,success,data,message);
 
@@ -220,11 +217,11 @@ return $default(_that.success,_that.data,_that.message);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _UserStatsResponseModel implements UserStatsResponseModel {
   const _UserStatsResponseModel({required this.success, this.data, this.message});
-  factory _UserStatsResponseModel.fromJson(Map<String, dynamic> json) => _$UserStatsResponseModelFromJson(json);
+  
 
 @override final  bool success;
 @override final  UserStatsDataModel? data;
@@ -236,17 +233,14 @@ class _UserStatsResponseModel implements UserStatsResponseModel {
 @pragma('vm:prefer-inline')
 _$UserStatsResponseModelCopyWith<_UserStatsResponseModel> get copyWith => __$UserStatsResponseModelCopyWithImpl<_UserStatsResponseModel>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$UserStatsResponseModelToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserStatsResponseModel&&(identical(other.success, success) || other.success == success)&&(identical(other.data, data) || other.data == data)&&(identical(other.message, message) || other.message == message));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,success,data,message);
 
@@ -304,7 +298,6 @@ $UserStatsDataModelCopyWith<$Res>? get data {
 }
 }
 
-
 /// @nodoc
 mixin _$UserStatsDataModel {
 
@@ -315,8 +308,6 @@ mixin _$UserStatsDataModel {
 @pragma('vm:prefer-inline')
 $UserStatsDataModelCopyWith<UserStatsDataModel> get copyWith => _$UserStatsDataModelCopyWithImpl<UserStatsDataModel>(this as UserStatsDataModel, _$identity);
 
-  /// Serializes this UserStatsDataModel to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -324,7 +315,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is UserStatsDataModel&&(identical(other.period, period) || other.period == period)&&(identical(other.employee, employee) || other.employee == employee)&&(identical(other.statistics, statistics) || other.statistics == statistics)&&const DeepCollectionEquality().equals(other.recentAttendances, recentAttendances));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,period,employee,statistics,const DeepCollectionEquality().hash(recentAttendances));
 
@@ -532,11 +523,11 @@ return $default(_that.period,_that.employee,_that.statistics,_that.recentAttenda
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _UserStatsDataModel implements UserStatsDataModel {
   const _UserStatsDataModel({required this.period, this.employee, required this.statistics, required final  List<RecentAttendanceModel> recentAttendances}): _recentAttendances = recentAttendances;
-  factory _UserStatsDataModel.fromJson(Map<String, dynamic> json) => _$UserStatsDataModelFromJson(json);
+  
 
 @override final  PeriodModel period;
 @override final  EmployeeInfoModel? employee;
@@ -555,17 +546,14 @@ class _UserStatsDataModel implements UserStatsDataModel {
 @pragma('vm:prefer-inline')
 _$UserStatsDataModelCopyWith<_UserStatsDataModel> get copyWith => __$UserStatsDataModelCopyWithImpl<_UserStatsDataModel>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$UserStatsDataModelToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserStatsDataModel&&(identical(other.period, period) || other.period == period)&&(identical(other.employee, employee) || other.employee == employee)&&(identical(other.statistics, statistics) || other.statistics == statistics)&&const DeepCollectionEquality().equals(other._recentAttendances, _recentAttendances));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,period,employee,statistics,const DeepCollectionEquality().hash(_recentAttendances));
 
@@ -642,7 +630,6 @@ $StatisticsModelCopyWith<$Res> get statistics {
 }
 }
 
-
 /// @nodoc
 mixin _$PeriodModel {
 
@@ -653,8 +640,6 @@ mixin _$PeriodModel {
 @pragma('vm:prefer-inline')
 $PeriodModelCopyWith<PeriodModel> get copyWith => _$PeriodModelCopyWithImpl<PeriodModel>(this as PeriodModel, _$identity);
 
-  /// Serializes this PeriodModel to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -662,7 +647,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is PeriodModel&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.days, days) || other.days == days));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,startDate,endDate,days);
 
@@ -839,11 +824,11 @@ return $default(_that.startDate,_that.endDate,_that.days);case _:
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _PeriodModel implements PeriodModel {
   const _PeriodModel({required this.startDate, required this.endDate, required this.days});
-  factory _PeriodModel.fromJson(Map<String, dynamic> json) => _$PeriodModelFromJson(json);
+  
 
 @override final  String startDate;
 @override final  String endDate;
@@ -855,17 +840,14 @@ class _PeriodModel implements PeriodModel {
 @pragma('vm:prefer-inline')
 _$PeriodModelCopyWith<_PeriodModel> get copyWith => __$PeriodModelCopyWithImpl<_PeriodModel>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$PeriodModelToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _PeriodModel&&(identical(other.startDate, startDate) || other.startDate == startDate)&&(identical(other.endDate, endDate) || other.endDate == endDate)&&(identical(other.days, days) || other.days == days));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,startDate,endDate,days);
 
@@ -911,19 +893,16 @@ as int,
 
 }
 
-
 /// @nodoc
 mixin _$EmployeeInfoModel {
 
- String get id; String get firstName; String get lastName; String get department; String get position; String? get shift;
+ String get id; String get firstName; String get lastName; String get department; String get position; ShiftModel? get shift;
 /// Create a copy of EmployeeInfoModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $EmployeeInfoModelCopyWith<EmployeeInfoModel> get copyWith => _$EmployeeInfoModelCopyWithImpl<EmployeeInfoModel>(this as EmployeeInfoModel, _$identity);
 
-  /// Serializes this EmployeeInfoModel to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -931,7 +910,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is EmployeeInfoModel&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.department, department) || other.department == department)&&(identical(other.position, position) || other.position == position)&&(identical(other.shift, shift) || other.shift == shift));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,id,firstName,lastName,department,position,shift);
 
@@ -948,11 +927,11 @@ abstract mixin class $EmployeeInfoModelCopyWith<$Res>  {
   factory $EmployeeInfoModelCopyWith(EmployeeInfoModel value, $Res Function(EmployeeInfoModel) _then) = _$EmployeeInfoModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String firstName, String lastName, String department, String position, String? shift
+ String id, String firstName, String lastName, String department, String position, ShiftModel? shift
 });
 
 
-
+$ShiftModelCopyWith<$Res>? get shift;
 
 }
 /// @nodoc
@@ -973,10 +952,22 @@ as String,lastName: null == lastName ? _self.lastName : lastName // ignore: cast
 as String,department: null == department ? _self.department : department // ignore: cast_nullable_to_non_nullable
 as String,position: null == position ? _self.position : position // ignore: cast_nullable_to_non_nullable
 as String,shift: freezed == shift ? _self.shift : shift // ignore: cast_nullable_to_non_nullable
-as String?,
+as ShiftModel?,
   ));
 }
+/// Create a copy of EmployeeInfoModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ShiftModelCopyWith<$Res>? get shift {
+    if (_self.shift == null) {
+    return null;
+  }
 
+  return $ShiftModelCopyWith<$Res>(_self.shift!, (value) {
+    return _then(_self.copyWith(shift: value));
+  });
+}
 }
 
 
@@ -1058,7 +1049,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String department,  String position,  String? shift)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String department,  String position,  ShiftModel? shift)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EmployeeInfoModel() when $default != null:
 return $default(_that.id,_that.firstName,_that.lastName,_that.department,_that.position,_that.shift);case _:
@@ -1079,7 +1070,7 @@ return $default(_that.id,_that.firstName,_that.lastName,_that.department,_that.p
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String department,  String position,  String? shift)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String firstName,  String lastName,  String department,  String position,  ShiftModel? shift)  $default,) {final _that = this;
 switch (_that) {
 case _EmployeeInfoModel():
 return $default(_that.id,_that.firstName,_that.lastName,_that.department,_that.position,_that.shift);case _:
@@ -1099,7 +1090,7 @@ return $default(_that.id,_that.firstName,_that.lastName,_that.department,_that.p
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String firstName,  String lastName,  String department,  String position,  String? shift)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String firstName,  String lastName,  String department,  String position,  ShiftModel? shift)?  $default,) {final _that = this;
 switch (_that) {
 case _EmployeeInfoModel() when $default != null:
 return $default(_that.id,_that.firstName,_that.lastName,_that.department,_that.position,_that.shift);case _:
@@ -1111,18 +1102,18 @@ return $default(_that.id,_that.firstName,_that.lastName,_that.department,_that.p
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _EmployeeInfoModel implements EmployeeInfoModel {
   const _EmployeeInfoModel({required this.id, required this.firstName, required this.lastName, required this.department, required this.position, this.shift});
-  factory _EmployeeInfoModel.fromJson(Map<String, dynamic> json) => _$EmployeeInfoModelFromJson(json);
+  
 
 @override final  String id;
 @override final  String firstName;
 @override final  String lastName;
 @override final  String department;
 @override final  String position;
-@override final  String? shift;
+@override final  ShiftModel? shift;
 
 /// Create a copy of EmployeeInfoModel
 /// with the given fields replaced by the non-null parameter values.
@@ -1130,17 +1121,14 @@ class _EmployeeInfoModel implements EmployeeInfoModel {
 @pragma('vm:prefer-inline')
 _$EmployeeInfoModelCopyWith<_EmployeeInfoModel> get copyWith => __$EmployeeInfoModelCopyWithImpl<_EmployeeInfoModel>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$EmployeeInfoModelToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _EmployeeInfoModel&&(identical(other.id, id) || other.id == id)&&(identical(other.firstName, firstName) || other.firstName == firstName)&&(identical(other.lastName, lastName) || other.lastName == lastName)&&(identical(other.department, department) || other.department == department)&&(identical(other.position, position) || other.position == position)&&(identical(other.shift, shift) || other.shift == shift));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,id,firstName,lastName,department,position,shift);
 
@@ -1157,11 +1145,11 @@ abstract mixin class _$EmployeeInfoModelCopyWith<$Res> implements $EmployeeInfoM
   factory _$EmployeeInfoModelCopyWith(_EmployeeInfoModel value, $Res Function(_EmployeeInfoModel) _then) = __$EmployeeInfoModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String firstName, String lastName, String department, String position, String? shift
+ String id, String firstName, String lastName, String department, String position, ShiftModel? shift
 });
 
 
-
+@override $ShiftModelCopyWith<$Res>? get shift;
 
 }
 /// @nodoc
@@ -1182,13 +1170,287 @@ as String,lastName: null == lastName ? _self.lastName : lastName // ignore: cast
 as String,department: null == department ? _self.department : department // ignore: cast_nullable_to_non_nullable
 as String,position: null == position ? _self.position : position // ignore: cast_nullable_to_non_nullable
 as String,shift: freezed == shift ? _self.shift : shift // ignore: cast_nullable_to_non_nullable
-as String?,
+as ShiftModel?,
+  ));
+}
+
+/// Create a copy of EmployeeInfoModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ShiftModelCopyWith<$Res>? get shift {
+    if (_self.shift == null) {
+    return null;
+  }
+
+  return $ShiftModelCopyWith<$Res>(_self.shift!, (value) {
+    return _then(_self.copyWith(shift: value));
+  });
+}
+}
+
+/// @nodoc
+mixin _$ShiftModel {
+
+ String get name; DateTime get startTime; DateTime get endTime;
+/// Create a copy of ShiftModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ShiftModelCopyWith<ShiftModel> get copyWith => _$ShiftModelCopyWithImpl<ShiftModel>(this as ShiftModel, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ShiftModel&&(identical(other.name, name) || other.name == name)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,name,startTime,endTime);
+
+@override
+String toString() {
+  return 'ShiftModel(name: $name, startTime: $startTime, endTime: $endTime)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ShiftModelCopyWith<$Res>  {
+  factory $ShiftModelCopyWith(ShiftModel value, $Res Function(ShiftModel) _then) = _$ShiftModelCopyWithImpl;
+@useResult
+$Res call({
+ String name, DateTime startTime, DateTime endTime
+});
+
+
+
+
+}
+/// @nodoc
+class _$ShiftModelCopyWithImpl<$Res>
+    implements $ShiftModelCopyWith<$Res> {
+  _$ShiftModelCopyWithImpl(this._self, this._then);
+
+  final ShiftModel _self;
+  final $Res Function(ShiftModel) _then;
+
+/// Create a copy of ShiftModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? startTime = null,Object? endTime = null,}) {
+  return _then(_self.copyWith(
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,startTime: null == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
+as DateTime,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
+as DateTime,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ShiftModel].
+extension ShiftModelPatterns on ShiftModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ShiftModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ShiftModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ShiftModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _ShiftModel():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ShiftModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ShiftModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  DateTime startTime,  DateTime endTime)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ShiftModel() when $default != null:
+return $default(_that.name,_that.startTime,_that.endTime);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  DateTime startTime,  DateTime endTime)  $default,) {final _that = this;
+switch (_that) {
+case _ShiftModel():
+return $default(_that.name,_that.startTime,_that.endTime);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  DateTime startTime,  DateTime endTime)?  $default,) {final _that = this;
+switch (_that) {
+case _ShiftModel() when $default != null:
+return $default(_that.name,_that.startTime,_that.endTime);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+
+class _ShiftModel implements ShiftModel {
+  const _ShiftModel({required this.name, required this.startTime, required this.endTime});
+  
+
+@override final  String name;
+@override final  DateTime startTime;
+@override final  DateTime endTime;
+
+/// Create a copy of ShiftModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ShiftModelCopyWith<_ShiftModel> get copyWith => __$ShiftModelCopyWithImpl<_ShiftModel>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ShiftModel&&(identical(other.name, name) || other.name == name)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,name,startTime,endTime);
+
+@override
+String toString() {
+  return 'ShiftModel(name: $name, startTime: $startTime, endTime: $endTime)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ShiftModelCopyWith<$Res> implements $ShiftModelCopyWith<$Res> {
+  factory _$ShiftModelCopyWith(_ShiftModel value, $Res Function(_ShiftModel) _then) = __$ShiftModelCopyWithImpl;
+@override @useResult
+$Res call({
+ String name, DateTime startTime, DateTime endTime
+});
+
+
+
+
+}
+/// @nodoc
+class __$ShiftModelCopyWithImpl<$Res>
+    implements _$ShiftModelCopyWith<$Res> {
+  __$ShiftModelCopyWithImpl(this._self, this._then);
+
+  final _ShiftModel _self;
+  final $Res Function(_ShiftModel) _then;
+
+/// Create a copy of ShiftModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? startTime = null,Object? endTime = null,}) {
+  return _then(_ShiftModel(
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,startTime: null == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
+as DateTime,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
+as DateTime,
   ));
 }
 
 
 }
-
 
 /// @nodoc
 mixin _$StatisticsModel {
@@ -1200,8 +1462,6 @@ mixin _$StatisticsModel {
 @pragma('vm:prefer-inline')
 $StatisticsModelCopyWith<StatisticsModel> get copyWith => _$StatisticsModelCopyWithImpl<StatisticsModel>(this as StatisticsModel, _$identity);
 
-  /// Serializes this StatisticsModel to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -1209,7 +1469,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is StatisticsModel&&(identical(other.totalDays, totalDays) || other.totalDays == totalDays)&&(identical(other.presences, presences) || other.presences == presences)&&(identical(other.absences, absences) || other.absences == absences)&&(identical(other.lateArrivals, lateArrivals) || other.lateArrivals == lateArrivals)&&(identical(other.justified, justified) || other.justified == justified)&&(identical(other.punctualityRate, punctualityRate) || other.punctualityRate == punctualityRate)&&(identical(other.averageHours, averageHours) || other.averageHours == averageHours)&&(identical(other.attendanceRate, attendanceRate) || other.attendanceRate == attendanceRate));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,totalDays,presences,absences,lateArrivals,justified,punctualityRate,averageHours,attendanceRate);
 
@@ -1391,11 +1651,11 @@ return $default(_that.totalDays,_that.presences,_that.absences,_that.lateArrival
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _StatisticsModel implements StatisticsModel {
   const _StatisticsModel({required this.totalDays, required this.presences, required this.absences, required this.lateArrivals, required this.justified, required this.punctualityRate, required this.averageHours, required this.attendanceRate});
-  factory _StatisticsModel.fromJson(Map<String, dynamic> json) => _$StatisticsModelFromJson(json);
+  
 
 @override final  int totalDays;
 @override final  int presences;
@@ -1412,17 +1672,14 @@ class _StatisticsModel implements StatisticsModel {
 @pragma('vm:prefer-inline')
 _$StatisticsModelCopyWith<_StatisticsModel> get copyWith => __$StatisticsModelCopyWithImpl<_StatisticsModel>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$StatisticsModelToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _StatisticsModel&&(identical(other.totalDays, totalDays) || other.totalDays == totalDays)&&(identical(other.presences, presences) || other.presences == presences)&&(identical(other.absences, absences) || other.absences == absences)&&(identical(other.lateArrivals, lateArrivals) || other.lateArrivals == lateArrivals)&&(identical(other.justified, justified) || other.justified == justified)&&(identical(other.punctualityRate, punctualityRate) || other.punctualityRate == punctualityRate)&&(identical(other.averageHours, averageHours) || other.averageHours == averageHours)&&(identical(other.attendanceRate, attendanceRate) || other.attendanceRate == attendanceRate));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,totalDays,presences,absences,lateArrivals,justified,punctualityRate,averageHours,attendanceRate);
 
@@ -1473,7 +1730,6 @@ as double,
 
 }
 
-
 /// @nodoc
 mixin _$RecentAttendanceModel {
 
@@ -1484,8 +1740,6 @@ mixin _$RecentAttendanceModel {
 @pragma('vm:prefer-inline')
 $RecentAttendanceModelCopyWith<RecentAttendanceModel> get copyWith => _$RecentAttendanceModelCopyWithImpl<RecentAttendanceModel>(this as RecentAttendanceModel, _$identity);
 
-  /// Serializes this RecentAttendanceModel to a JSON map.
-  Map<String, dynamic> toJson();
 
 
 @override
@@ -1493,7 +1747,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is RecentAttendanceModel&&(identical(other.date, date) || other.date == date)&&(identical(other.checkInTime, checkInTime) || other.checkInTime == checkInTime)&&(identical(other.checkOutTime, checkOutTime) || other.checkOutTime == checkOutTime)&&(identical(other.status, status) || other.status == status)&&(identical(other.durationMins, durationMins) || other.durationMins == durationMins));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,date,checkInTime,checkOutTime,status,durationMins);
 
@@ -1672,11 +1926,11 @@ return $default(_that.date,_that.checkInTime,_that.checkOutTime,_that.status,_th
 }
 
 /// @nodoc
-@JsonSerializable()
+
 
 class _RecentAttendanceModel implements RecentAttendanceModel {
   const _RecentAttendanceModel({required this.date, required this.checkInTime, this.checkOutTime, required this.status, this.durationMins});
-  factory _RecentAttendanceModel.fromJson(Map<String, dynamic> json) => _$RecentAttendanceModelFromJson(json);
+  
 
 @override final  DateTime date;
 @override final  DateTime checkInTime;
@@ -1690,17 +1944,14 @@ class _RecentAttendanceModel implements RecentAttendanceModel {
 @pragma('vm:prefer-inline')
 _$RecentAttendanceModelCopyWith<_RecentAttendanceModel> get copyWith => __$RecentAttendanceModelCopyWithImpl<_RecentAttendanceModel>(this, _$identity);
 
-@override
-Map<String, dynamic> toJson() {
-  return _$RecentAttendanceModelToJson(this, );
-}
+
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _RecentAttendanceModel&&(identical(other.date, date) || other.date == date)&&(identical(other.checkInTime, checkInTime) || other.checkInTime == checkInTime)&&(identical(other.checkOutTime, checkOutTime) || other.checkOutTime == checkOutTime)&&(identical(other.status, status) || other.status == status)&&(identical(other.durationMins, durationMins) || other.durationMins == durationMins));
 }
 
-@JsonKey(includeFromJson: false, includeToJson: false)
+
 @override
 int get hashCode => Object.hash(runtimeType,date,checkInTime,checkOutTime,status,durationMins);
 
