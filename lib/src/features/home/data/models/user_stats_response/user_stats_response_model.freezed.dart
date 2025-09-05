@@ -308,7 +308,7 @@ $UserStatsDataModelCopyWith<$Res>? get data {
 /// @nodoc
 mixin _$UserStatsDataModel {
 
- PeriodModel get period; EmployeeInfoModel get employee; StatisticsModel get statistics; List<RecentAttendanceModel> get recentAttendances;
+ PeriodModel get period; EmployeeInfoModel? get employee; StatisticsModel get statistics; List<RecentAttendanceModel> get recentAttendances;
 /// Create a copy of UserStatsDataModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -341,11 +341,11 @@ abstract mixin class $UserStatsDataModelCopyWith<$Res>  {
   factory $UserStatsDataModelCopyWith(UserStatsDataModel value, $Res Function(UserStatsDataModel) _then) = _$UserStatsDataModelCopyWithImpl;
 @useResult
 $Res call({
- PeriodModel period, EmployeeInfoModel employee, StatisticsModel statistics, List<RecentAttendanceModel> recentAttendances
+ PeriodModel period, EmployeeInfoModel? employee, StatisticsModel statistics, List<RecentAttendanceModel> recentAttendances
 });
 
 
-$PeriodModelCopyWith<$Res> get period;$EmployeeInfoModelCopyWith<$Res> get employee;$StatisticsModelCopyWith<$Res> get statistics;
+$PeriodModelCopyWith<$Res> get period;$EmployeeInfoModelCopyWith<$Res>? get employee;$StatisticsModelCopyWith<$Res> get statistics;
 
 }
 /// @nodoc
@@ -358,11 +358,11 @@ class _$UserStatsDataModelCopyWithImpl<$Res>
 
 /// Create a copy of UserStatsDataModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? period = null,Object? employee = null,Object? statistics = null,Object? recentAttendances = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? period = null,Object? employee = freezed,Object? statistics = null,Object? recentAttendances = null,}) {
   return _then(_self.copyWith(
 period: null == period ? _self.period : period // ignore: cast_nullable_to_non_nullable
-as PeriodModel,employee: null == employee ? _self.employee : employee // ignore: cast_nullable_to_non_nullable
-as EmployeeInfoModel,statistics: null == statistics ? _self.statistics : statistics // ignore: cast_nullable_to_non_nullable
+as PeriodModel,employee: freezed == employee ? _self.employee : employee // ignore: cast_nullable_to_non_nullable
+as EmployeeInfoModel?,statistics: null == statistics ? _self.statistics : statistics // ignore: cast_nullable_to_non_nullable
 as StatisticsModel,recentAttendances: null == recentAttendances ? _self.recentAttendances : recentAttendances // ignore: cast_nullable_to_non_nullable
 as List<RecentAttendanceModel>,
   ));
@@ -380,9 +380,12 @@ $PeriodModelCopyWith<$Res> get period {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$EmployeeInfoModelCopyWith<$Res> get employee {
-  
-  return $EmployeeInfoModelCopyWith<$Res>(_self.employee, (value) {
+$EmployeeInfoModelCopyWith<$Res>? get employee {
+    if (_self.employee == null) {
+    return null;
+  }
+
+  return $EmployeeInfoModelCopyWith<$Res>(_self.employee!, (value) {
     return _then(_self.copyWith(employee: value));
   });
 }/// Create a copy of UserStatsDataModel
@@ -476,7 +479,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( PeriodModel period,  EmployeeInfoModel employee,  StatisticsModel statistics,  List<RecentAttendanceModel> recentAttendances)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( PeriodModel period,  EmployeeInfoModel? employee,  StatisticsModel statistics,  List<RecentAttendanceModel> recentAttendances)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserStatsDataModel() when $default != null:
 return $default(_that.period,_that.employee,_that.statistics,_that.recentAttendances);case _:
@@ -497,7 +500,7 @@ return $default(_that.period,_that.employee,_that.statistics,_that.recentAttenda
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( PeriodModel period,  EmployeeInfoModel employee,  StatisticsModel statistics,  List<RecentAttendanceModel> recentAttendances)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( PeriodModel period,  EmployeeInfoModel? employee,  StatisticsModel statistics,  List<RecentAttendanceModel> recentAttendances)  $default,) {final _that = this;
 switch (_that) {
 case _UserStatsDataModel():
 return $default(_that.period,_that.employee,_that.statistics,_that.recentAttendances);case _:
@@ -517,7 +520,7 @@ return $default(_that.period,_that.employee,_that.statistics,_that.recentAttenda
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( PeriodModel period,  EmployeeInfoModel employee,  StatisticsModel statistics,  List<RecentAttendanceModel> recentAttendances)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( PeriodModel period,  EmployeeInfoModel? employee,  StatisticsModel statistics,  List<RecentAttendanceModel> recentAttendances)?  $default,) {final _that = this;
 switch (_that) {
 case _UserStatsDataModel() when $default != null:
 return $default(_that.period,_that.employee,_that.statistics,_that.recentAttendances);case _:
@@ -532,11 +535,11 @@ return $default(_that.period,_that.employee,_that.statistics,_that.recentAttenda
 @JsonSerializable()
 
 class _UserStatsDataModel implements UserStatsDataModel {
-  const _UserStatsDataModel({required this.period, required this.employee, required this.statistics, required final  List<RecentAttendanceModel> recentAttendances}): _recentAttendances = recentAttendances;
+  const _UserStatsDataModel({required this.period, this.employee, required this.statistics, required final  List<RecentAttendanceModel> recentAttendances}): _recentAttendances = recentAttendances;
   factory _UserStatsDataModel.fromJson(Map<String, dynamic> json) => _$UserStatsDataModelFromJson(json);
 
 @override final  PeriodModel period;
-@override final  EmployeeInfoModel employee;
+@override final  EmployeeInfoModel? employee;
 @override final  StatisticsModel statistics;
  final  List<RecentAttendanceModel> _recentAttendances;
 @override List<RecentAttendanceModel> get recentAttendances {
@@ -579,11 +582,11 @@ abstract mixin class _$UserStatsDataModelCopyWith<$Res> implements $UserStatsDat
   factory _$UserStatsDataModelCopyWith(_UserStatsDataModel value, $Res Function(_UserStatsDataModel) _then) = __$UserStatsDataModelCopyWithImpl;
 @override @useResult
 $Res call({
- PeriodModel period, EmployeeInfoModel employee, StatisticsModel statistics, List<RecentAttendanceModel> recentAttendances
+ PeriodModel period, EmployeeInfoModel? employee, StatisticsModel statistics, List<RecentAttendanceModel> recentAttendances
 });
 
 
-@override $PeriodModelCopyWith<$Res> get period;@override $EmployeeInfoModelCopyWith<$Res> get employee;@override $StatisticsModelCopyWith<$Res> get statistics;
+@override $PeriodModelCopyWith<$Res> get period;@override $EmployeeInfoModelCopyWith<$Res>? get employee;@override $StatisticsModelCopyWith<$Res> get statistics;
 
 }
 /// @nodoc
@@ -596,11 +599,11 @@ class __$UserStatsDataModelCopyWithImpl<$Res>
 
 /// Create a copy of UserStatsDataModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? period = null,Object? employee = null,Object? statistics = null,Object? recentAttendances = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? period = null,Object? employee = freezed,Object? statistics = null,Object? recentAttendances = null,}) {
   return _then(_UserStatsDataModel(
 period: null == period ? _self.period : period // ignore: cast_nullable_to_non_nullable
-as PeriodModel,employee: null == employee ? _self.employee : employee // ignore: cast_nullable_to_non_nullable
-as EmployeeInfoModel,statistics: null == statistics ? _self.statistics : statistics // ignore: cast_nullable_to_non_nullable
+as PeriodModel,employee: freezed == employee ? _self.employee : employee // ignore: cast_nullable_to_non_nullable
+as EmployeeInfoModel?,statistics: null == statistics ? _self.statistics : statistics // ignore: cast_nullable_to_non_nullable
 as StatisticsModel,recentAttendances: null == recentAttendances ? _self._recentAttendances : recentAttendances // ignore: cast_nullable_to_non_nullable
 as List<RecentAttendanceModel>,
   ));
@@ -619,9 +622,12 @@ $PeriodModelCopyWith<$Res> get period {
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$EmployeeInfoModelCopyWith<$Res> get employee {
-  
-  return $EmployeeInfoModelCopyWith<$Res>(_self.employee, (value) {
+$EmployeeInfoModelCopyWith<$Res>? get employee {
+    if (_self.employee == null) {
+    return null;
+  }
+
+  return $EmployeeInfoModelCopyWith<$Res>(_self.employee!, (value) {
     return _then(_self.copyWith(employee: value));
   });
 }/// Create a copy of UserStatsDataModel

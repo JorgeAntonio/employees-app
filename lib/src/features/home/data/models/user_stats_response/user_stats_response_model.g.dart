@@ -27,9 +27,11 @@ Map<String, dynamic> _$UserStatsResponseModelToJson(
 _UserStatsDataModel _$UserStatsDataModelFromJson(Map<String, dynamic> json) =>
     _UserStatsDataModel(
       period: PeriodModel.fromJson(json['period'] as Map<String, dynamic>),
-      employee: EmployeeInfoModel.fromJson(
-        json['employee'] as Map<String, dynamic>,
-      ),
+      employee: json['employee'] == null
+          ? null
+          : EmployeeInfoModel.fromJson(
+              json['employee'] as Map<String, dynamic>,
+            ),
       statistics: StatisticsModel.fromJson(
         json['statistics'] as Map<String, dynamic>,
       ),

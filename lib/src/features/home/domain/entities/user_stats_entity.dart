@@ -7,13 +7,13 @@ class UserStatsEntityResponse {
 
 class UserStatsData {
   final Period period;
-  final EmployeeInfo employee;
+  final EmployeeInfo? employee;
   final Statistics statistics;
   final List<RecentAttendance> recentAttendances;
 
   UserStatsData({
     required this.period,
-    required this.employee,
+    this.employee,
     required this.statistics,
     required this.recentAttendances,
   });

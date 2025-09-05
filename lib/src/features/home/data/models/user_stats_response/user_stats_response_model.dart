@@ -20,7 +20,7 @@ abstract class UserStatsResponseModel with _$UserStatsResponseModel {
 abstract class UserStatsDataModel with _$UserStatsDataModel {
   const factory UserStatsDataModel({
     required PeriodModel period,
-    required EmployeeInfoModel employee,
+    EmployeeInfoModel? employee,
     required StatisticsModel statistics,
     required List<RecentAttendanceModel> recentAttendances,
   }) = _UserStatsDataModel;
@@ -90,6 +90,11 @@ abstract class RecentAttendanceModel with _$RecentAttendanceModel {
 // Extensions to convert from Model to Domain
 extension UserStatsResponseModelX on UserStatsResponseModel {
   UserStatsEntityResponse toDomain() {
+    if (data == null) {
+      throw Exception(
+        'No se pudieron obtener las estadísticas del usuario: datos no disponibles',
+      );
+    }
     return UserStatsEntityResponse(success: success, data: data!.toDomain());
   }
 }
@@ -98,7 +103,7 @@ extension UserStatsDataModelX on UserStatsDataModel {
   UserStatsData toDomain() {
     return UserStatsData(
       period: period.toDomain(),
-      employee: employee.toDomain(),
+      employee: employee?.toDomain(),
       statistics: statistics.toDomain(),
       recentAttendances: recentAttendances.map((e) => e.toDomain()).toList(),
     );

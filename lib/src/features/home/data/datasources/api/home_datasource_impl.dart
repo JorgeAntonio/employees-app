@@ -36,7 +36,18 @@ class HomeDataSourceImpl implements HomeDataSource {
 
           // Verificar si la respuesta indica éxito
           if (userStatsResponseModel.success) {
-            return right(userStatsResponseModel.toDomain());
+            // Verificar si data no es null antes de convertir
+            if (userStatsResponseModel.data == null) {
+              return left(
+                const ServerFailure('Datos de estadísticas no disponibles'),
+              );
+            }
+
+            try {
+              return right(userStatsResponseModel.toDomain());
+            } catch (e) {
+              return left(ServerFailure('Error al procesar datos: $e'));
+            }
           } else {
             return left(
               ServerFailure(
