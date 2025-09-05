@@ -47,7 +47,6 @@ Future<UserStatsEntityResponse> userStats(Ref ref) async {
 
   return result.fold((failure) {
     // Log del error para debugging
-    print('Error en userStats: ${failure.message}');
     throw Exception(failure.message);
   }, (success) => success);
 }

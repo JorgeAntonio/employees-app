@@ -370,31 +370,42 @@ class UpdateEmployeeNotifier extends _$UpdateEmployeeNotifier {
   }
 
   Future<void> updateEmployee(String id, CreateEmployeeRequest request) async {
+    if (!ref.mounted) return;
     state = const AsyncValue.loading();
 
     try {
       final updateEmployeeUseCase = ref.read(updateEmployeeUseCaseProvider);
       final result = await updateEmployeeUseCase(id, request);
 
+      if (!ref.mounted) return;
+
       result.fold(
         (failure) {
-          state = AsyncValue.error(
-            Exception(failure.message),
-            StackTrace.current,
-          );
+          if (ref.mounted) {
+            state = AsyncValue.error(
+              Exception(failure.message),
+              StackTrace.current,
+            );
+          }
         },
         (employeesResponse) {
-          state = AsyncValue.data(employeesResponse);
-          // Refrescar la lista de empleados después de la actualización
-          ref.invalidate(employeesStateNotifierProvider);
+          if (ref.mounted) {
+            state = AsyncValue.data(employeesResponse);
+            // Refrescar la lista de empleados después de la actualización
+            // ref.invalidate(employeesStateNotifierProvider); // Temporarily commented
+          }
         },
       );
     } catch (e, stackTrace) {
-      state = AsyncValue.error(e, stackTrace);
+      if (ref.mounted) {
+        state = AsyncValue.error(e, stackTrace);
+      }
     }
   }
 
   void clearState() {
-    state = const AsyncValue.data(null);
+    if (ref.mounted) {
+      state = const AsyncValue.data(null);
+    }
   }
 }

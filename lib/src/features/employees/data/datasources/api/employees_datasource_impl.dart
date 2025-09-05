@@ -235,7 +235,8 @@ class EmployeesDataSourceImpl implements EmployeesDataSource {
 
           // Verificar si la respuesta indica éxito
           if (updateEmployeeResponseModel.success) {
-            return right(updateEmployeeResponseModel.toDomain());
+            final domainResult = updateEmployeeResponseModel.toDomain();
+            return right(domainResult);
           } else {
             return left(
               ServerFailure(
@@ -274,11 +275,6 @@ class EmployeesDataSourceImpl implements EmployeesDataSource {
 
         // Convertir la request usando solo campos no nulos
         final requestData = request.toJsonWithoutNulls();
-
-        print('=== DATOS ENVIADOS AL API ===');
-        print('URL: /employees/$id');
-        print('Data: $requestData');
-        print('============================');
 
         final response = await _dio.put(
           '/employees/$id',

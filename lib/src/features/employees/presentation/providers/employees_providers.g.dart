@@ -808,7 +808,7 @@ final class UpdateEmployeeNotifierProvider
 }
 
 String _$updateEmployeeNotifierHash() =>
-    r'64ac03bea4b775899c3d84db999070192cb9e48b';
+    r'b8b6a3de1ed6839dd144552db5e21585eddcd709';
 
 abstract class _$UpdateEmployeeNotifier
     extends $Notifier<AsyncValue<EmployeesResponse?>> {

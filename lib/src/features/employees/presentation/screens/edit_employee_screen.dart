@@ -114,45 +114,87 @@ class EditEmployeeScreen extends HookConsumerWidget {
         shiftId: selectedShiftId.value,
       );
 
-      final updateEmployeeNotifier = ref.read(
-        updateEmployeeNotifierProvider.notifier,
-      );
+      try {
+        // Show loading indicator
+        FlutterAppBlurryLoader.show(context, text: 'Actualizando empleado...');
 
-      await showLoader(
-        context,
-        updateEmployeeNotifier.updateEmployee(employeeId, request),
-        text: 'Actualizando empleado...',
-      );
+        // Call the use case directly instead of going through the provider
+        final updateEmployeeUseCase = ref.read(updateEmployeeUseCaseProvider);
+        final result = await updateEmployeeUseCase(employeeId, request);
 
-      // Verificar el estado después de la actualización
-      final updateState = ref.read(updateEmployeeNotifierProvider);
+        // Hide loader
+        if (context.mounted) {
+          FlutterAppBlurryLoader.hide(context);
+        }
 
-      updateState.when(
-        data: (response) {
-          if (response != null && response.success) {
+        // Check if widget is still mounted
+        if (!context.mounted) return;
+
+        // Handle the result directly
+        result.fold(
+          (failure) {
+            if (!context.mounted) return;
             AlertInfo.show(
               context: context,
-              text: response.message ?? 'Empleado actualizado exitosamente',
-              typeInfo: TypeInfo.success,
-            );
-            Navigator.of(context).pop();
-          } else if (response != null) {
-            AlertInfo.show(
-              context: context,
-              text: response.message ?? 'Error al actualizar empleado',
+              text: 'Error al actualizar empleado: ${failure.message}',
               typeInfo: TypeInfo.error,
             );
-          }
-        },
-        loading: () {},
-        error: (error, stackTrace) {
-          AlertInfo.show(
-            context: context,
-            text: 'Error al actualizar empleado: ${error.toString()}',
-            typeInfo: TypeInfo.error,
-          );
-        },
-      );
+          },
+          (employeesResponse) {
+            if (!context.mounted) return;
+
+            if (employeesResponse.success) {
+              // Show success message
+              AlertInfo.show(
+                context: context,
+                text:
+                    employeesResponse.message ??
+                    'Empleado actualizado exitosamente',
+                typeInfo: TypeInfo.success,
+              );
+
+              // Navigate back after a delay to let user see the alert
+              Future.delayed(const Duration(milliseconds: 1500), () {
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                }
+              });
+
+              // Refresh the employees list by calling the reload method
+              Future.delayed(const Duration(milliseconds: 1600), () {
+                if (context.mounted) {
+                  final employeesStateNotifier = ref.read(
+                    employeesStateNotifierProvider.notifier,
+                  );
+                  final request = ref.read(employeesRequestNotifierProvider);
+                  employeesStateNotifier.loadEmployees(
+                    request.copyWith(page: 1, limit: 10),
+                  );
+                }
+              });
+            } else {
+              AlertInfo.show(
+                context: context,
+                text:
+                    employeesResponse.message ?? 'Error al actualizar empleado',
+                typeInfo: TypeInfo.error,
+              );
+            }
+          },
+        );
+      } catch (e) {
+        // Hide loader in case of error
+        if (context.mounted) {
+          FlutterAppBlurryLoader.hide(context);
+        }
+
+        if (!context.mounted) return;
+        AlertInfo.show(
+          context: context,
+          text: 'Error inesperado al actualizar empleado: ${e.toString()}',
+          typeInfo: TypeInfo.error,
+        );
+      }
     }
 
     // useEffect para cargar datos cuando se monta el widget
