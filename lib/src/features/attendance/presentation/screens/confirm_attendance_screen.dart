@@ -1,5 +1,7 @@
+import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
+import 'package:attendance_app/src/core/shared/widgets/section_title.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/confirm_attendance_request.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/confirm_attendance_state_provider.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,7 @@ class _ConfirmAttendanceScreenState
   final _deviceOsController = TextEditingController();
   final _deviceBrowserController = TextEditingController();
   final _deviceUserAgentController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   bool _includeLocation = false;
   bool _includeDeviceInfo = false;
@@ -46,13 +49,9 @@ class _ConfirmAttendanceScreenState
   }
 
   void _confirmAttendance() {
+    if (!_formKey.currentState!.validate()) return;
+
     final code = _codeController.text.trim();
-    if (code.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Por favor ingresa un código')),
-      );
-      return;
-    }
 
     DeviceInfo? deviceInfo;
     if (_includeDeviceInfo) {
@@ -110,6 +109,7 @@ class _ConfirmAttendanceScreenState
       appBar: AttendanceAppBar(
         title: 'Confirmar Asistencia',
         centerTitle: true,
+        leading: true,
         actions: [
           // clear button
           IconButton(
@@ -136,269 +136,253 @@ class _ConfirmAttendanceScreenState
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Código
-            TextField(
-              controller: _codeController,
-              decoration: const InputDecoration(
-                labelText: 'Código QR o Manual',
-                hintText: 'Ingresa el código a confirmar',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Confirmación
-            Row(
-              children: [
-                const Text('Confirmado: '),
-                Radio<bool?>(
-                  value: true,
-                  groupValue: _confirmed,
-                  onChanged: (value) => setState(() => _confirmed = value),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            // Switch para incluir ubicación
-            SwitchListTile(
-              title: const Text('Incluir datos de ubicación'),
-              value: _includeLocation,
-              onChanged: (value) => setState(() => _includeLocation = value),
-            ),
-
-            // Campos de ubicación
-            if (_includeLocation) ...[
-              const SizedBox(height: 16),
-              TextField(
-                controller: _locationIdController,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            spacing: DoubleSizes.size16,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Código
+              const SectionTitle(title: 'Código QR'),
+              TextFormField(
+                controller: _codeController,
                 decoration: const InputDecoration(
-                  labelText: 'ID de Ubicación (opcional)',
+                  labelText: 'Código QR',
+                  hintText: 'Ingresa el código a confirmar',
                   border: OutlineInputBorder(),
                 ),
+                validator: (value) => value == null || value.trim().isEmpty
+                    ? 'El código QR es requerido'
+                    : null,
               ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: _latitudeController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Latitud (opcional)',
-                  hintText: 'Ej: -12.0464',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: _longitudeController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Longitud (opcional)',
-                  hintText: 'Ej: -77.0428',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: _accuracyController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Precisión en metros (opcional)',
-                  hintText: 'Ej: 10.5',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'Nombre de ubicación (opcional)',
-                  hintText: 'Ej: Oficina Principal',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ],
 
-            const SizedBox(height: 16),
-
-            // Switch para incluir información del dispositivo
-            SwitchListTile(
-              title: const Text('Incluir información del dispositivo'),
-              value: _includeDeviceInfo,
-              onChanged: (value) => setState(() => _includeDeviceInfo = value),
-            ),
-
-            // Campos de dispositivo
-            if (_includeDeviceInfo) ...[
-              const SizedBox(height: 16),
-              TextField(
-                controller: _deviceNameController,
-                decoration: const InputDecoration(
-                  labelText: 'Nombre del dispositivo',
-                  hintText: 'Ej: Samsung Galaxy S21',
-                  border: OutlineInputBorder(),
-                ),
+              // Confirmación
+              Row(
+                children: [
+                  const Text('Confirmado: '),
+                  Radio<bool?>(
+                    value: true,
+                    groupValue: _confirmed,
+                    onChanged: (value) => setState(() => _confirmed = value),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: _deviceOsController,
-                decoration: const InputDecoration(
-                  labelText: 'Sistema Operativo',
-                  hintText: 'Ej: Android 13',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: _deviceBrowserController,
-                decoration: const InputDecoration(
-                  labelText: 'Navegador',
-                  hintText: 'Ej: Chrome 120.0',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: _deviceUserAgentController,
-                decoration: const InputDecoration(
-                  labelText: 'User Agent',
-                  hintText: 'Mozilla/5.0...',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-            ],
 
-            const SizedBox(height: 24),
+              // // Switch para incluir ubicación
+              // SwitchListTile(
+              //   title: const Text('Incluir datos de ubicación'),
+              //   value: _includeLocation,
+              //   onChanged: (value) => setState(() => _includeLocation = value),
+              // ),
 
-            // Botón de confirmación
-            // ElevatedButton(
-            //   onPressed: state.isLoading ? null : _confirmAttendance,
-            //   child: state.isLoading
-            //       ? const CircularProgressIndicator()
-            //       : const Text('Confirmar Asistencia'),
-            // ),
+              // // Campos de ubicación
+              // if (_includeLocation) ...[
+              //   const SizedBox(height: 16),
+              //   TextField(
+              //     controller: _locationIdController,
+              //     decoration: const InputDecoration(
+              //       labelText: 'ID de Ubicación (opcional)',
+              //       border: OutlineInputBorder(),
+              //     ),
+              //   ),
+              //   const SizedBox(height: 8),
+              //   TextField(
+              //     controller: _latitudeController,
+              //     keyboardType: TextInputType.number,
+              //     decoration: const InputDecoration(
+              //       labelText: 'Latitud (opcional)',
+              //       hintText: 'Ej: -12.0464',
+              //       border: OutlineInputBorder(),
+              //     ),
+              //   ),
+              //   const SizedBox(height: 8),
+              //   TextField(
+              //     controller: _longitudeController,
+              //     keyboardType: TextInputType.number,
+              //     decoration: const InputDecoration(
+              //       labelText: 'Longitud (opcional)',
+              //       hintText: 'Ej: -77.0428',
+              //       border: OutlineInputBorder(),
+              //     ),
+              //   ),
+              //   const SizedBox(height: 8),
+              //   TextField(
+              //     controller: _accuracyController,
+              //     keyboardType: TextInputType.number,
+              //     decoration: const InputDecoration(
+              //       labelText: 'Precisión en metros (opcional)',
+              //       hintText: 'Ej: 10.5',
+              //       border: OutlineInputBorder(),
+              //     ),
+              //   ),
+              //   const SizedBox(height: 8),
+              //   TextField(
+              //     controller: _nameController,
+              //     decoration: const InputDecoration(
+              //       labelText: 'Nombre de ubicación (opcional)',
+              //       hintText: 'Ej: Oficina Principal',
+              //       border: OutlineInputBorder(),
+              //     ),
+              //   ),
+              // ],
 
-            // const SizedBox(height: 16),
+              // // Switch para incluir información del dispositivo
+              // SwitchListTile(
+              //   title: const Text('Incluir información del dispositivo'),
+              //   value: _includeDeviceInfo,
+              //   onChanged: (value) => setState(() => _includeDeviceInfo = value),
+              // ),
 
-            // Resultado
-            state.when(
-              initial: () => const SizedBox.shrink(),
-              loading: () => const Center(
-                child: Column(
-                  children: [
-                    CircularProgressIndicator(),
-                    SizedBox(height: 8),
-                    Text('Confirmando asistencia...'),
-                  ],
-                ),
-              ),
-              success: (response) => Card(
-                color: Colors.green.shade50,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+              // // Campos de dispositivo
+              // if (_includeDeviceInfo) ...[
+              //   const SizedBox(height: 16),
+              //   TextField(
+              //     controller: _deviceNameController,
+              //     decoration: const InputDecoration(
+              //       labelText: 'Nombre del dispositivo',
+              //       hintText: 'Ej: Samsung Galaxy S21',
+              //       border: OutlineInputBorder(),
+              //     ),
+              //   ),
+              //   const SizedBox(height: 8),
+              //   TextField(
+              //     controller: _deviceOsController,
+              //     decoration: const InputDecoration(
+              //       labelText: 'Sistema Operativo',
+              //       hintText: 'Ej: Android 13',
+              //       border: OutlineInputBorder(),
+              //     ),
+              //   ),
+              //   const SizedBox(height: 8),
+              //   TextField(
+              //     controller: _deviceBrowserController,
+              //     decoration: const InputDecoration(
+              //       labelText: 'Navegador',
+              //       hintText: 'Ej: Chrome 120.0',
+              //       border: OutlineInputBorder(),
+              //     ),
+              //   ),
+              //   const SizedBox(height: 8),
+              //   TextField(
+              //     controller: _deviceUserAgentController,
+              //     decoration: const InputDecoration(
+              //       labelText: 'User Agent',
+              //       hintText: 'Mozilla/5.0...',
+              //       border: OutlineInputBorder(),
+              //     ),
+              //   ),
+              // ],
+
+              // const SizedBox(height: 24),
+
+              // Resultado
+              state.when(
+                initial: () => const SizedBox.shrink(),
+                loading: () => const Center(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.check_circle,
-                            color: Colors.green.shade700,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            'Asistencia Confirmada',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                      CircularProgressIndicator(),
+                      SizedBox(height: 8),
+                      Text('Confirmando asistencia...'),
+                    ],
+                  ),
+                ),
+                success: (response) => Card(
+                  color: Colors.green.shade50,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.check_circle,
                               color: Colors.green.shade700,
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 8),
-                      if (response.data != null) ...[
-                        Text('Mensaje: ${response.data!.message}'),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Asistencia Confirmada',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green.shade700,
+                              ),
+                            ),
+                          ],
+                        ),
                         const SizedBox(height: 8),
-                        Text(
-                          'Empleado: ${response.data!.attendance.employee.fullName}',
-                        ),
-                        Text('DNI: ${response.data!.attendance.employee.dni}'),
-                        Text('Estado: ${response.data!.attendance.status}'),
-                        Text(
-                          'Fecha: ${response.data!.attendance.date.toString().split(' ')[0]}',
-                        ),
-                        if (response.data!.attendance.checkInTime != null)
+                        if (response.data != null) ...[
+                          Text('Mensaje: ${response.data!.message}'),
+                          const SizedBox(height: 8),
                           Text(
-                            'Hora de entrada: ${response.data!.attendance.checkInTime.toString().split(' ')[1].substring(0, 8)}',
+                            'Empleado: ${response.data!.attendance.employee.fullName}',
                           ),
-                        if (response.data!.attendance.checkOutTime != null)
                           Text(
-                            'Hora de salida: ${response.data!.attendance.checkOutTime.toString().split(' ')[1].substring(0, 8)}',
+                            'DNI: ${response.data!.attendance.employee.dni}',
                           ),
-                        Text(
-                          'Duración: ${response.data!.attendance.durationMins} minutos',
-                        ),
-                        if (response.data!.attendance.checkInLocation != null)
+                          Text('Estado: ${response.data!.attendance.status}'),
                           Text(
-                            'Ubicación entrada: ${response.data!.attendance.checkInLocation!.name}',
+                            'Fecha: ${response.data!.attendance.date.toString().split(' ')[0]}',
                           ),
-                        if (response.data!.attendance.checkOutLocation != null)
+                          if (response.data!.attendance.checkInTime != null)
+                            Text(
+                              'Hora de entrada: ${response.data!.attendance.checkInTime.toString().split(' ')[1].substring(0, 8)}',
+                            ),
+                          if (response.data!.attendance.checkOutTime != null)
+                            Text(
+                              'Hora de salida: ${response.data!.attendance.checkOutTime.toString().split(' ')[1].substring(0, 8)}',
+                            ),
                           Text(
-                            'Ubicación salida: ${response.data!.attendance.checkOutLocation!.name}',
+                            'Duración: ${response.data!.attendance.durationMins} minutos',
                           ),
+                          if (response.data!.attendance.checkInLocation != null)
+                            Text(
+                              'Ubicación entrada: ${response.data!.attendance.checkInLocation!.name}',
+                            ),
+                          if (response.data!.attendance.checkOutLocation !=
+                              null)
+                            Text(
+                              'Ubicación salida: ${response.data!.attendance.checkOutLocation!.name}',
+                            ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
                 ),
-              ),
-              error: (message) => Card(
-                color: Colors.red.shade50,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.error, color: Colors.red.shade700),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          'Error: $message',
-                          style: TextStyle(color: Colors.red.shade700),
+                error: (message) => Card(
+                  color: Colors.red.shade50,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      children: [
+                        Icon(Icons.error, color: Colors.red.shade700),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Error: $message',
+                            style: TextStyle(color: Colors.red.shade700),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: SizedBox(
-        width: 200,
-        child: FilledButton(
-          onPressed: state.isLoading ? null : _confirmAttendance,
-          style: FilledButton.styleFrom(padding: const EdgeInsets.all(16)),
-          child: state.isLoading
-              ? Row(
-                  spacing: DoubleSizes.size12,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Confirmando...'),
-                    const CircularProgressIndicator(),
-                  ],
-                )
-              : Row(
-                  spacing: DoubleSizes.size12,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Confirmar Asistencia'),
-                    const Icon(Icons.check, color: Colors.white),
-                  ],
-                ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: state.isLoading ? null : _confirmAttendance,
+        label: state.isLoading
+            ? const Text('Confirmando...')
+            : const Text('Confirmar'),
+        icon: Icon(
+          state.isLoading ? Icons.hourglass_top : Icons.check_circle,
+          color: Colors.white,
         ),
+        backgroundColor: context.appColorScheme.secondary,
       ),
     );
   }

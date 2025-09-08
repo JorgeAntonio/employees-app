@@ -1,5 +1,5 @@
-import 'package:attendance_app/src/features/attendance/data/models/attendance_history_response/attendance_history_response_model.dart';
-import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_response.dart';
+import 'package:attendance_app/src/core/entities/pagination_response.dart';
+import 'package:attendance_app/src/core/models/pagination_response_model.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/employee_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -22,7 +22,7 @@ abstract class EmployeesResponseModel with _$EmployeesResponseModel {
 abstract class EmployeesDataModel with _$EmployeesDataModel {
   const factory EmployeesDataModel({
     required List<EmployeeModel> employees,
-    required PaginationInfoModel pagination,
+    required PaginationResponseModel pagination,
   }) = _EmployeesDataModel;
 
   factory EmployeesDataModel.fromJson(Map<String, dynamic> json) =>
@@ -68,8 +68,8 @@ abstract class ShiftModel with _$ShiftModel {
   const factory ShiftModel({
     required String id,
     required String name,
-    required String startTime,
-    required String endTime,
+    required DateTime startTime,
+    required DateTime endTime,
   }) = _ShiftModel;
 
   factory ShiftModel.fromJson(Map<String, dynamic> json) =>
@@ -85,7 +85,7 @@ extension EmployeesResponseModelX on EmployeesResponseModel {
           data?.toDomain() ??
           EmployeesData(
             employees: const [],
-            pagination: PaginationInfo(
+            pagination: PaginationResponse(
               page: 1,
               limit: 10,
               total: 0,

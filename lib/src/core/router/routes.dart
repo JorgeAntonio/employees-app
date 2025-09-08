@@ -21,6 +21,9 @@ class Routes {
   static Routes get profile =>
       const Routes._(name: 'profile', path: '/profile');
 
+  static Routes get editProfile =>
+      const Routes._(name: 'edit-profile', path: '/edit-profile');
+
   static Routes get settings =>
       const Routes._(name: 'settings', path: '/settings');
 
@@ -42,6 +45,19 @@ class Routes {
   static Routes get employees =>
       const Routes._(name: 'employees', path: '/employees');
 
+  static Routes get addEmployee => const Routes._(name: 'add', path: '/add');
+
+  static Routes get editEmployee => const Routes._(name: 'edit', path: '/edit');
+
   static Routes get importEmployees =>
       const Routes._(name: 'import-employees', path: '/employees/import');
+
+  static Routes get employeesAttendance => const Routes._(
+    name: 'employees-attendance',
+    path: '/employees/attendance',
+  );
+
+  static Routes get info => const Routes._(name: 'info', path: '/info');
+
+  static Routes get about => const Routes._(name: 'about', path: '/about');
 }

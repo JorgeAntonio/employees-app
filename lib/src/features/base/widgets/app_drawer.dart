@@ -18,11 +18,25 @@ class AppDrawer extends HookConsumerWidget {
     final session = ref.watch(authStateProvider);
 
     final menuItems = [
+      // {
+      //   'icon': Icons.dashboard_rounded,
+      //   'title': 'Dashboard',
+      //   'subtitle': 'Ver el dashboard de asistencia',
+      //   'onTap': () => context.pushNamed(Routes.dashboard.name),
+      // },
       {
-        'icon': Icons.dashboard_rounded,
-        'title': 'Dashboard',
-        'subtitle': 'Ver el dashboard de asistencia',
-        'onTap': () => context.pushNamed(Routes.dashboard.name),
+        'icon': Icons.people,
+        'title': 'Estado de Empleados',
+        'subtitle': 'Ver el estado de los empleados',
+        'requiresAdmin': true,
+        'onTap': () => context.pushNamed(Routes.employeesAttendance.name),
+      },
+      {
+        'icon': Icons.person_add,
+        'title': 'Empleados',
+        'subtitle': 'Administrar empleados',
+        'requiresAdmin': true,
+        'onTap': () => context.pushNamed(Routes.employees.name),
       },
       {
         'icon': Icons.qr_code_2_rounded,
@@ -42,46 +56,39 @@ class AppDrawer extends HookConsumerWidget {
         'subtitle': 'Confirmar asistencia con código manual',
         'onTap': () => context.pushNamed(Routes.confirmAttendance.name),
       },
-      {
-        'icon': Icons.person_add,
-        'title': 'Empleados',
-        'subtitle': 'Administrar empleados',
-        'requiresAdmin': true,
-        'onTap': () => context.pushNamed(Routes.employees.name),
-      },
-      {
-        'icon': Icons.notifications_rounded,
-        'title': 'Notificaciones',
-        'subtitle': 'Configurar alertas de asistencia',
-        'requiresAdmin': true,
-        'onTap': () {},
-      },
-      {
-        'icon': Icons.security_rounded,
-        'title': 'Seguridad',
-        'subtitle': 'Cambiar contraseña y configuración',
-        'requiresAdmin': true,
-        'onTap': () {},
-      },
-      {
-        'icon': Icons.help_rounded,
-        'title': 'Ayuda y Soporte',
-        'subtitle': 'Centro de ayuda y contacto',
-        'onTap': () {},
-      },
+      // {
+      //   'icon': Icons.notifications_rounded,
+      //   'title': 'Notificaciones',
+      //   'subtitle': 'Configurar alertas de asistencia',
+      //   'requiresAdmin': true,
+      //   'onTap': () {},
+      // },
+      // {
+      //   'icon': Icons.security_rounded,
+      //   'title': 'Seguridad',
+      //   'subtitle': 'Cambiar contraseña y configuración',
+      //   'requiresAdmin': true,
+      //   'onTap': () {},
+      // },
+      // {
+      //   'icon': Icons.help_rounded,
+      //   'title': 'Ayuda y Soporte',
+      //   'subtitle': 'Centro de ayuda y contacto',
+      //   'onTap': () {},
+      // },
       {
         'icon': Icons.info_rounded,
         'title': 'Acerca de',
         'subtitle': 'Información de la aplicación',
-        'onTap': () {},
+        'onTap': () => context.pushNamed(Routes.about.name),
       },
       {
         'icon': Icons.logout_rounded,
         'title': 'Cerrar Sesión',
         'subtitle': 'Salir de la aplicación',
         'isDestructive': true,
-        'onTap': () {
-          ref.read(authStateProvider.notifier).signOut();
+        'onTap': () async {
+          await ref.read(authStateProvider.notifier).signOut();
         },
       },
     ];
@@ -130,12 +137,10 @@ class AppDrawer extends HookConsumerWidget {
 
     return Drawer(
       width: context.screenWidth * 0.8,
-      // Add a ListView to the drawer. This ensures the user can scroll
-      // through the options in the drawer if there isn't enough vertical
-      // space to fit everything.
-      child: ListView(
+      child: Column(
         children: [
           DrawerHeader(
+            margin: EdgeInsets.zero,
             decoration: BoxDecoration(color: colorScheme.primary),
             child: Column(
               spacing: DoubleSizes.size8,
@@ -178,49 +183,50 @@ class AppDrawer extends HookConsumerWidget {
               ],
             ),
           ),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: filteredMenuItems.length,
-            separatorBuilder: (context, index) => Divider(
-              height: 1,
-              color: colorScheme.outlineVariant,
-              indent: 16,
-              endIndent: 16,
-            ),
-            itemBuilder: (context, index) {
-              final item = filteredMenuItems[index];
-              final isDestructive = item['isDestructive'] == true;
+          Expanded(
+            child: ListView.separated(
+              itemCount: filteredMenuItems.length,
+              separatorBuilder: (context, index) => Divider(
+                height: 1,
+                color: colorScheme.outlineVariant,
+                indent: 16,
+                endIndent: 16,
+              ),
+              padding: EdgeInsets.zero,
+              itemBuilder: (context, index) {
+                final item = filteredMenuItems[index];
+                final isDestructive = item['isDestructive'] == true;
 
-              return ListTile(
-                onTap: item['onTap'] as void Function(),
-                leading: Icon(
-                  item['icon'] as IconData,
-                  color: isDestructive
-                      ? colorScheme.error
-                      : colorScheme.onSurfaceVariant,
-                ),
-                title: Text(
-                  item['title'] as String,
-                  style: textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.w600,
+                return ListTile(
+                  onTap: item['onTap'] as void Function(),
+                  leading: Icon(
+                    item['icon'] as IconData,
                     color: isDestructive
                         ? colorScheme.error
-                        : colorScheme.onSurface,
+                        : colorScheme.onSurfaceVariant,
                   ),
-                ),
-                subtitle: Text(
-                  item['subtitle'] as String,
-                  style: textTheme.bodyMedium?.copyWith(
+                  title: Text(
+                    item['title'] as String,
+                    style: textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: isDestructive
+                          ? colorScheme.error
+                          : colorScheme.onSurface,
+                    ),
+                  ),
+                  subtitle: Text(
+                    item['subtitle'] as String,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.chevron_right_rounded,
                     color: colorScheme.onSurfaceVariant,
                   ),
-                ),
-                trailing: Icon(
-                  Icons.chevron_right_rounded,
-                  color: colorScheme.onSurfaceVariant,
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ],
       ),

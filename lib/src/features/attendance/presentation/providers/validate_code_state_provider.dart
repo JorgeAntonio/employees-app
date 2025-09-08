@@ -25,15 +25,27 @@ class ValidateCodeNotifier extends _$ValidateCodeNotifier {
 
   /// Validate QR code or manual code
   Future<void> validateCode(ValidateCodeRequest request) async {
-    state = const ValidateCodeState.loading();
+    try {
+      state = const ValidateCodeState.loading();
 
-    final useCase = ref.read(validateCodeUseCaseProvider);
-    final result = await useCase(request);
+      final useCase = ref.read(validateCodeUseCaseProvider);
+      final result = await useCase(request);
 
-    result.fold(
-      (failure) => state = ValidateCodeState.error(failure.message),
-      (response) => state = ValidateCodeState.success(response),
-    );
+      result.fold(
+        (failure) {
+          state = ValidateCodeState.error(failure.message);
+        },
+        (response) {
+          state = ValidateCodeState.success(response);
+        },
+      );
+    } catch (e) {
+      // Solo capturar errores realmente inesperados que no sean de red/API
+      // Los errores de red/API ya están manejados en el datasource
+      state = const ValidateCodeState.error(
+        'Ocurrió un error inesperado. Verifica si tienes MARCADO un INGRESO activo. Debes MARCAR tu SALIDA primero e intentar nuevamente.',
+      );
+    }
   }
 
   /// Validate code with location data

@@ -1,4 +1,5 @@
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
+import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -7,10 +8,10 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dashboard'),
+      appBar: AttendanceAppBar(
+        title: 'Dashboard',
         centerTitle: true,
-        elevation: 0,
+        leading: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(DoubleSizes.size16),

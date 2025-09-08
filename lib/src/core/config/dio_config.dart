@@ -69,6 +69,8 @@ class _LoggingInterceptor extends Interceptor {
         : '';
     final fullUrl = '$url$queryParams';
 
+
+
     Logger().i('✅ RESPONSE [${response.statusCode}] => $fullUrl');
     Logger().d('📦 Response Data: ${response.data}');
     Logger().d(
@@ -85,6 +87,8 @@ class _LoggingInterceptor extends Interceptor {
         ? '?${Uri(queryParameters: err.requestOptions.queryParameters).query}'
         : '';
     final fullUrl = '$url$queryParams';
+
+
 
     Logger().e(
       '❌ ERROR [${err.response?.statusCode ?? 'NO_RESPONSE'}] => $fullUrl',

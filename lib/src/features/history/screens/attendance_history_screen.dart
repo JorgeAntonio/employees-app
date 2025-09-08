@@ -1,5 +1,7 @@
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
+import 'package:attendance_app/src/core/shared/widgets/attendance_card_skeleton.dart';
+import 'package:attendance_app/src/core/utils/current_date.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_request.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/attendance_history_provider.dart';
 import 'package:attendance_app/src/features/history/widgets/attendance_history_filters.dart';
@@ -21,6 +23,7 @@ class _AttendanceHistoryScreenState
   DateTime? _endDate;
   int _currentPage = 1;
   final int _limit = 10;
+  bool _isLoadingMore = false;
 
   @override
   void initState() {
@@ -48,15 +51,61 @@ class _AttendanceHistoryScreenState
       _startDate = startDate;
       _endDate = endDate;
       _currentPage = 1; // Reset to first page when filters change
+      _isLoadingMore = false;
     });
+
+    // Clear existing data when filters change
+    ref.read(attendanceHistoryNotifierProvider.notifier).clearHistory();
     _loadAttendanceHistory();
   }
 
   void _onPageChanged(int page) {
+    if (page > _currentPage) {
+      // Loading more data (infinite scroll)
+      setState(() {
+        _currentPage = page;
+        _isLoadingMore = true;
+      });
+
+      final request = AttendanceHistoryRequest(
+        page: _currentPage,
+        limit: _limit,
+        startDate: _startDate,
+        endDate: _endDate,
+      );
+
+      ref
+          .read(attendanceHistoryNotifierProvider.notifier)
+          .loadMoreAttendanceHistory(request)
+          .then((_) {
+            if (mounted) {
+              setState(() {
+                _isLoadingMore = false;
+              });
+            }
+          });
+    } else {
+      // Regular page change (shouldn't happen with infinite scroll)
+      setState(() {
+        _currentPage = page;
+      });
+      _loadAttendanceHistory();
+    }
+  }
+
+  Future<void> _onRefresh() async {
+    // Reset to first page and reload data
     setState(() {
-      _currentPage = page;
+      _currentPage = 1;
+      _isLoadingMore = false;
     });
+
+    // Clear existing data and load fresh data
+    ref.read(attendanceHistoryNotifierProvider.notifier).clearHistory();
     _loadAttendanceHistory();
+
+    // Add a small delay to ensure the UI shows the refresh indicator
+    await Future.delayed(const Duration(milliseconds: 500));
   }
 
   @override
@@ -65,7 +114,9 @@ class _AttendanceHistoryScreenState
 
     return Scaffold(
       appBar: AttendanceAppBar(
-        title: 'Historial',
+        title: formattedDate,
+        leading: false,
+        centerTitle: false,
         actions: [
           AttendanceHistoryFilters(
             startDate: _startDate,
@@ -80,47 +131,102 @@ class _AttendanceHistoryScreenState
           children: [
             // Content section
             Expanded(
-              child: attendanceHistoryState.when(
-                data: (historyResponse) {
-                  if (historyResponse == null) {
-                    return const Center(
-                      child: Text('No hay datos de historial disponibles'),
-                    );
-                  }
+              child: RefreshIndicator(
+                onRefresh: _onRefresh,
+                child: attendanceHistoryState.when(
+                  data: (historyResponse) {
+                    if (historyResponse == null) {
+                      return SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          child: const Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.history,
+                                  size: 64,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(height: 16),
+                                Text(
+                                  'No hay datos de historial disponibles',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  'Desliza hacia abajo para actualizar',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }
 
-                  return AttendanceHistoryList(
-                    historyResponse: historyResponse,
-                    currentPage: _currentPage,
-                    onPageChanged: _onPageChanged,
-                  );
-                },
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (error, stackTrace) => Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.error_outline,
-                        size: 64,
-                        color: Colors.red,
+                    return AttendanceHistoryList(
+                      historyResponse: historyResponse,
+                      currentPage: _currentPage,
+                      onPageChanged: _onPageChanged,
+                      isLoading: _isLoadingMore,
+                    );
+                  },
+                  loading: () => Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: DoubleSizes.size16,
+                    ),
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      child: SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        child: const Center(
+                          child: AttendanceCardLoading(),
+                          // CircularProgressIndicator()
+                        ),
                       ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Error al cargar el historial',
-                        style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ),
+                  error: (error, stackTrace) => SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.error_outline,
+                              size: 64,
+                              color: Colors.red,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Error al cargar el historial',
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              error.toString(),
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              onPressed: _loadAttendanceHistory,
+                              child: const Text('Reintentar'),
+                            ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        error.toString(),
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: _loadAttendanceHistory,
-                        child: const Text('Reintentar'),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),

@@ -308,7 +308,7 @@ $EmployeesDataModelCopyWith<$Res>? get data {
 /// @nodoc
 mixin _$EmployeesDataModel {
 
- List<EmployeeModel> get employees; PaginationInfoModel get pagination;
+ List<EmployeeModel> get employees; PaginationResponseModel get pagination;
 /// Create a copy of EmployeesDataModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -341,11 +341,11 @@ abstract mixin class $EmployeesDataModelCopyWith<$Res>  {
   factory $EmployeesDataModelCopyWith(EmployeesDataModel value, $Res Function(EmployeesDataModel) _then) = _$EmployeesDataModelCopyWithImpl;
 @useResult
 $Res call({
- List<EmployeeModel> employees, PaginationInfoModel pagination
+ List<EmployeeModel> employees, PaginationResponseModel pagination
 });
 
 
-$PaginationInfoModelCopyWith<$Res> get pagination;
+$PaginationResponseModelCopyWith<$Res> get pagination;
 
 }
 /// @nodoc
@@ -362,16 +362,16 @@ class _$EmployeesDataModelCopyWithImpl<$Res>
   return _then(_self.copyWith(
 employees: null == employees ? _self.employees : employees // ignore: cast_nullable_to_non_nullable
 as List<EmployeeModel>,pagination: null == pagination ? _self.pagination : pagination // ignore: cast_nullable_to_non_nullable
-as PaginationInfoModel,
+as PaginationResponseModel,
   ));
 }
 /// Create a copy of EmployeesDataModel
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$PaginationInfoModelCopyWith<$Res> get pagination {
+$PaginationResponseModelCopyWith<$Res> get pagination {
   
-  return $PaginationInfoModelCopyWith<$Res>(_self.pagination, (value) {
+  return $PaginationResponseModelCopyWith<$Res>(_self.pagination, (value) {
     return _then(_self.copyWith(pagination: value));
   });
 }
@@ -456,7 +456,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<EmployeeModel> employees,  PaginationInfoModel pagination)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<EmployeeModel> employees,  PaginationResponseModel pagination)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _EmployeesDataModel() when $default != null:
 return $default(_that.employees,_that.pagination);case _:
@@ -477,7 +477,7 @@ return $default(_that.employees,_that.pagination);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<EmployeeModel> employees,  PaginationInfoModel pagination)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<EmployeeModel> employees,  PaginationResponseModel pagination)  $default,) {final _that = this;
 switch (_that) {
 case _EmployeesDataModel():
 return $default(_that.employees,_that.pagination);case _:
@@ -497,7 +497,7 @@ return $default(_that.employees,_that.pagination);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<EmployeeModel> employees,  PaginationInfoModel pagination)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<EmployeeModel> employees,  PaginationResponseModel pagination)?  $default,) {final _that = this;
 switch (_that) {
 case _EmployeesDataModel() when $default != null:
 return $default(_that.employees,_that.pagination);case _:
@@ -522,7 +522,7 @@ class _EmployeesDataModel implements EmployeesDataModel {
   return EqualUnmodifiableListView(_employees);
 }
 
-@override final  PaginationInfoModel pagination;
+@override final  PaginationResponseModel pagination;
 
 /// Create a copy of EmployeesDataModel
 /// with the given fields replaced by the non-null parameter values.
@@ -557,11 +557,11 @@ abstract mixin class _$EmployeesDataModelCopyWith<$Res> implements $EmployeesDat
   factory _$EmployeesDataModelCopyWith(_EmployeesDataModel value, $Res Function(_EmployeesDataModel) _then) = __$EmployeesDataModelCopyWithImpl;
 @override @useResult
 $Res call({
- List<EmployeeModel> employees, PaginationInfoModel pagination
+ List<EmployeeModel> employees, PaginationResponseModel pagination
 });
 
 
-@override $PaginationInfoModelCopyWith<$Res> get pagination;
+@override $PaginationResponseModelCopyWith<$Res> get pagination;
 
 }
 /// @nodoc
@@ -578,7 +578,7 @@ class __$EmployeesDataModelCopyWithImpl<$Res>
   return _then(_EmployeesDataModel(
 employees: null == employees ? _self._employees : employees // ignore: cast_nullable_to_non_nullable
 as List<EmployeeModel>,pagination: null == pagination ? _self.pagination : pagination // ignore: cast_nullable_to_non_nullable
-as PaginationInfoModel,
+as PaginationResponseModel,
   ));
 }
 
@@ -586,9 +586,9 @@ as PaginationInfoModel,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$PaginationInfoModelCopyWith<$Res> get pagination {
+$PaginationResponseModelCopyWith<$Res> get pagination {
   
-  return $PaginationInfoModelCopyWith<$Res>(_self.pagination, (value) {
+  return $PaginationResponseModelCopyWith<$Res>(_self.pagination, (value) {
     return _then(_self.copyWith(pagination: value));
   });
 }
@@ -1208,7 +1208,7 @@ as DateTime,
 /// @nodoc
 mixin _$ShiftModel {
 
- String get id; String get name; String get startTime; String get endTime;
+ String get id; String get name; DateTime get startTime; DateTime get endTime;
 /// Create a copy of ShiftModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1241,7 +1241,7 @@ abstract mixin class $ShiftModelCopyWith<$Res>  {
   factory $ShiftModelCopyWith(ShiftModel value, $Res Function(ShiftModel) _then) = _$ShiftModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String startTime, String endTime
+ String id, String name, DateTime startTime, DateTime endTime
 });
 
 
@@ -1263,8 +1263,8 @@ class _$ShiftModelCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,startTime: null == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
-as String,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
-as String,
+as DateTime,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
+as DateTime,
   ));
 }
 
@@ -1349,7 +1349,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String startTime,  String endTime)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  DateTime startTime,  DateTime endTime)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ShiftModel() when $default != null:
 return $default(_that.id,_that.name,_that.startTime,_that.endTime);case _:
@@ -1370,7 +1370,7 @@ return $default(_that.id,_that.name,_that.startTime,_that.endTime);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String startTime,  String endTime)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  DateTime startTime,  DateTime endTime)  $default,) {final _that = this;
 switch (_that) {
 case _ShiftModel():
 return $default(_that.id,_that.name,_that.startTime,_that.endTime);case _:
@@ -1390,7 +1390,7 @@ return $default(_that.id,_that.name,_that.startTime,_that.endTime);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String startTime,  String endTime)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  DateTime startTime,  DateTime endTime)?  $default,) {final _that = this;
 switch (_that) {
 case _ShiftModel() when $default != null:
 return $default(_that.id,_that.name,_that.startTime,_that.endTime);case _:
@@ -1410,8 +1410,8 @@ class _ShiftModel implements ShiftModel {
 
 @override final  String id;
 @override final  String name;
-@override final  String startTime;
-@override final  String endTime;
+@override final  DateTime startTime;
+@override final  DateTime endTime;
 
 /// Create a copy of ShiftModel
 /// with the given fields replaced by the non-null parameter values.
@@ -1446,7 +1446,7 @@ abstract mixin class _$ShiftModelCopyWith<$Res> implements $ShiftModelCopyWith<$
   factory _$ShiftModelCopyWith(_ShiftModel value, $Res Function(_ShiftModel) _then) = __$ShiftModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String startTime, String endTime
+ String id, String name, DateTime startTime, DateTime endTime
 });
 
 
@@ -1468,8 +1468,8 @@ class __$ShiftModelCopyWithImpl<$Res>
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,startTime: null == startTime ? _self.startTime : startTime // ignore: cast_nullable_to_non_nullable
-as String,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
-as String,
+as DateTime,endTime: null == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
+as DateTime,
   ));
 }
 

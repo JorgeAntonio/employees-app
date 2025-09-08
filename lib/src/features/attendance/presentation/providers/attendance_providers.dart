@@ -1,13 +1,13 @@
 import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/features/attendance/data/data.dart';
 import 'package:attendance_app/src/features/attendance/domain/repositories/attendance_repository.dart';
+import 'package:attendance_app/src/features/attendance/domain/usecases/confirm_attendance_usecase.dart';
 import 'package:attendance_app/src/features/attendance/domain/usecases/generate_checkin_qr_usecase.dart';
 import 'package:attendance_app/src/features/attendance/domain/usecases/generate_checkout_qr_usecase.dart';
-import 'package:attendance_app/src/features/attendance/domain/usecases/validate_code_usecase.dart';
-import 'package:attendance_app/src/features/attendance/domain/usecases/confirm_attendance_usecase.dart';
-import 'package:attendance_app/src/features/attendance/domain/usecases/get_attendance_history_usecase.dart';
-import 'package:attendance_app/src/features/attendance/domain/usecases/get_attendance_history_for_employee_usecase.dart';
 import 'package:attendance_app/src/features/attendance/domain/usecases/get_all_attendance_history_usecase.dart';
+import 'package:attendance_app/src/features/attendance/domain/usecases/get_attendance_history_for_employee_usecase.dart';
+import 'package:attendance_app/src/features/attendance/domain/usecases/get_attendance_history_usecase.dart';
+import 'package:attendance_app/src/features/attendance/domain/usecases/validate_code_usecase.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/auth_providers.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -33,9 +33,7 @@ AttendanceDataSourceImpl attendanceApiDataSource(Ref ref) {
 AttendanceRepository attendanceRepository(Ref ref) {
   final apiDataSource = ref.watch(attendanceApiDataSourceProvider);
 
-  return AttendanceRepositoryImpl(
-    apiDataSource: apiDataSource,
-  );
+  return AttendanceRepositoryImpl(apiDataSource: apiDataSource);
 }
 
 // Use Cases Providers
@@ -70,7 +68,9 @@ GetAttendanceHistoryUseCase getAttendanceHistoryUseCase(Ref ref) {
 }
 
 @riverpod
-GetAttendanceHistoryForEmployeeUseCase getAttendanceHistoryForEmployeeUseCase(Ref ref) {
+GetAttendanceHistoryForEmployeeUseCase getAttendanceHistoryForEmployeeUseCase(
+  Ref ref,
+) {
   final attendanceRepository = ref.watch(attendanceRepositoryProvider);
   return GetAttendanceHistoryForEmployeeUseCase(attendanceRepository);
 }

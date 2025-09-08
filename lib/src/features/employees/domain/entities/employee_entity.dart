@@ -1,4 +1,4 @@
-import 'package:attendance_app/src/features/attendance/domain/entities/attendance_history_response.dart';
+import 'package:attendance_app/src/core/entities/pagination_response.dart';
 
 class EmployeesResponse {
   final bool success;
@@ -10,7 +10,7 @@ class EmployeesResponse {
 
 class EmployeesData {
   final List<Employee> employees;
-  final PaginationInfo pagination;
+  final PaginationResponse pagination;
 
   EmployeesData({required this.employees, required this.pagination});
 }
@@ -62,8 +62,8 @@ class UserEntity {
 class Shift {
   final String id;
   final String name;
-  final String startTime;
-  final String endTime;
+  final DateTime startTime;
+  final DateTime endTime;
 
   Shift({
     required this.id,
@@ -71,4 +71,12 @@ class Shift {
     required this.startTime,
     required this.endTime,
   });
+}
+
+class UpdateUserEmployee {
+  final bool success;
+  final Employee? employee;
+  final String? message;
+
+  UpdateUserEmployee({required this.success, this.employee, this.message});
 }

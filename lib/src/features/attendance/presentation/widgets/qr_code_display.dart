@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:alert_info/alert_info.dart';
 import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
 import 'package:attendance_app/src/features/attendance/domain/entities/qr_code_response.dart';
@@ -167,11 +168,10 @@ class QrCodeDisplay extends StatelessWidget {
 
   void _copyToClipboard(BuildContext context, String text) {
     Clipboard.setData(ClipboardData(text: text));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Código copiado: $text'),
-        duration: const Duration(seconds: 2),
-      ),
+    AlertInfo.show(
+      context: context,
+      text: 'Código copiado: $text',
+      typeInfo: TypeInfo.info,
     );
   }
 

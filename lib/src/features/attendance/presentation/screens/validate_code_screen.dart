@@ -1,5 +1,8 @@
+import 'package:alert_info/alert_info.dart';
 import 'package:attendance_app/src/core/shared/extensions/build_context.dart';
+import 'package:attendance_app/src/core/shared/layout/double_value.dart';
 import 'package:attendance_app/src/core/shared/widgets/attendance_app_bar.dart';
+import 'package:attendance_app/src/core/shared/widgets/section_title.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/confirm_attendance_state_provider.dart';
 import 'package:attendance_app/src/features/attendance/presentation/providers/validate_code_state_provider.dart';
 import 'package:flutter/material.dart';
@@ -44,11 +47,10 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
       final accuracy = double.tryParse(_accuracyController.text);
 
       if (latitude == null || longitude == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Por favor ingresa coordenadas válidas'),
-            backgroundColor: Colors.red,
-          ),
+        AlertInfo.show(
+          context: context,
+          text: 'Por favor ingresa coordenadas válidas',
+          typeInfo: TypeInfo.warning,
         );
         return;
       }
@@ -91,7 +93,7 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
         actions: [
           IconButton(
             onPressed: _reset,
-            icon: Icon(Icons.refresh, color: context.appColorScheme.onPrimary),
+            icon: Icon(Icons.refresh, color: context.appColorScheme.onSurface),
             tooltip: 'Limpiar',
           ),
         ],
@@ -107,16 +109,10 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Column(
+                  spacing: DoubleSizes.size16,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Código QR o Manual',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
+                    const SectionTitle(title: 'Código QR'),
                     TextFormField(
                       controller: _codeController,
                       decoration: const InputDecoration(
@@ -134,74 +130,74 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Text(
-                          'Incluir Ubicación',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const Spacer(),
-                        Switch(
-                          value: _includeLocation,
-                          onChanged: (value) {
-                            setState(() {
-                              _includeLocation = value;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                    if (_includeLocation) ...[
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _latitudeController,
-                        decoration: const InputDecoration(
-                          labelText: 'Latitud',
-                          hintText: 'Ej: -12.0464',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.location_on),
-                        ),
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      TextFormField(
-                        controller: _longitudeController,
-                        decoration: const InputDecoration(
-                          labelText: 'Longitud',
-                          hintText: 'Ej: -77.0428',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.location_on),
-                        ),
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      TextFormField(
-                        controller: _accuracyController,
-                        decoration: const InputDecoration(
-                          labelText: 'Precisión (opcional)',
-                          hintText: 'Ej: 5.0',
-                          border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.gps_fixed),
-                        ),
-                        keyboardType: const TextInputType.numberWithOptions(
-                          decimal: true,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-                const SizedBox(height: 24),
+                // const SizedBox(height: 16),
+                // Column(
+                //   crossAxisAlignment: CrossAxisAlignment.start,
+                //   children: [
+                //     Row(
+                //       children: [
+                //         const Text(
+                //           'Incluir Ubicación',
+                //           style: TextStyle(
+                //             fontSize: 18,
+                //             fontWeight: FontWeight.bold,
+                //           ),
+                //         ),
+                //         const Spacer(),
+                //         Switch(
+                //           value: _includeLocation,
+                //           onChanged: (value) {
+                //             setState(() {
+                //               _includeLocation = value;
+                //             });
+                //           },
+                //         ),
+                //       ],
+                //     ),
+                //     if (_includeLocation) ...[
+                //       const SizedBox(height: 16),
+                //       TextFormField(
+                //         controller: _latitudeController,
+                //         decoration: const InputDecoration(
+                //           labelText: 'Latitud',
+                //           hintText: 'Ej: -12.0464',
+                //           border: OutlineInputBorder(),
+                //           prefixIcon: Icon(Icons.location_on),
+                //         ),
+                //         keyboardType: const TextInputType.numberWithOptions(
+                //           decimal: true,
+                //         ),
+                //       ),
+                //       const SizedBox(height: 12),
+                //       TextFormField(
+                //         controller: _longitudeController,
+                //         decoration: const InputDecoration(
+                //           labelText: 'Longitud',
+                //           hintText: 'Ej: -77.0428',
+                //           border: OutlineInputBorder(),
+                //           prefixIcon: Icon(Icons.location_on),
+                //         ),
+                //         keyboardType: const TextInputType.numberWithOptions(
+                //           decimal: true,
+                //         ),
+                //       ),
+                //       const SizedBox(height: 12),
+                //       TextFormField(
+                //         controller: _accuracyController,
+                //         decoration: const InputDecoration(
+                //           labelText: 'Precisión (opcional)',
+                //           hintText: 'Ej: 5.0',
+                //           border: OutlineInputBorder(),
+                //           prefixIcon: Icon(Icons.gps_fixed),
+                //         ),
+                //         keyboardType: const TextInputType.numberWithOptions(
+                //           decimal: true,
+                //         ),
+                //       ),
+                //     ],
+                //   ],
+                // ),
+                // const SizedBox(height: 24),
 
                 // Resultado de la validación
                 validateCodeState.when(
@@ -375,7 +371,7 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: validateCodeState.maybeWhen(
-        success: (response) => FilledButton(
+        success: (response) => FloatingActionButton.extended(
           onPressed: ref
               .watch(confirmAttendanceNotifierProvider)
               .maybeWhen(
@@ -399,18 +395,13 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
                   }
                 },
               ),
-          style: FilledButton.styleFrom(padding: const EdgeInsets.all(16)),
-          child: ref
+          label: ref
               .watch(confirmAttendanceNotifierProvider)
               .maybeWhen(
                 loading: () => const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Confirmando...',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    Spacer(),
+                    Text('Confirmando...'),
+                    SizedBox(width: 10),
                     SizedBox(
                       width: 20,
                       height: 20,
@@ -421,50 +412,24 @@ class _ValidateCodeScreenState extends ConsumerState<ValidateCodeScreen> {
                     ),
                   ],
                 ),
-                orElse: () => Row(
-                  children: [
-                    const Text('Confirmar', style: TextStyle(fontSize: 16)),
-                    const Spacer(),
-                    const Icon(Icons.check, color: Colors.white),
-                  ],
-                ),
+                orElse: () => const Text('Confirmar'),
               ),
+          icon: const Icon(Icons.check),
         ),
-        orElse: () => Container(
-          width: 200,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            color: context.appColorScheme.primary,
+        orElse: () => FloatingActionButton.extended(
+          onPressed: validateCodeState.maybeWhen(
+            loading: () => null,
+            orElse: () => _validateCode,
           ),
-          child: FilledButton(
-            onPressed: validateCodeState.maybeWhen(
-              loading: () => null,
-              orElse: () => _validateCode,
-            ),
-            style: FilledButton.styleFrom(padding: const EdgeInsets.all(16)),
-            child: validateCodeState.maybeWhen(
-              loading: () => const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Validando...', style: TextStyle(color: Colors.white)),
-                  Spacer(),
-                  SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    ),
-                  ),
-                ],
-              ),
-              orElse: () => Row(
-                children: [
-                  const Text('Validar Código', style: TextStyle(fontSize: 16)),
-                  const Spacer(),
-                  const Icon(Icons.check, color: Colors.white),
-                ],
-              ),
+          backgroundColor: context.appColorScheme.secondary,
+          label: validateCodeState.maybeWhen(
+            loading: () => const Text('Validando...'),
+            orElse: () => const Text('Validar'),
+          ),
+          icon: Icon(
+            validateCodeState.maybeWhen(
+              loading: () => Icons.hourglass_top,
+              orElse: () => Icons.check_circle,
             ),
           ),
         ),
