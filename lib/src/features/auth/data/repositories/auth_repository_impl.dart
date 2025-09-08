@@ -2,6 +2,7 @@ import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/features/auth/data/datasources/api/auth_datasource_impl.dart';
 import 'package:attendance_app/src/features/auth/data/datasources/local/auth_local_datasource.dart';
 import 'package:attendance_app/src/features/auth/domain/entities/auth_session.dart';
+import 'package:attendance_app/src/features/auth/domain/entities/profile_entity.dart';
 import 'package:attendance_app/src/features/auth/domain/repositories/auth_repositories.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -58,6 +59,11 @@ class AuthRepositoryImpl implements AuthRepository {
         );
       },
     );
+  }
+
+  @override
+  FutureEither<ProfileEntityResponse> getProfile() async {
+    return await _apiDataSource.getProfile();
   }
 
   /// Get stored authentication session

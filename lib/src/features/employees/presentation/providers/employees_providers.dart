@@ -2,6 +2,7 @@ import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/auth_providers.dart';
 import 'package:attendance_app/src/features/employees/data/datasources/api/employees_datasource_impl.dart';
 import 'package:attendance_app/src/features/employees/data/repositories/employees_repository_impl.dart';
+import 'package:attendance_app/src/features/employees/domain/entities/create_employee_request.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/daily_attendance_entity.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/daily_attendance_request.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/employee_entity.dart';
@@ -10,6 +11,8 @@ import 'package:attendance_app/src/features/employees/domain/repositories/employ
 import 'package:attendance_app/src/features/employees/domain/usecases/add_employee_usecase.dart';
 import 'package:attendance_app/src/features/employees/domain/usecases/get_daily_attendance_usecase.dart';
 import 'package:attendance_app/src/features/employees/domain/usecases/get_employees_usecase.dart';
+import 'package:attendance_app/src/features/employees/domain/usecases/update_employee_usecase.dart';
+import 'package:attendance_app/src/features/employees/domain/usecases/update_only_employee_usecase.dart';
 import 'package:dio/dio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -54,6 +57,18 @@ AddEmployeeUseCase addEmployeeUseCase(Ref ref) {
 GetDailyAttendanceUseCase getDailyAttendanceUseCase(Ref ref) {
   final employeesRepository = ref.watch(employeesRepositoryProvider);
   return GetDailyAttendanceUseCase(employeesRepository);
+}
+
+@riverpod
+UpdateEmployeeUseCase updateEmployeeUseCase(Ref ref) {
+  final employeesRepository = ref.watch(employeesRepositoryProvider);
+  return UpdateEmployeeUseCase(employeesRepository);
+}
+
+@riverpod
+UpdateOnlyEmployeeUseCase updateOnlyEmployeeUseCase(Ref ref) {
+  final employeesRepository = ref.watch(employeesRepositoryProvider);
+  return UpdateOnlyEmployeeUseCase(employeesRepository);
 }
 
 // Estado para manejar la paginación
@@ -343,5 +358,54 @@ class DailyAttendanceNotifier extends _$DailyAttendanceNotifier {
 
   void clearAttendance() {
     state = const AsyncValue.loading();
+  }
+}
+
+// Update Employee State Provider
+@riverpod
+class UpdateEmployeeNotifier extends _$UpdateEmployeeNotifier {
+  @override
+  AsyncValue<EmployeesResponse?> build() {
+    return const AsyncValue.data(null);
+  }
+
+  Future<void> updateEmployee(String id, CreateEmployeeRequest request) async {
+    if (!ref.mounted) return;
+    state = const AsyncValue.loading();
+
+    try {
+      final updateEmployeeUseCase = ref.read(updateEmployeeUseCaseProvider);
+      final result = await updateEmployeeUseCase(id, request);
+
+      if (!ref.mounted) return;
+
+      result.fold(
+        (failure) {
+          if (ref.mounted) {
+            state = AsyncValue.error(
+              Exception(failure.message),
+              StackTrace.current,
+            );
+          }
+        },
+        (employeesResponse) {
+          if (ref.mounted) {
+            state = AsyncValue.data(employeesResponse);
+            // Refrescar la lista de empleados después de la actualización
+            // ref.invalidate(employeesStateNotifierProvider); // Temporarily commented
+          }
+        },
+      );
+    } catch (e, stackTrace) {
+      if (ref.mounted) {
+        state = AsyncValue.error(e, stackTrace);
+      }
+    }
+  }
+
+  void clearState() {
+    if (ref.mounted) {
+      state = const AsyncValue.data(null);
+    }
   }
 }

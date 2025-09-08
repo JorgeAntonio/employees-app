@@ -113,8 +113,8 @@ class AttendanceFilters {
 class Shift {
   final String id;
   final String name;
-  final String startTime;
-  final String endTime;
+  final DateTime startTime;
+  final DateTime endTime;
 
   Shift({
     required this.id,

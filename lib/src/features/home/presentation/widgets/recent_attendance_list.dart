@@ -42,11 +42,9 @@ class RecentAttendanceList extends ConsumerWidget {
                 .take(5)
                 .map(
                   (attendance) => AttendanceCard(
-                    date: DateTime.parse(attendance.date),
-                    checkInTime: DateTime.parse(attendance.checkInTime),
-                    checkOutTime: attendance.checkOutTime != null
-                        ? DateTime.parse(attendance.checkOutTime!)
-                        : null,
+                    date: attendance.date,
+                    checkInTime: attendance.checkInTime,
+                    checkOutTime: attendance.checkOutTime,
                     status: attendance.status,
                     durationMins: attendance.durationMins,
                   ),

@@ -1,5 +1,7 @@
 import 'package:attendance_app/src/core/shared/extensions/extensions.dart';
 import 'package:attendance_app/src/core/shared/layout/layout.dart';
+import 'package:attendance_app/src/core/utils/date_time_utils.dart';
+import 'package:attendance_app/src/core/utils/status_text.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/daily_attendance_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -178,7 +180,7 @@ class AttendanceCard extends StatelessWidget {
                 ),
                 const SizedBox(width: DoubleSizes.size8),
                 Text(
-                  'Estado: ${record.status}',
+                  'Estado: ${StatusTextUtil.getStatusText(record.status)}',
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -191,31 +193,12 @@ class AttendanceCard extends StatelessWidget {
               const SizedBox(height: DoubleSizes.size8),
 
               // Entrada
-              if (hasCheckIn)
-                Row(
-                  children: [
-                    const Icon(Icons.login, size: 16, color: Colors.green),
-                    const SizedBox(width: DoubleSizes.size8),
-                    Text(
-                      'Entrada: ${record.checkInTime.toString().split(' ')[1].substring(0, 5)}',
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  ],
-                ),
+              if (hasCheckIn) TimeLabel(dateTime: record.checkInTime!),
 
               // Salida
               if (hasCheckOut) ...[
                 const SizedBox(height: DoubleSizes.size4),
-                Row(
-                  children: [
-                    const Icon(Icons.logout, size: 16, color: Colors.orange),
-                    const SizedBox(width: DoubleSizes.size8),
-                    Text(
-                      'Salida: ${record.checkOutTime.toString().split(' ')[1].substring(0, 5)}',
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  ],
-                ),
+                TimeLabel(dateTime: record.checkOutTime!),
               ],
 
               // Duración
@@ -226,7 +209,7 @@ class AttendanceCard extends StatelessWidget {
                     const Icon(Icons.timer, size: 16, color: Colors.blue),
                     const SizedBox(width: DoubleSizes.size8),
                     Text(
-                      'Duración: ${record.durationMins} min',
+                      'Duración: ${DateTimeUtils.formatDuration(record.durationMins!)}',
                       style: const TextStyle(fontSize: 12),
                     ),
                   ],
@@ -256,6 +239,27 @@ class AttendanceCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class TimeLabel extends StatelessWidget {
+  const TimeLabel({super.key, required this.dateTime});
+
+  final IconData icon = Icons.logout;
+  final DateTime dateTime;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, size: 16, color: Colors.orange),
+        const SizedBox(width: DoubleSizes.size8),
+        Text(
+          'Salida: ${DateTimeUtils.formatTimeLocal(dateTime)}',
+          style: const TextStyle(fontSize: 12),
+        ),
+      ],
     );
   }
 }

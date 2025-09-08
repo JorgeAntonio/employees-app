@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 
 class EmployeesScreen extends ConsumerStatefulWidget {
   const EmployeesScreen({super.key});
@@ -735,8 +736,12 @@ class _EmployeeDetailsContent extends StatelessWidget {
                             if (employee.shift != null)
                               _DetailItem(
                                 label: 'Horario',
-                                value:
-                                    '${employee.shift!.startTime} - ${employee.shift!.endTime}',
+                                value: () {
+                                  final timeFormat = DateFormat('HH:mm');
+                                  final startTime = timeFormat.format(employee.shift!.startTime);
+                                  final endTime = timeFormat.format(employee.shift!.endTime);
+                                  return '$startTime - $endTime';
+                                }(),
                               ),
                           ],
                         ),

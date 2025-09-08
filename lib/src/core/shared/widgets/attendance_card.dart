@@ -1,6 +1,7 @@
 import 'package:attendance_app/src/core/shared/layout/double_value.dart';
+import 'package:attendance_app/src/core/utils/date_time_utils.dart';
+import 'package:attendance_app/src/core/utils/status_text.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 /// Widget reutilizable para mostrar información de asistencia
 /// Usado tanto en la lista de asistencias recientes como en el historial
@@ -26,7 +27,16 @@ class AttendanceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeFormat = DateFormat('HH:mm');
+    // Usar la utilidad para obtener fechas y horas locales
+    final friendlyDate = DateTimeUtils.getFriendlyDateText(date);
+    final localCheckInTime = DateTimeUtils.formatTimeLocal(checkInTime);
+    final localCheckOutTime = checkOutTime != null
+        ? DateTimeUtils.formatTimeLocal(checkOutTime!)
+        : null;
+
+    final difference = int.parse(friendlyDate['difference']!);
+    final dateText = friendlyDate['dateText']!;
+    final monthText = friendlyDate['monthText']!;
 
     Color statusColor;
     IconData statusIcon;
@@ -80,7 +90,7 @@ class AttendanceCard extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        date.day.toString(),
+                        difference < 7 ? monthText : dateText,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
                               fontWeight: FontWeight.bold,
@@ -88,7 +98,7 @@ class AttendanceCard extends StatelessWidget {
                             ),
                       ),
                       Text(
-                        DateFormat('MMM', 'es').format(date).toUpperCase(),
+                        difference < 7 ? dateText : monthText,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: statusColor,
                           fontWeight: FontWeight.w500,
@@ -109,7 +119,7 @@ class AttendanceCard extends StatelessWidget {
                           Icon(statusIcon, color: statusColor, size: 16),
                           const SizedBox(width: DoubleSizes.size4),
                           Text(
-                            _getStatusText(status),
+                            StatusTextUtil.getStatusText(status),
                             style: Theme.of(context).textTheme.bodyMedium
                                 ?.copyWith(
                                   color: statusColor,
@@ -118,40 +128,62 @@ class AttendanceCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: DoubleSizes.size4),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.login,
-                                size: 14,
-                                color: Colors.grey.shade600,
-                              ),
-                              const SizedBox(width: DoubleSizes.size4),
-                              Text(
-                                'Entrada: ${timeFormat.format(checkInTime)}',
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
+                      const SizedBox(height: DoubleSizes.size8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: DoubleSizes.size8,
+                          vertical: DoubleSizes.size4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.shade50,
+                          borderRadius: BorderRadius.circular(
+                            DoubleSizes.size4,
                           ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.logout,
-                                size: 14,
-                                color: Colors.grey.shade600,
-                              ),
-                              const SizedBox(width: DoubleSizes.size4),
-                              Text(
-                                checkOutTime != null
-                                    ? 'Salida: ${timeFormat.format(checkOutTime!)}'
-                                    : 'Salida: Pendiente',
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                            ],
-                          ),
-                        ],
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.login,
+                                  size: 14,
+                                  color: Colors.green.shade600,
+                                ),
+                                const SizedBox(width: DoubleSizes.size4),
+                                Text(
+                                  'Entrada: $localCheckInTime',
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(fontWeight: FontWeight.w500),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: DoubleSizes.size4),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.logout,
+                                  size: 14,
+                                  color: localCheckOutTime != null
+                                      ? Colors.red.shade600
+                                      : Colors.grey.shade600,
+                                ),
+                                const SizedBox(width: DoubleSizes.size4),
+                                Text(
+                                  localCheckOutTime != null
+                                      ? 'Salida: $localCheckOutTime'
+                                      : 'Salida: Pendiente',
+                                  style: Theme.of(context).textTheme.bodySmall
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color: localCheckOutTime == null
+                                            ? Colors.orange.shade700
+                                            : null,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -163,7 +195,7 @@ class AttendanceCard extends StatelessWidget {
                   children: [
                     Text(
                       durationMins != null
-                          ? _formatDuration(durationMins!)
+                          ? DateTimeUtils.formatDuration(durationMins!)
                           : '--',
                       style: Theme.of(context).textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.bold,
@@ -183,29 +215,5 @@ class AttendanceCard extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String _getStatusText(String status) {
-    switch (status.toUpperCase()) {
-      case 'PRESENT':
-        return 'Presente';
-      case 'LATE':
-        return 'Tardanza';
-      case 'ABSENT':
-        return 'Ausente';
-      default:
-        return 'Desconocido';
-    }
-  }
-
-  String _formatDuration(int minutes) {
-    if (minutes < 60) {
-      return '${minutes}m';
-    }
-    final hours = minutes ~/ 60;
-    final remainingMinutes = minutes % 60;
-    return remainingMinutes > 0
-        ? '${hours}h ${remainingMinutes}m'
-        : '${hours}h';
   }
 }

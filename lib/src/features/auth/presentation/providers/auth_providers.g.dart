@@ -271,6 +271,53 @@ final class VerifyTokenUseCaseProvider
 String _$verifyTokenUseCaseHash() =>
     r'aae55ccfb9d168d2a4da958d7204e4a542a61f35';
 
+@ProviderFor(getProfileUseCase)
+const getProfileUseCaseProvider = GetProfileUseCaseProvider._();
+
+final class GetProfileUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GetProfileUseCase,
+          GetProfileUseCase,
+          GetProfileUseCase
+        >
+    with $Provider<GetProfileUseCase> {
+  const GetProfileUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getProfileUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getProfileUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetProfileUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetProfileUseCase create(Ref ref) {
+    return getProfileUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetProfileUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetProfileUseCase>(value),
+    );
+  }
+}
+
+String _$getProfileUseCaseHash() => r'ce0e030c0ac68a24d4d05b71715efbc6afe3b0b9';
+
 @ProviderFor(getStoredSessionUseCase)
 const getStoredSessionUseCaseProvider = GetStoredSessionUseCaseProvider._();
 

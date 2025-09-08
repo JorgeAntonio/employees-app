@@ -2,8 +2,8 @@ class Shift {
   final String id;
   final String name;
   final String description;
-  final String startTime;
-  final String endTime;
+  final DateTime startTime;
+  final DateTime endTime;
   final int employeeCount;
 
   const Shift({

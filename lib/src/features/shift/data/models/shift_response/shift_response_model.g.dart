@@ -42,8 +42,8 @@ _ShiftModel _$ShiftModelFromJson(Map<String, dynamic> json) => _ShiftModel(
   id: json['id'] as String,
   name: json['name'] as String,
   description: json['description'] as String,
-  startTime: json['startTime'] as String,
-  endTime: json['endTime'] as String,
+  startTime: DateTime.parse(json['startTime'] as String),
+  endTime: DateTime.parse(json['endTime'] as String),
   employeeCount: (json['employeeCount'] as num).toInt(),
 );
 
@@ -52,8 +52,8 @@ Map<String, dynamic> _$ShiftModelToJson(_ShiftModel instance) =>
       'id': instance.id,
       'name': instance.name,
       'description': instance.description,
-      'startTime': instance.startTime,
-      'endTime': instance.endTime,
+      'startTime': instance.startTime.toIso8601String(),
+      'endTime': instance.endTime.toIso8601String(),
       'employeeCount': instance.employeeCount,
     };
 

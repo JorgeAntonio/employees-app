@@ -1,6 +1,7 @@
 import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/features/auth/data/data.dart';
 import 'package:attendance_app/src/features/auth/domain/repositories/auth_repositories.dart';
+import 'package:attendance_app/src/features/auth/domain/usecases/get_profile_usecase.dart';
 import 'package:attendance_app/src/features/auth/domain/usecases/get_stored_session_usecase.dart';
 import 'package:attendance_app/src/features/auth/domain/usecases/sign_in_usecase.dart';
 import 'package:attendance_app/src/features/auth/domain/usecases/sign_out_usecase.dart';
@@ -52,6 +53,12 @@ SignInUseCase signInUseCase(Ref ref) {
 VerifyTokenUseCase verifyTokenUseCase(Ref ref) {
   final authRepository = ref.watch(authRepositoryProvider);
   return VerifyTokenUseCase(authRepository);
+}
+
+@riverpod
+GetProfileUseCase getProfileUseCase(Ref ref) {
+  final authRepository = ref.watch(authRepositoryProvider);
+  return GetProfileUseCase(authRepository);
 }
 
 @riverpod

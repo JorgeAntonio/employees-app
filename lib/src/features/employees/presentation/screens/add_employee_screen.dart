@@ -9,6 +9,7 @@ import 'package:attendance_app/src/features/employees/presentation/providers/emp
 import 'package:attendance_app/src/features/shift/presentation/providers/shift_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class AddEmployeeScreen extends ConsumerStatefulWidget {
   const AddEmployeeScreen({super.key});
@@ -328,10 +329,13 @@ class _AddEmployeeScreenState extends ConsumerState<AddEmployeeScreen> {
                                 helperText: 'Seleccione el turno de trabajo',
                               ),
                               items: shifts.map((shift) {
+                                final timeFormat = DateFormat('HH:mm');
+                                final startTime = timeFormat.format(shift.startTime);
+                                final endTime = timeFormat.format(shift.endTime);
                                 return DropdownMenuItem<String>(
                                   value: shift.id.toString(),
                                   child: Text(
-                                    '${shift.name} (${shift.startTime} - ${shift.endTime})',
+                                    '${shift.name} ($startTime - $endTime)',
                                     style: context.appTextTheme.bodySmall,
                                     overflow: TextOverflow.ellipsis,
                                   ),

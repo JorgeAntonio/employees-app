@@ -4,6 +4,8 @@ import 'package:attendance_app/src/features/employees/data/models/create_employe
 import 'package:attendance_app/src/features/employees/data/models/create_employee_response/create_employee_response_model.dart';
 import 'package:attendance_app/src/features/employees/data/models/daily_attendance_response/daily_attendance_response_model.dart';
 import 'package:attendance_app/src/features/employees/data/models/employees_response/employees_response_model.dart';
+import 'package:attendance_app/src/features/employees/data/models/update_employee_request/update_employee_request_model.dart';
+import 'package:attendance_app/src/features/employees/data/models/update_employee_response/update_employee_response_model.dart';
 import 'package:attendance_app/src/features/employees/domain/datasources/api/employees_datasource.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/create_employee_request.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/create_employee_response.dart';
@@ -11,6 +13,8 @@ import 'package:attendance_app/src/features/employees/domain/entities/daily_atte
 import 'package:attendance_app/src/features/employees/domain/entities/daily_attendance_request.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/employee_entity.dart';
 import 'package:attendance_app/src/features/employees/domain/entities/employees_request.dart';
+import 'package:attendance_app/src/features/employees/domain/entities/update_employee_request.dart';
+import 'package:attendance_app/src/features/employees/domain/entities/update_employee_response.dart';
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -187,6 +191,117 @@ class EmployeesDataSourceImpl implements EmployeesDataSource {
             return right(dailyAttendanceResponseModel.toDomain());
           } else {
             return left(ServerFailure('Error al obtener asistencia diaria'));
+          }
+        } else {
+          return left(
+            ServerFailure('Error del servidor: ${response.statusCode}'),
+          );
+        }
+      });
+    } on DioException catch (e) {
+      return left(ServerFailure(e.message ?? 'Error de conexión'));
+    } catch (e) {
+      return left(ServerFailure('Error inesperado: $e'));
+    }
+  }
+
+  @override
+  FutureEither<UpdateUserEmployee> updateEmployee(
+    String id,
+    CreateEmployeeRequest request,
+  ) async {
+    try {
+      // Obtener token de autenticación
+      final tokenResult = await _authLocalDataSource.getToken();
+      return tokenResult.fold((failure) => left(failure), (token) async {
+        if (token == null) {
+          return left(
+            const AuthFailure('Token de autenticación no encontrado'),
+          );
+        }
+
+        // Convertir la request a modelo para serialización
+        final requestModel = request.toModel();
+
+        final response = await _dio.put(
+          '/employees/$id/complete',
+          data: requestModel.toJson(),
+          options: Options(headers: {'Authorization': 'Bearer $token'}),
+        );
+
+        if (response.statusCode == 200) {
+          final updateEmployeeResponseModel =
+              UpdateEmployeeResponseModel.fromJson(response.data);
+
+          // Verificar si la respuesta indica éxito
+          if (updateEmployeeResponseModel.success) {
+            final domainResult = updateEmployeeResponseModel.toDomain();
+            return right(domainResult);
+          } else {
+            return left(
+              ServerFailure(
+                updateEmployeeResponseModel.message ??
+                    'Error al actualizar empleado',
+              ),
+            );
+          }
+        } else {
+          return left(
+            ServerFailure('Error del servidor: ${response.statusCode}'),
+          );
+        }
+      });
+    } on DioException catch (e) {
+      return left(ServerFailure(e.message ?? 'Error de conexión'));
+    } catch (e) {
+      return left(ServerFailure('Error inesperado: $e'));
+    }
+  }
+
+  @override
+  FutureEither<UpdateEmployeeResponse> updateOnlyEmployee(
+    String id,
+    UpdateEmployeeRequest request,
+  ) async {
+    try {
+      // Obtener token de autenticación
+      final tokenResult = await _authLocalDataSource.getToken();
+      return tokenResult.fold((failure) => left(failure), (token) async {
+        if (token == null) {
+          return left(
+            const AuthFailure('Token de autenticación no encontrado'),
+          );
+        }
+
+        // Convertir la request usando solo campos no nulos
+        final requestData = request.toJsonWithoutNulls();
+
+        final response = await _dio.put(
+          '/employees/$id',
+          data: requestData,
+          options: Options(headers: {'Authorization': 'Bearer $token'}),
+        );
+
+        if (response.statusCode == 200) {
+          final updateEmployeeResponseModel =
+              UpdateEmployeeResponseModel.fromJson(response.data);
+
+          // Verificar si la respuesta indica éxito
+          if (updateEmployeeResponseModel.success) {
+            return right(
+              UpdateEmployeeResponse(
+                success: updateEmployeeResponseModel.success,
+                data: updateEmployeeResponseModel.data?.toDomain(),
+                message: updateEmployeeResponseModel.message,
+              ),
+            );
+          } else {
+            return left(
+              ServerFailure(
+                updateEmployeeResponseModel.message ??
+                    'Error al actualizar empleado',
+              ),
+            );
           }
         } else {
           return left(

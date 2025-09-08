@@ -18,12 +18,12 @@ class AppDrawer extends HookConsumerWidget {
     final session = ref.watch(authStateProvider);
 
     final menuItems = [
-      {
-        'icon': Icons.dashboard_rounded,
-        'title': 'Dashboard',
-        'subtitle': 'Ver el dashboard de asistencia',
-        'onTap': () => context.pushNamed(Routes.dashboard.name),
-      },
+      // {
+      //   'icon': Icons.dashboard_rounded,
+      //   'title': 'Dashboard',
+      //   'subtitle': 'Ver el dashboard de asistencia',
+      //   'onTap': () => context.pushNamed(Routes.dashboard.name),
+      // },
       {
         'icon': Icons.people,
         'title': 'Estado de Empleados',
@@ -56,31 +56,31 @@ class AppDrawer extends HookConsumerWidget {
         'subtitle': 'Confirmar asistencia con código manual',
         'onTap': () => context.pushNamed(Routes.confirmAttendance.name),
       },
-      {
-        'icon': Icons.notifications_rounded,
-        'title': 'Notificaciones',
-        'subtitle': 'Configurar alertas de asistencia',
-        'requiresAdmin': true,
-        'onTap': () {},
-      },
-      {
-        'icon': Icons.security_rounded,
-        'title': 'Seguridad',
-        'subtitle': 'Cambiar contraseña y configuración',
-        'requiresAdmin': true,
-        'onTap': () {},
-      },
-      {
-        'icon': Icons.help_rounded,
-        'title': 'Ayuda y Soporte',
-        'subtitle': 'Centro de ayuda y contacto',
-        'onTap': () {},
-      },
+      // {
+      //   'icon': Icons.notifications_rounded,
+      //   'title': 'Notificaciones',
+      //   'subtitle': 'Configurar alertas de asistencia',
+      //   'requiresAdmin': true,
+      //   'onTap': () {},
+      // },
+      // {
+      //   'icon': Icons.security_rounded,
+      //   'title': 'Seguridad',
+      //   'subtitle': 'Cambiar contraseña y configuración',
+      //   'requiresAdmin': true,
+      //   'onTap': () {},
+      // },
+      // {
+      //   'icon': Icons.help_rounded,
+      //   'title': 'Ayuda y Soporte',
+      //   'subtitle': 'Centro de ayuda y contacto',
+      //   'onTap': () {},
+      // },
       {
         'icon': Icons.info_rounded,
         'title': 'Acerca de',
         'subtitle': 'Información de la aplicación',
-        'onTap': () {},
+        'onTap': () => context.pushNamed(Routes.about.name),
       },
       {
         'icon': Icons.logout_rounded,

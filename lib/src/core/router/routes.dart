@@ -21,6 +21,9 @@ class Routes {
   static Routes get profile =>
       const Routes._(name: 'profile', path: '/profile');
 
+  static Routes get editProfile =>
+      const Routes._(name: 'edit-profile', path: '/edit-profile');
+
   static Routes get settings =>
       const Routes._(name: 'settings', path: '/settings');
 
@@ -55,4 +58,6 @@ class Routes {
   );
 
   static Routes get info => const Routes._(name: 'info', path: '/info');
+
+  static Routes get about => const Routes._(name: 'about', path: '/about');
 }

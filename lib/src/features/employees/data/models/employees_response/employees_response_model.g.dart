@@ -92,14 +92,14 @@ Map<String, dynamic> _$UserModelToJson(_UserModel instance) =>
 _ShiftModel _$ShiftModelFromJson(Map<String, dynamic> json) => _ShiftModel(
   id: json['id'] as String,
   name: json['name'] as String,
-  startTime: json['startTime'] as String,
-  endTime: json['endTime'] as String,
+  startTime: DateTime.parse(json['startTime'] as String),
+  endTime: DateTime.parse(json['endTime'] as String),
 );
 
 Map<String, dynamic> _$ShiftModelToJson(_ShiftModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
-      'startTime': instance.startTime,
-      'endTime': instance.endTime,
+      'startTime': instance.startTime.toIso8601String(),
+      'endTime': instance.endTime.toIso8601String(),
     };

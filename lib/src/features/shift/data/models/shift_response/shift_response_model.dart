@@ -1,5 +1,5 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:attendance_app/src/features/shift/domain/entities/shift.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'shift_response_model.freezed.dart';
 part 'shift_response_model.g.dart';
@@ -33,8 +33,8 @@ abstract class ShiftModel with _$ShiftModel {
     required String id,
     required String name,
     required String description,
-    required String startTime,
-    required String endTime,
+    required DateTime startTime,
+    required DateTime endTime,
     required int employeeCount,
   }) = _ShiftModel;
 
@@ -60,7 +60,17 @@ extension ShiftResponseModelX on ShiftResponseModel {
   ShiftResponse toDomain() {
     return ShiftResponse(
       success: success,
-      data: data?.toDomain() ?? const ShiftData(shifts: [], pagination: ShiftPagination(page: 1, limit: 10, total: 0, totalPages: 0)),
+      data:
+          data?.toDomain() ??
+          const ShiftData(
+            shifts: [],
+            pagination: ShiftPagination(
+              page: 1,
+              limit: 10,
+              total: 0,
+              totalPages: 0,
+            ),
+          ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:attendance_app/src/features/about/presentation/about_screen.dart';
 import 'package:attendance_app/src/features/attendance/presentation/screens/screens.dart';
 import 'package:attendance_app/src/features/auth/presentation/providers/session_provider.dart';
 import 'package:attendance_app/src/features/auth/presentation/screens/sign_in_screen.dart';
@@ -10,6 +11,7 @@ import 'package:attendance_app/src/features/employees/presentation/screens/emplo
 import 'package:attendance_app/src/features/employees/presentation/screens/import_employees_screen.dart';
 import 'package:attendance_app/src/features/history/screens/attendance_history_screen.dart';
 import 'package:attendance_app/src/features/home/presentation/screens/home_screen.dart';
+import 'package:attendance_app/src/features/profile/presentation/screens/edit_profile_screen.dart';
 import 'package:attendance_app/src/features/profile/presentation/screens/profile_screen.dart';
 import 'package:attendance_app/src/features/qr_reader/presentation/screens/qr_reader_screen.dart';
 import 'package:attendance_app/src/features/welcome/welcome_screen.dart';
@@ -53,6 +55,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
       GoRoute(
+        path: Routes.about.path,
+        name: Routes.about.name,
+        // parentNavigatorKey: _rootNavigatorkey,
+        builder: (context, state) {
+          return const AboutScreen();
+        },
+      ),
+      GoRoute(
         path: Routes.signin.path,
         name: Routes.signin.name,
         // parentNavigatorKey: _rootNavigatorkey,
@@ -64,6 +74,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: Routes.profile.path,
         name: Routes.profile.name,
         builder: (context, state) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: Routes.editProfile.path,
+        name: Routes.editProfile.name,
+        builder: (context, state) => const EditProfileScreen(),
       ),
       GoRoute(
         path: Routes.scanner.path,

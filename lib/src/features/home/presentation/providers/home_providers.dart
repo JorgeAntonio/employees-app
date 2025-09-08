@@ -45,8 +45,8 @@ Future<UserStatsEntityResponse> userStats(Ref ref) async {
   final getUserStatsUseCase = ref.watch(getUserStatsUseCaseProvider);
   final result = await getUserStatsUseCase();
 
-  return result.fold(
-    (failure) => throw Exception(failure.message),
-    (success) => success,
-  );
+  return result.fold((failure) {
+    // Log del error para debugging
+    throw Exception(failure.message);
+  }, (success) => success);
 }

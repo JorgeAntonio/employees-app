@@ -1,8 +1,10 @@
 import 'package:attendance_app/src/core/core.dart';
 import 'package:attendance_app/src/features/auth/data/datasources/local/auth_local_datasource_impl.dart';
 import 'package:attendance_app/src/features/auth/data/models/auth_session/auth_session_model.dart';
+import 'package:attendance_app/src/features/auth/data/models/profile/profile_model.dart';
 import 'package:attendance_app/src/features/auth/domain/dartasource/api/auth_datasource.dart';
 import 'package:attendance_app/src/features/auth/domain/entities/auth_session.dart';
+import 'package:attendance_app/src/features/auth/domain/entities/profile_entity.dart';
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 
@@ -115,6 +117,54 @@ class AuthDataSourceImpl implements AuthDataSource {
             },
           });
           return right(authSessionModel.toDomain());
+        } else {
+          return left(
+            const ServerFailure('Error en la respuesta del servidor'),
+          );
+        }
+      });
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        return left(const NetworkFailure('Error de conexión'));
+      } else if (e.response?.statusCode == 401) {
+        // Token inválido, limpiar la sesión local
+        await AuthLocalDataSourceImpl().clearAuthSession();
+        return left(const AuthFailure('Token inválido o expirado'));
+      } else if (e.response?.statusCode == 404) {
+        return left(const ServerFailure('Servicio no encontrado'));
+      } else {
+        final errorMessage = _extractErrorMessage(e.response?.data);
+        return left(ServerFailure(errorMessage));
+      }
+    } catch (e) {
+      return left(ServerFailure('Error inesperado: $e'));
+    }
+  }
+
+  @override
+  FutureEither<ProfileEntityResponse> getProfile() async {
+    try {
+      // Obtener token de autenticación
+      final tokenResult = await AuthLocalDataSourceImpl().getToken();
+      return tokenResult.fold((failure) => left(failure), (token) async {
+        if (token == null) {
+          return left(
+            const AuthFailure('Token de autenticación no encontrado'),
+          );
+        }
+
+        final response = await _dio.get(
+          '/auth/profile',
+          options: Options(headers: {'Authorization': 'Bearer $token'}),
+        );
+
+        if (response.statusCode == 200) {
+          final profileResponseModel = ProfileResponseModel.fromJson(
+            response.data,
+          );
+          return right(profileResponseModel.toDomain());
         } else {
           return left(
             const ServerFailure('Error en la respuesta del servidor'),

@@ -7,13 +7,13 @@ class UserStatsEntityResponse {
 
 class UserStatsData {
   final Period period;
-  final EmployeeInfo employee;
+  final EmployeeInfo? employee;
   final Statistics statistics;
   final List<RecentAttendance> recentAttendances;
 
   UserStatsData({
     required this.period,
-    required this.employee,
+    this.employee,
     required this.statistics,
     required this.recentAttendances,
   });
@@ -33,7 +33,7 @@ class EmployeeInfo {
   final String lastName;
   final String department;
   final String position;
-  final String? shift;
+  final Shift? shift;
 
   EmployeeInfo({
     required this.id,
@@ -43,6 +43,14 @@ class EmployeeInfo {
     required this.position,
     this.shift,
   });
+}
+
+class Shift {
+  final String name;
+  final DateTime startTime;
+  final DateTime endTime;
+
+  Shift({required this.name, required this.startTime, required this.endTime});
 }
 
 class Statistics {
@@ -68,9 +76,9 @@ class Statistics {
 }
 
 class RecentAttendance {
-  final String date;
-  final String checkInTime;
-  final String? checkOutTime;
+  final DateTime date;
+  final DateTime checkInTime;
+  final DateTime? checkOutTime;
   final String status;
   final int? durationMins;
 
@@ -82,55 +90,3 @@ class RecentAttendance {
     this.durationMins,
   });
 }
-
-// {
-// 	"success": true,
-// 	"data": {
-// 		"period": {
-// 			"startDate": "2025-07-27",
-// 			"endDate": "2025-08-26",
-// 			"days": 30
-// 		},
-// 		"employee": {
-// 			"id": "88b00246-a26c-43bf-b62a-34554175721f",
-// 			"firstName": "Administrador",
-// 			"lastName": "Sistema",
-// 			"department": "Sistemas",
-// 			"position": "Administrador",
-// 			"shift": null
-// 		},
-// 		"statistics": {
-// 			"totalDays": 3,
-// 			"presences": 3,
-// 			"absences": 0,
-// 			"lateArrivals": 0,
-// 			"justified": 0,
-// 			"punctualityRate": 100,
-// 			"averageHours": 0.2,
-// 			"attendanceRate": 100
-// 		},
-// 		"recentAttendances": [
-// 			{
-// 				"date": "2025-08-26",
-// 				"checkInTime": "2025-08-26T03:33:04.379Z",
-// 				"checkOutTime": "2025-08-26T03:56:23.433Z",
-// 				"status": "PRESENT",
-// 				"durationMins": 23
-// 			},
-// 			{
-// 				"date": "2025-08-26",
-// 				"checkInTime": "2025-08-26T02:43:36.752Z",
-// 				"checkOutTime": "2025-08-26T02:49:33.512Z",
-// 				"status": "PRESENT",
-// 				"durationMins": 5
-// 			},
-// 			{
-// 				"date": "2025-08-25",
-// 				"checkInTime": "2025-08-25T18:48:55.564Z",
-// 				"checkOutTime": "2025-08-25T18:49:14.266Z",
-// 				"status": "PRESENT",
-// 				"durationMins": 0
-// 			}
-// 		]
-// 	}
-// }
